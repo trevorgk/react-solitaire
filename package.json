@@ -1,0 +1,14 @@
+{
+  "name": "react-solitaire",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build-app": "babel playing-cards.js Solitaire.js -o bundle.js"
+  },
+  "author": "Trevor Kilvington",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "^5.8.21"
+  }
+}
