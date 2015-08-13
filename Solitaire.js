@@ -135,6 +135,7 @@ var Solitaire = React.createClass({
           <Tableau piles={piles}/>
         </div>
         <br style={{clear: "both"}}/>
+        <p>Cards in waste:{deck.length()}</p>
       </div>
     );
   }

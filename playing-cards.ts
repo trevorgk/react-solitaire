@@ -55,6 +55,8 @@ class DeckOfCards {
   ranks: Rank[] = [Rank.Ace, Rank.Two, Rank.Three, Rank.Four, Rank.Five, Rank.Six, Rank.Seven, Rank.Eight, Rank.Nine, Rank.Ten, Rank.Jack, Rank.Queen, Rank.King];
 
   cards: Card[] = [];
+  //public length = this.cards.length;
+
  	constructor(includeJokers: boolean = true) {
     this.suits.forEach((suit) =>
       this.ranks.forEach((rank) =>
@@ -82,6 +84,10 @@ class DeckOfCards {
 
   toString(): string {
     return this.cards.join(", ")
+  }
+
+  length(): number {
+    return this.cards.length;
   }
 
   deal(players: number, handSize: number = 0): Card[][] {
