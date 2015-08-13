@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-app": "babel playing-cards.js Solitaire.js -o bundle.js"
+    "build-app": "babel playing-cards.js Solitaire.js -o bundle.js",
+    "build-app:watch": "npm run build-app -- -w"
   },
   "author": "Trevor Kilvington",
   "license": "ISC",
