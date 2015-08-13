@@ -90,6 +90,14 @@ class DeckOfCards {
     return this.cards.length;
   }
 
+  push(card:Card) {
+    this.cards.push(card);
+  }
+
+  concat(cards: Card[]): DeckOfCards{
+    this.cards = cards.concat(this.cards);
+    return this;
+  }
   deal(players: number, handSize: number = 0): Card[][] {
     const maxPlayers = 4;
 

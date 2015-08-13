@@ -18,17 +18,19 @@ var Pile = React.createClass({
 
     switch(this.props.layout){
       case Layout.Squared:
-        pileStyle = React.addons.update(pileStyle, {$merge: {position: "relative", width: "80px", height: "112px"}});
-        cardStyle = React.addons.update(cardStyle, {$merge: {position: "absolute"}});
+        pileStyle = React.addons.update({position: "relative", width: "80px", height: "112px"}, {$merge: pileStyle});
+        cardStyle = React.addons.update({position: "absolute"}, {$merge: cardStyle});
         break;
       case Layout.FannedRight:
-        pileStyle = React.addons.update(pileStyle, {$merge: {clear:"both", margin:"0 5px"}});
-        cardStyle = React.addons.update(cardStyle, {$merge: {float:"left", marginLeft:"-65px"}});
+        pileStyle = React.addons.update({
+          //clear:"both",
+          margin:"0 5px"}, {$merge: pileStyle});
+        cardStyle = React.addons.update({float:"left", marginLeft:"-65px"}, {$merge: cardStyle});
         break;
       case Layout.FannedDown:
       default:
-        pileStyle = React.addons.update(pileStyle, {$merge: {float:"left", margin:"0 5px"}});
-        cardStyle = React.addons.update(cardStyle, {$merge: {marginTop:"-90px"}});
+        pileStyle = React.addons.update({float:"left", margin:"0 5px"}, {$merge: pileStyle});
+        cardStyle = React.addons.update({marginTop:"-95px"}, {$merge: cardStyle});
         break;
     }
     let cards = this.props.pile.map(function(card){
@@ -71,26 +73,40 @@ var Tableau = React.createClass({
   }
 });
 
-var Waste = React.createClass({
-  render: function() {
-    return (
-      <div className="Waste">
-
-      </div>
-    );
-  }
-});
-
 var Stock = React.createClass({
+  getInitialState: function() {
+   return {waste: []};
+ },
+
+  handleClick: function(event) {
+    const wasteSize = 3;
+    let cards = this.props.cards.concat(this.state.waste.reverse());
+    let waste = [];
+    for (let i = 0; i < wasteSize; i++){
+      let card = cards.getNextCard();
+      card.show = i == wasteSize - 1;
+      waste.push(card);
+    }
+    this.setState({waste: waste});
+    console.log('cards in deck', this.props.cards.toString());
+  },
+
   render: function() {
     return (
-      <div className="Stock">
-        <img src={Card.backFace} style={{
-          float: "left",
+      <div className="Stock" style={{
+        width: "240px",
+        margin: "10px 15px",
+        float: "left"
+      }}>
+        <img src={Card.backFace} onClick={this.handleClick} style={{
           width: "80px",
           height: "112px",
-          margin: "10px 15px"
+          cursor: "pointer",
+          float:"left"
         }}/>
+        <Pile pile={this.state.waste} layout={Layout.FannedRight} pileStyle={{
+          float:"left",
+          marginLeft:"75px"}} />
       </div>
     );
   }
@@ -122,7 +138,7 @@ var Solitaire = React.createClass({
       <div className="Solitaire" style={style}>
         <div className="">
           <div className="">
-            <Stock cards={this.deck}/>
+            <Stock cards={deck}/>
           </div>
           <div style={{paddingRight:"10px", float: "right"}}>
             <Foundation suit={Suit.Spades} />
@@ -135,7 +151,9 @@ var Solitaire = React.createClass({
           <Tableau piles={piles}/>
         </div>
         <br style={{clear: "both"}}/>
-        <p>Cards in waste:{deck.length()}</p>
+        <div className="diagnostics">
+          <p>Cards in stock:{deck.length()}</p>
+        </div>
       </div>
     );
   }
