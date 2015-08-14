@@ -1,9 +1,7 @@
+import React from 'react';
+const rootEl = document.getElementById('solitaire');
 
-const rootEl = document.getElementById('root');
-
-observe(knightPosition =>
-        React.render(
-            <Board knightPosition={knightPosition} />,
-            rootEl
-        )
+import Solitaire from './Solitaire';
+React.render(
+    <Solitaire pileCount={7} />, rootEl
 );

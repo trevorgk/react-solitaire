@@ -26,12 +26,8 @@ export default class Stock {
                 margin: "10px 15px",
                 float: "left"
             }}>
-                <img src={Card.backFace} onClick={this.handleClick} style={{
-                    width: "80px",
-                    height: "112px",
-                    cursor: "pointer",
-                    float:"left"
-                }}/>
+                <Pile pile={this.props.cards} onClick={this.handleClick} layout={Layout.Squared} />
+
                 <Pile pile={this.state.waste} layout={Layout.FannedRight} pileStyle={{
                     float:"left",
                     marginLeft:"75px"}} />

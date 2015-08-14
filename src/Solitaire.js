@@ -4,26 +4,28 @@ import Foundation from './Foundation';
 import Stock from './Stock';
 import PlayingCard from './PlayingCard';
 import Tableau from './Tableau';
-
-function tableauPiles(pileCount, deck){
-    let piles = [];
-    for (let i = 0; i < pileCount; i++) {
-        for (let j = pileCount - 1; j >= i; j--) {
-            if (!piles[j]) {
-                piles[j] = [];
-            }
-            let card = deck.getNextCard();
-            card.show = j == i;
-
-            piles[j].push(card);
-        }
-    }
-}
+import DeckOfCards from './DeckOfCards';
 
 export default class Solitaire{
+
+    tableauPiles(pileCount, deck){
+        let piles = [];
+        for (let i = 0; i < pileCount; i++) {
+            for (let j = pileCount - 1; j >= i; j--) {
+                if (!piles[j]) {
+                    piles[j] = [];
+                }
+                let card = deck.getNextCard();
+                card.show = j == i;
+
+                piles[j].push(card);
+            }
+        }
+    }
+
     render() {
         const pileCount = this.props.pileCount;
-        let deck = new DeckOfCards(false);
+        let deck = new Cards.DeckOfCards(false);
         deck.shuffle();
         let piles = tableauPiles(pileCount, deck);
         let style = {

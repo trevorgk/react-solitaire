@@ -1,8 +1,9 @@
-enum Suit { Spades, Clubs, Diamonds, Hearts }
-enum Rank { Ace = 1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King }
-enum Layout {Squared, FannedDown, FannedRight}	//todo FannedUp, FannedDown
-const cardsDir = 'img/cards/';
 
+/// <reference path="Constants.ts"/>
+//
+//declare module Cards {
+//
+//}
 class Card {
   joker: boolean;
   suit: Suit;
@@ -53,7 +54,6 @@ class DeckOfCards {
   //	default order
   suits: Suit[] = [Suit.Spades, Suit.Clubs, Suit.Diamonds, Suit.Hearts];
   ranks: Rank[] = [Rank.Ace, Rank.Two, Rank.Three, Rank.Four, Rank.Five, Rank.Six, Rank.Seven, Rank.Eight, Rank.Nine, Rank.Ten, Rank.Jack, Rank.Queen, Rank.King];
-
   cards: Card[] = [];
   //public length = this.cards.length;
 
@@ -113,7 +113,7 @@ class DeckOfCards {
     let hands: Card[][] = [];
 
     for (let i = 0; i < players; i++) {
-      hands[i] = new Array<Card>();
+      hands[i] = [];
     }
 
     for (let i = 0; i < handSize; i++) {
