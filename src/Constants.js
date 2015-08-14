@@ -28,3 +28,4 @@ var Layout;
     Layout[Layout["FannedRight"] = 2] = "FannedRight";
 })(Layout || (Layout = {})); //todo FannedUp, FannedDown
 const cardsDir = 'img/cards/';
+//# sourceMappingURL=Constants.js.map

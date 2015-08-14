@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "build": "webpack --progress --profile --colors",
+    "watch": "webpack-dev-server --hot --inline --progress --colors"
   },
   "author": "Trevor Kilvington",
   "license": "ISC",
@@ -19,6 +20,7 @@
   },
   "dependencies": {
     "react": "^0.13.0",
-    "react-dnd": "^1.1.4"
+    "react-dnd": "^1.1.4",
+    "ts-loader": "^0.5.0"
   }
 }

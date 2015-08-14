@@ -25,7 +25,8 @@ export default class Solitaire{
 
     render() {
         const pileCount = this.props.pileCount;
-        let deck = new Cards.DeckOfCards(false);
+        let deck = new DeckOfCards(false);
+
         deck.shuffle();
         let piles = tableauPiles(pileCount, deck);
         let style = {
