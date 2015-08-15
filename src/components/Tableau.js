@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Pile from './Pile';
 
-export default class Tableau {
+export default class Tableau extends React.Component{
     render() {
         let piles = this.props.piles.map(function(pile) {
             return <Pile pile={pile} layout={Layout.FannedDown}/>

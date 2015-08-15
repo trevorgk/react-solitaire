@@ -1,7 +1,8 @@
 import React from 'react';
+import Solitaire from './Solitaire';
+
 const rootEl = document.getElementById('solitaire');
 
-import Solitaire from './Solitaire';
 React.render(
     <Solitaire pileCount={7} />, rootEl
 );

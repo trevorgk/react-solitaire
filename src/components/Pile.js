@@ -1,7 +1,7 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes } from 'react/addons';
 import PlayingCard from './PlayingCard';
 
-export default class Pile{
+export default class Pile extends React.Component{
 
     render() {
         let pileStyle = this.props.pileStyle || {};
@@ -29,7 +29,7 @@ export default class Pile{
         });
         return (
             <div className="Pile" style={pileStyle}>
-        {cards}
+              {cards}
             </div>
         );
     }

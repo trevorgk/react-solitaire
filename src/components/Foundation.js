@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-export default class Foundation {
+export default class Foundation extends React.Component {
     render() {
         return (
             <div className="Foundation" style={{

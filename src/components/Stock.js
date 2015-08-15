@@ -1,10 +1,12 @@
 import React, { PropTypes } from 'react';
+import Pile from './Pile';
 
-export default class Stock {
+export default class Stock extends React.Component{
 
-    getInitialState() {
-        return {waste: []};
-    };
+    constructor(props) {
+      super(props);
+      this.state = {waste: []};
+    }
 
     handleClick(event) {
         const wasteSize = 3;
@@ -26,7 +28,12 @@ export default class Stock {
                 margin: "10px 15px",
                 float: "left"
             }}>
-                <Pile pile={this.props.cards} onClick={this.handleClick} layout={Layout.Squared} />
+            <img src={Card.backFace} onClick={this.handleClick.bind(this)} style={{
+               width: "80px",
+               height: "112px",
+               cursor: "pointer",
+               float:"left"
+              }}/>
 
                 <Pile pile={this.state.waste} layout={Layout.FannedRight} pileStyle={{
                     float:"left",

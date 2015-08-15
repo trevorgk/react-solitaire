@@ -4,9 +4,8 @@ import Foundation from './Foundation';
 import Stock from './Stock';
 import PlayingCard from './PlayingCard';
 import Tableau from './Tableau';
-import DeckOfCards from './DeckOfCards';
 
-export default class Solitaire{
+export default class Solitaire extends React.Component{
 
     tableauPiles(pileCount, deck){
         let piles = [];
@@ -21,6 +20,7 @@ export default class Solitaire{
                 piles[j].push(card);
             }
         }
+        return piles;
     }
 
     render() {
@@ -28,7 +28,7 @@ export default class Solitaire{
         let deck = new DeckOfCards(false);
 
         deck.shuffle();
-        let piles = tableauPiles(pileCount, deck);
+        let piles = this.tableauPiles(pileCount, deck);
         let style = {
           backgroundImage: "url(img/card-table-bg.png)",
           width:"650px",

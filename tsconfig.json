@@ -20,6 +20,6 @@
         "!./node_modules/**/*"
     ],
     "files": [
-        "./playing-cards.ts"
+        "./src/playing-cards.ts"
     ]
 }

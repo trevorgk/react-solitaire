@@ -2,8 +2,9 @@
   "name": "react-solitaire",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "App.js",
   "scripts": {
+    "build-tsc": "tsc src/playing-cards.ts --out dist/playing-cards.js",
     "build": "webpack --progress --profile --colors",
     "watch": "webpack-dev-server --hot --inline --progress --colors"
   },
@@ -20,6 +21,7 @@
   },
   "dependencies": {
     "react": "^0.13.0",
+    "react-addons": "^0.9.0",
     "react-dnd": "^1.1.4",
     "ts-loader": "^0.5.0"
   }
