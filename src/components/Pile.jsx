@@ -29,13 +29,12 @@ export default class Pile extends React.Component{
         //     return <PlayingCard card={card} style={React.addons.update({zIndex:zIndex++}, {$merge: cardStyle})} />
         // });
 
-        let card = this.props.card;
-        let notify = this.props.notifySelected;
+        let notifySelected = this.props.notifySelected;
         let selectedCard = this.props.selectedCard;
         return (
             <div  className="Pile" style={pileStyle}>
               {this.props.pile.map(function(card){
-                  return <PlayingCard card={card} selectedCard={selectedCard} notifySelected={notify} style={React.addons.update({zIndex:zIndex++}, {$merge: cardStyle})} />
+                  return <PlayingCard card={card} selectedCard={selectedCard} notifySelected={notifySelected} style={React.addons.update({zIndex:zIndex++}, {$merge: cardStyle})} />
               })}
             </div>
         );

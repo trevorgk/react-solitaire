@@ -9,8 +9,12 @@ export default class Solitaire extends React.Component{
 
   constructor(props) {
     super(props);
-    this.state = {selectedCard: null};
     this.notifySelected = this.notifySelected.bind(this);
+
+    let deck = new DeckOfCards(false);
+    deck.shuffle();
+    let piles = this.tableauPiles(this.props.pileCount, deck);
+    this.state = {selectedCard: null, deck: deck, piles: piles};
   }
 
 
@@ -31,16 +35,11 @@ export default class Solitaire extends React.Component{
     }
 
     notifySelected(card){
-      // this.state.selectedCard = card;
       this.setState({selectedCard: card});
+      console.log('Selected: ',card.toString());
     }
 
     render() {
-        const pileCount = this.props.pileCount;
-        let deck = new DeckOfCards(false);
-
-        deck.shuffle();
-        let piles = this.tableauPiles(pileCount, deck);
         let style = {
           backgroundImage: "url(img/card-table-bg.png)",
           width:"650px",
@@ -50,7 +49,7 @@ export default class Solitaire extends React.Component{
           <div className="Solitaire" style={style}>
             <div className="">
               <div className="">
-                <Stock cards={deck}/>
+                <Stock cards={this.state.deck}/>
               </div>
               <div style={{paddingRight:"10px", float: "right"}}>
                 <Foundation suit={Suit.Spades} />
@@ -60,11 +59,10 @@ export default class Solitaire extends React.Component{
               </div>
             </div>
             <div>
-              <Tableau selected={this.state.selectedCard} notifySelected={this.notifySelected} piles={piles}/>
+              <Tableau selectedCard={this.state.selectedCard} notifySelected={this.notifySelected} piles={this.state.piles}/>
             </div>
             <br style={{clear: "both"}}/>
             <div className="diagnostics">
-              <p>Cards in stock:{deck.length()}</p>
             </div>
           </div>
         );

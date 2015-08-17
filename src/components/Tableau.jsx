@@ -6,12 +6,12 @@ export default class Tableau extends React.Component{
         // let piles = this.props.piles.map(function(pile) {
         //     return <Pile  selected={this.state.selectedCard} notify={notifySelected} pile={pile} layout={Layout.FannedDown}/>
         // });
-        let notify = this.props.notifySelected;
+        let notifySelected = this.props.notifySelected;
         let selectedCard = this.props.selectedCard;
         return (
             <div className="Tableau"style={{padding:"130px 10px 120px", float: "right"}}>
                 {this.props.piles.map(function(pile) {
-                    return <Pile selectedCard={selectedCard} notifySelected={notify} pile={pile} layout={Layout.FannedDown}/>
+                    return <Pile selectedCard={selectedCard} notifySelected={notifySelected} pile={pile} layout={Layout.FannedDown}/>
                 })}
             </div>
         );
