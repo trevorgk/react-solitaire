@@ -24,8 +24,9 @@ export default class Pile extends React.Component{
                 cardStyle = React.addons.update({marginTop:"-95px"}, {$merge: cardStyle});
                 break;
         }
+        let zIndex = 0;
         let cards = this.props.pile.map(function(card){
-            return <PlayingCard card={card} style={cardStyle} />
+            return <PlayingCard card={card} style={React.addons.update({zIndex:zIndex++}, {$merge: cardStyle})} />
         });
         return (
             <div className="Pile" style={pileStyle}>
