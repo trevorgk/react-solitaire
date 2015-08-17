@@ -7,6 +7,13 @@ import Tableau from './Tableau';
 
 export default class Solitaire extends React.Component{
 
+  constructor(props) {
+    super(props);
+    this.state = {selectedCard: null};
+    this.notifySelected = this.notifySelected.bind(this);
+  }
+
+
     tableauPiles(pileCount, deck){
         let piles = [];
         for (let i = 0; i < pileCount; i++) {
@@ -21,6 +28,11 @@ export default class Solitaire extends React.Component{
             }
         }
         return piles;
+    }
+
+    notifySelected(card){
+      // this.state.selectedCard = card;
+      this.setState({selectedCard: card});
     }
 
     render() {
@@ -48,7 +60,7 @@ export default class Solitaire extends React.Component{
               </div>
             </div>
             <div>
-              <Tableau piles={piles}/>
+              <Tableau selected={this.state.selectedCard} notifySelected={this.notifySelected} piles={piles}/>
             </div>
             <br style={{clear: "both"}}/>
             <div className="diagnostics">

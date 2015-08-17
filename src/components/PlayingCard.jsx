@@ -25,13 +25,15 @@ export default class PlayingCard extends React.Component {
   handleClick(event) {
       this.setState({isSelected:!this.state.isSelected});
       console.log('isSelected',this.state.isSelected);
+      this.props.notifySelected(this.props.card);
   };
 
   render() {
       let style = React.addons.update({position: "relative", width:"80px",height:"112px"}, {$merge: this.props.style});
+      let card = this.props.card;
       return (
           <div className="PlayingCard" onClick={this.handleClick.bind(this)} style={style}>
-              <img style={{width:"100%"}} src={this.props.card.display()} />
+              <img style={{width:"100%"}} src={card.display()} />
               {this.state.isSelected && this.renderOverlay('aquamarine')}
           </div>
       );
