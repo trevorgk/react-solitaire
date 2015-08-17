@@ -35,8 +35,13 @@ export default class Solitaire extends React.Component{
     }
 
     notifySelected(card){
-      this.setState({selectedCard: card});
-      console.log('Selected: ',card.toString());
+      if (this.state.selectedCard == null) {
+        this.setState({selectedCard: card})
+      }
+      else if (card.toString() == this.state.selectedCard.toString()) this.setState({selectedCard: null});
+      else this.setState({selectedCard: card});
+
+      console.log('Selected: ', card.toString());
     }
 
     render() {
