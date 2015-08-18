@@ -2,6 +2,14 @@ import React, { PropTypes } from 'react/addons';
 import PlayingCard from './PlayingCard';
 
 export default class Pile extends React.Component{
+    constructor(props) {
+      super(props);
+      this.notifySelected = this.notifySelected.bind(this);
+    }
+
+    notifySelected(card, row) {
+      this.props.notifySelected(card, row, this.props.column);
+    }
 
     render() {
         let pileStyle = this.props.pileStyle || {};
@@ -29,13 +37,12 @@ export default class Pile extends React.Component{
         //     return <PlayingCard card={card} style={React.addons.update({zIndex:zIndex++}, {$merge: cardStyle})} />
         // });
 
-        let notifySelected = this.props.notifySelected;
-        let selectedCard = this.props.selectedCard;
+        let row = 0;
         return (
-            <div  className="Pile" style={pileStyle}>
+            <div className="Pile" style={pileStyle}>
               {this.props.pile.map(function(card){
-                  return <PlayingCard card={card} selectedCard={selectedCard} notifySelected={notifySelected} style={React.addons.update({zIndex:zIndex++}, {$merge: cardStyle})} />
-              })}
+                  return <PlayingCard card={card} selectedCard={this.props.selectedCard} notifySelected={this.notifySelected} row={row++} style={React.addons.update({zIndex:zIndex++}, {$merge: cardStyle})} />
+              }.bind(this))}
             </div>
         );
     }

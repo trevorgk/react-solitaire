@@ -7,16 +7,15 @@ import Tableau from './Tableau';
 
 export default class Solitaire extends React.Component{
 
-  constructor(props) {
-    super(props);
-    this.notifySelected = this.notifySelected.bind(this);
+    constructor(props) {
+      super(props);
+      this.notifySelected = this.notifySelected.bind(this);
 
-    let deck = new DeckOfCards(false);
-    deck.shuffle();
-    let piles = this.tableauPiles(this.props.pileCount, deck);
-    this.state = {selectedCard: null, deck: deck, piles: piles};
-  }
-
+      let deck = new DeckOfCards(false);
+      deck.shuffle();
+      let piles = this.tableauPiles(this.props.pileCount, deck);
+      this.state = {selectedCard: null, deck: deck, piles: piles};
+    }
 
     tableauPiles(pileCount, deck){
         let piles = [];
@@ -34,14 +33,32 @@ export default class Solitaire extends React.Component{
         return piles;
     }
 
-    notifySelected(card){
+    notifySelected(card, row, column) {
       if (this.state.selectedCard == null) {
-        this.setState({selectedCard: card})
+        this.setState({selectedCard: card, selectedRow: row, selectedColumn: column})
       }
-      else if (card.toString() == this.state.selectedCard.toString()) this.setState({selectedCard: null});
-      else this.setState({selectedCard: card});
+      else if (card.toString() == this.state.selectedCard.toString()) {
+        this.setState({selectedCard: null, selectedRow: null, selectedColumn: null});
+      }
+      else {
+        console.log('move col ' + this.state.selectedColumn + ' to ' + column);
+        console.log('move row ' + this.state.selectedRow + ' to ' + row);
 
-      console.log('Selected: ', card.toString());
+        let srcPile = this.state.piles[this.state.selectedColumn];
+        let destPile = this.state.piles[column];
+        srcPile.splice(this.state.selectedRow, 1);
+        destPile.push(this.state.selectedCard);
+
+        if (srcPile.length > 0){
+          srcPile[srcPile.length - 1].show = true;
+        }
+
+        this.setState({selectedCard: null, selectedRow: null, selectedColumn: null})
+      }
+
+      console.log('Selected card: ', card.toString());
+      console.log('Selected row: ', row);
+      console.log('Selected column: ', column);
     }
 
     render() {

@@ -23,7 +23,7 @@ export default class PlayingCard extends React.Component {
   }
 
   handleClick(event) {
-      this.props.notifySelected(this.props.card);
+      this.props.notifySelected(this.props.card, this.props.row);
   };
 
   render() {
