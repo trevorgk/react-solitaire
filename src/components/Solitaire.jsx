@@ -14,7 +14,7 @@ export default class Solitaire extends React.Component{
       let deck = new DeckOfCards(false);
       deck.shuffle();
       let piles = this.tableauPiles(this.props.pileCount, deck);
-      this.state = {selectedCard: null, deck: deck, piles: piles};
+      this.state = {selectedCard: null, deck: deck, piles: piles, moves:0};
     }
 
     tableauPiles(pileCount, deck){
@@ -56,6 +56,8 @@ export default class Solitaire extends React.Component{
         this.setState({selectedCard: null, selectedRow: null, selectedColumn: null})
       }
 
+      this.setState({moves:this.state.moves+1})
+
       console.log('Selected card: ', card.toString());
       console.log('Selected row: ', row);
       console.log('Selected column: ', column);
@@ -85,6 +87,7 @@ export default class Solitaire extends React.Component{
             </div>
             <br style={{clear: "both"}}/>
             <div className="diagnostics">
+              mc: {this.state.moves}
             </div>
           </div>
         );
