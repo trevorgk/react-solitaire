@@ -8,7 +8,8 @@ export default class Pile extends React.Component{
     }
 
     notifySelected(card, row) {
-      this.props.notifySelected(card, row, this.props.column);
+      if (this.props.notifySelected)
+        this.props.notifySelected(card, row, this.props.column);
     }
 
     render() {
@@ -32,17 +33,15 @@ export default class Pile extends React.Component{
                 cardStyle = React.addons.update({marginTop:"-95px"}, {$merge: cardStyle});
                 break;
         }
-        let zIndex = 0;
         // let cards = this.props.pile.map(function(card){
         //     return <PlayingCard card={card} style={React.addons.update({zIndex:zIndex++}, {$merge: cardStyle})} />
         // });
 
-        let row = 0;
         return (
             <div className="Pile" style={pileStyle}>
-              {this.props.pile.map(function(card){
-                  return <PlayingCard card={card} selectedCard={this.props.selectedCard} notifySelected={this.notifySelected} row={row++} style={React.addons.update({zIndex:zIndex++}, {$merge: cardStyle})} />
-              }.bind(this))}
+              {this.props.pile.map((card, row) =>
+                  <PlayingCard card={card} selectedCard={this.props.selectedCard} notifySelected={this.notifySelected} row={row} style={React.addons.update({zIndex:row}, {$merge: cardStyle})} />
+              )}
             </div>
         );
     }

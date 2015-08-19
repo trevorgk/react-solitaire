@@ -10,11 +10,13 @@ export default class Solitaire extends React.Component{
     constructor(props) {
       super(props);
       this.notifySelected = this.notifySelected.bind(this);
+      this.notifyFoundationSelected = this.notifyFoundationSelected.bind(this);
 
       let deck = new DeckOfCards(false);
       deck.shuffle();
       let piles = this.tableauPiles(this.props.pileCount, deck);
-      this.state = {selectedCard: null, deck: deck, piles: piles, moves:0};
+      let foundationPiles = this.foundationPiles();
+      this.state = {selectedCard: null, deck: deck, piles: piles, foundationPiles:foundationPiles, moves:0};
     }
 
     tableauPiles(pileCount, deck){
@@ -33,6 +35,22 @@ export default class Solitaire extends React.Component{
         return piles;
     }
 
+    foundationPiles(){
+      return [[],[],[],[]];
+    }
+
+    notifyFoundationSelected(column){
+      var pile = this.state.foundationPiles[column];
+      if (this.state.selectedCard == null) {
+        console.log('notifyFoundationSelected: do nothing', column);
+      } else {
+          pile.push(this.state.selectedCard);
+          this.removeTableauCard();
+
+          this.setState({selectedCard: null, selectedRow: null, selectedColumn: null})
+      }
+    }
+
     notifySelected(card, row, column) {
       if (this.state.selectedCard == null) {
         this.setState({selectedCard: card, selectedRow: row, selectedColumn: column})
@@ -44,14 +62,9 @@ export default class Solitaire extends React.Component{
         console.log('move col ' + this.state.selectedColumn + ' to ' + column);
         console.log('move row ' + this.state.selectedRow + ' to ' + row);
 
-        let srcPile = this.state.piles[this.state.selectedColumn];
         let destPile = this.state.piles[column];
-        srcPile.splice(this.state.selectedRow, 1);
         destPile.push(this.state.selectedCard);
-
-        if (srcPile.length > 0){
-          srcPile[srcPile.length - 1].show = true;
-        }
+        this.removeTableauCard();
 
         this.setState({selectedCard: null, selectedRow: null, selectedColumn: null})
       }
@@ -62,6 +75,15 @@ export default class Solitaire extends React.Component{
       console.log('Selected row: ', row);
       console.log('Selected column: ', column);
     }
+
+    removeTableauCard(){
+      let srcPile = this.state.piles[this.state.selectedColumn];
+      srcPile.splice(this.state.selectedRow, 1);
+      if (srcPile.length > 0){
+        srcPile[srcPile.length - 1].show = true;
+      }
+    }
+    // movePiles(fromPile, column, row, toPile)
 
     render() {
         let style = {
@@ -75,11 +97,10 @@ export default class Solitaire extends React.Component{
               <div className="">
                 <Stock cards={this.state.deck}/>
               </div>
-              <div style={{paddingRight:"10px", float: "right"}}>
-                <Foundation suit={Suit.Spades} />
-                <Foundation suit={Suit.Clubs} />
-                <Foundation suit={Suit.Diamonds} />
-                <Foundation suit={Suit.Hearts} />
+              <div style={{paddingRight:"10px", float: "left"}}>
+                {this.state.foundationPiles.map((pile, foundation)  =>
+                    <Foundation notifySelected={this.notifyFoundationSelected} pile={pile} column={foundation}/>
+                  )}
               </div>
             </div>
             <div>
