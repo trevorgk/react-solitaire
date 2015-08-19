@@ -20,6 +20,14 @@
         "!./node_modules/**/*"
     ],
     "files": [
-        "./src/playing-cards.ts"
+        "./src/playing-cards.ts",
+        "./typing/react-addons-global.d.ts",
+        "./typing/react-addons-tests.ts",
+        "./typing/react-addons.d.ts",
+        "./typing/react-global.d.ts",
+        "./typing/react-tests.ts",
+        "./typing/react.d.ts",
+        "./src/Demo.tsx",
+        "./src/components/test.tsx"
     ]
 }
