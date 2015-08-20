@@ -8005,7 +8005,7 @@ function assertValidProps(props) {
     props.style == null || typeof props.style === 'object',
     'The `style` prop expects a mapping from style properties to values, ' +
     'not a string. For example, style={{marginRight: spacing + \'em\'}} when ' +
-    'using JSX.'
+    'using import React = require('react/addons');'
   ) : invariant(props.style == null || typeof props.style === 'object'));
 }
 
@@ -8458,7 +8458,7 @@ var ReactDOMForm = ReactClass.createClass({
   mixins: [ReactBrowserComponentMixin, LocalEventTrapMixin],
 
   render: function() {
-    // TODO: Instead of using `ReactDOM` directly, we should use JSX. However,
+    // TODO: Instead of using `ReactDOM` directly, we should use import React = require('react/addons'); However,
     // `jshint` fails to parse JSX so in order for linting to work in the open
     // source repo, we need to just use `ReactDOM.form`.
     return form(this.props);

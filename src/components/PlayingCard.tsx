@@ -1,13 +1,23 @@
-import React, { PropTypes } from 'react';
+/// <reference path="../../typings/react/react-addons.d.ts" />
+import React = require('react/addons');
+import * as PlayingCards from '../playing-cards';
 
-export default class PlayingCard extends React.Component {
+interface Props extends React.Props<any> {
+  card: PlayingCards.Card,
+  notifySelected: any,
+  selectedCard: PlayingCards.Card
+  row?: number,
+  style?: any,
+}
+
+export default class PlayingCard extends React.Component<Props, {}>  {
 
   constructor(props) {
     super(props);
     this.state = {isSelected: false};
   }
 
-  renderOverlay(color) {
+  renderOverlay(color){
     return (
       <div style={{
         position: 'absolute',
@@ -18,7 +28,7 @@ export default class PlayingCard extends React.Component {
         zIndex: 1,
         opacity: 0.5,
         backgroundColor: color,
-      }} />
+      }}></div>
     );
   }
 

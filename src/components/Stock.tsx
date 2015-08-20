@@ -1,7 +1,13 @@
-import React, { PropTypes } from 'react';
+/// <reference path="../../typings/react/react-addons.d.ts" />
+import React = require('react/addons');
 import Pile from './Pile';
+import * as PlayingCards from '../playing-cards';
 
-export default class Stock extends React.Component{
+interface Props extends React.Props<any> {
+  cards: PlayingCards.DeckOfCards,
+}
+
+export default class Stock extends React.Component<Props,any>{
 
     constructor(props) {
       super(props);
@@ -22,20 +28,23 @@ export default class Stock extends React.Component{
     };
 
     render() {
+        let pileStyle={
+          float:"left",
+          marginLeft:"75px"
+        };
         return (
             <div className="Stock" style={{
                 width: "240px",
                 margin: "10px 15px",
                 float: "left"
             }}>
-            <img src={Card.backFace} onClick={this.handleClick.bind(this)} style={{
+              <img src='img/cards/back-purple.png' onClick={this.handleClick.bind(this)} style={{
                width: "80px",
                height: "112px",
                cursor: "pointer",
                float:"left"
               }}/>
-
-                <Pile pile={this.state.waste} layout={Layout.FannedRight} pileStyle={{
+              <Pile layout={PlayingCards.Layout.FannedRight} pile={this.state.waste} pileStyle={{
                     float:"left",
                     marginLeft:"75px"}} />
             </div>

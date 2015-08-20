@@ -1,18 +1,30 @@
-import React, { PropTypes } from 'react';
+/// <reference path="../../typings/react/react-addons.d.ts" />
+import React = require('react/addons');
 import Pile from './Pile';
 import Foundation from './Foundation';
 import Stock from './Stock';
 import PlayingCard from './PlayingCard';
 import Tableau from './Tableau';
+import * as PlayingCards from '../playing-cards';
+//
+// declare module JSX {
+//     interface IntrinsicElements {
+//         Pile: any
+//     }
+// }
 
-export default class Solitaire extends React.Component{
+interface Props extends React.Props<any> {
+  pileCount: number,
+}
+
+export default class Solitaire extends React.Component<Props,any>{
 
     constructor(props) {
       super(props);
       this.notifySelected = this.notifySelected.bind(this);
       this.notifyFoundationSelected = this.notifyFoundationSelected.bind(this);
 
-      let deck = new DeckOfCards(false);
+      let deck = new PlayingCards.DeckOfCards(false);
       deck.shuffle();
       let piles = this.tableauPiles(this.props.pileCount, deck);
       let foundationPiles = this.foundationPiles();

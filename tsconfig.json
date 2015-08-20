@@ -1,33 +1,16 @@
 {
-    "version": "1.5.0-beta",
-    "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
-        "isolatedModules": false,
-        "jsx": "react",
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "declaration": false,
-        "noImplicitAny": false,
-        "removeComments": true,
-        "noLib": false,
-        "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true
-    },
-    "filesGlob": [
-        "./**/*.ts",
-        "./**/*.tsx",
-        "!./node_modules/**/*"
-    ],
-    "files": [
-        "./src/playing-cards.ts",
-        "./typing/react-addons-global.d.ts",
-        "./typing/react-addons-tests.ts",
-        "./typing/react-addons.d.ts",
-        "./typing/react-global.d.ts",
-        "./typing/react-tests.ts",
-        "./typing/react.d.ts",
-        "./src/Demo.tsx",
-        "./src/components/test.tsx"
-    ]
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es5",
+    "jsx": "react"
+  },
+  "files": [
+    "./src/playing-cards.ts",
+    "./src/components/Pile.tsx",
+    "./src/components/PlayingCard.tsx",
+    "./src/components/Solitaire.tsx",
+    "./src/components/Stock.tsx",
+    "./src/components/Tableau.tsx",
+    "./typings/react/react-addons.d.ts"
+  ]
 }

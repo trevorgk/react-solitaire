@@ -1,9 +1,8 @@
-"use strict"
-enum Suit { Spades, Clubs, Diamonds, Hearts }
-enum Rank { Ace = 1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King }
-enum Layout {Squared, FannedDown, FannedRight}	//todo FannedUp, FannedDown
+export enum Suit { Spades, Clubs, Diamonds, Hearts }
+export enum Rank { Ace = 1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King }
+export enum Layout {Squared, FannedDown, FannedRight}	//todo FannedUp, FannedDown
 
-class Card {
+export class Card {
   joker: boolean;
   suit: Suit;
   rank: Rank;
@@ -34,7 +33,7 @@ class Card {
   }
 }
 
-class Joker extends Card {
+export class Joker extends Card {
 	constructor(){
 		super(null,null);
 		this.joker = true;
@@ -49,7 +48,7 @@ class Joker extends Card {
 	}
 }
 
-class DeckOfCards {
+export class DeckOfCards {
   //	default order
   suits: Suit[] = [Suit.Spades, Suit.Clubs, Suit.Diamonds, Suit.Hearts];
   ranks: Rank[] = [Rank.Ace, Rank.Two, Rank.Three, Rank.Four, Rank.Five, Rank.Six, Rank.Seven, Rank.Eight, Rank.Nine, Rank.Ten, Rank.Jack, Rank.Queen, Rank.King];
@@ -126,7 +125,7 @@ class DeckOfCards {
   }
 }
 
-class Player {
+export class Player {
   hand: Card[];
   name: string;
 
