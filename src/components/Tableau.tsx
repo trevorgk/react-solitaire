@@ -3,7 +3,13 @@ import React = require('react/addons');
 import Pile from './Pile';
 import * as PlayingCards from '../playing-cards';
 
-export default class Tableau extends React.Component<any,any>{
+interface Props extends React.Props<any> {
+  piles: PlayingCards.Card[][],
+  selectedCard: PlayingCards.Card,
+  notifySelected: any,
+}
+
+export default class Tableau extends React.Component<Props,any>{
     constructor(props) {
       super(props);
     }

@@ -4,7 +4,6 @@
   "description": "",
   "main": "App.js",
   "scripts": {
-    "build-tsc": "tsc src/playing-cards.ts --out dist/playing-cards.js",
     "build": "webpack --progress --profile --colors",
     "watch": "webpack-dev-server --hot --inline --progress --colors"
   },

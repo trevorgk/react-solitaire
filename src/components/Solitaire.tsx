@@ -5,6 +5,7 @@ import Foundation from './Foundation';
 import Stock from './Stock';
 import PlayingCard from './PlayingCard';
 import Tableau from './Tableau';
+import * as Constants from '../Constants';
 import * as PlayingCards from '../playing-cards';
 //
 // declare module JSX {
@@ -21,8 +22,9 @@ export default class Solitaire extends React.Component<Props,any>{
 
     constructor(props) {
       super(props);
-      this.notifySelected = this.notifySelected.bind(this);
-      this.notifyFoundationSelected = this.notifyFoundationSelected.bind(this);
+      this.foundationSelected = this.foundationSelected.bind(this);
+      this.tableauSelected = this.tableauSelected.bind(this);
+      this.stockSelected = this.stockSelected.bind(this);
 
       let deck = new PlayingCards.DeckOfCards(false);
       deck.shuffle();
@@ -51,24 +53,41 @@ export default class Solitaire extends React.Component<Props,any>{
       return [[],[],[],[]];
     }
 
-    notifyFoundationSelected(column){
-      var pile = this.state.foundationPiles[column];
+    stockSelected(card){
+      console.log(card);
       if (this.state.selectedCard == null) {
-        console.log('notifyFoundationSelected: do nothing', column);
-      } else {
-          pile.push(this.state.selectedCard);
-          this.removeTableauCard();
-
-          this.setState({selectedCard: null, selectedRow: null, selectedColumn: null})
+        this.setState({selectedCard: card, selectedSrc:Constants.PileType.STOCK, selectedColumn: 0})
       }
     }
 
-    notifySelected(card, row, column) {
+    foundationSelected(card, column){
       if (this.state.selectedCard == null) {
-        this.setState({selectedCard: card, selectedRow: row, selectedColumn: column})
+        this.setState({selectedCard: card, selectedSrc:Constants.PileType.FOUNDATION, selectedColumn: column})
       }
       else if (card.toString() == this.state.selectedCard.toString()) {
-        this.setState({selectedCard: null, selectedRow: null, selectedColumn: null});
+        this.setState({selectedCard: null, selectedSrc:null, selectedRow: null, selectedColumn: null});
+      }
+      else {
+        var pile = this.state.foundationPiles[column];
+        pile.push(this.state.selectedCard);
+        this.removeTableauCard();
+
+        this.setState({selectedSrc:null, selectedCard: null, selectedRow: null, selectedColumn: null})
+      }
+    }
+
+    canMoveCard(src, srcCard, dest, destCard){
+      if (dest == Constants.PileType.TABLEAU){
+
+      }
+    }
+
+    tableauSelected(card, row, column) {
+      if (this.state.selectedCard == null) {
+        this.setState({selectedCard: card, selectedSrc:Constants.PileType.TABLEAU, selectedRow: row, selectedColumn: column})
+      }
+      else if (card.toString() == this.state.selectedCard.toString()) {
+        this.setState({selectedSrc:null, selectedCard: null,selectedRow: null, selectedColumn: null});
       }
       else {
         console.log('move col ' + this.state.selectedColumn + ' to ' + column);
@@ -78,7 +97,7 @@ export default class Solitaire extends React.Component<Props,any>{
         destPile.push(this.state.selectedCard);
         this.removeTableauCard();
 
-        this.setState({selectedCard: null, selectedRow: null, selectedColumn: null})
+        this.setState({selectedSrc:null, selectedCard: null, selectedRow: null, selectedColumn: null})
       }
 
       this.setState({moves:this.state.moves+1})
@@ -107,16 +126,16 @@ export default class Solitaire extends React.Component<Props,any>{
           <div className="Solitaire" style={style}>
             <div className="">
               <div className="">
-                <Stock cards={this.state.deck}/>
+                <Stock selectedCard={this.state.selectedCard} notifySelected={this.stockSelected} cards={this.state.deck}/>
               </div>
               <div style={{paddingRight:"10px", float: "left"}}>
                 {this.state.foundationPiles.map((pile, foundation)  =>
-                    <Foundation notifySelected={this.notifyFoundationSelected} pile={pile} column={foundation}/>
+                    <Foundation notifySelected={this.foundationSelected} pile={pile} column={foundation}/>
                   )}
               </div>
             </div>
             <div>
-              <Tableau selectedCard={this.state.selectedCard} notifySelected={this.notifySelected} piles={this.state.piles}/>
+              <Tableau selectedCard={this.state.selectedCard} notifySelected={this.tableauSelected} piles={this.state.piles}/>
             </div>
             <br style={{clear: "both"}}/>
             <div className="diagnostics">

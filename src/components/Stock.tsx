@@ -5,6 +5,8 @@ import * as PlayingCards from '../playing-cards';
 
 interface Props extends React.Props<any> {
   cards: PlayingCards.DeckOfCards,
+  notifySelected: any,
+  selectedCard: PlayingCards.Card
 }
 
 export default class Stock extends React.Component<Props,any>{
@@ -27,6 +29,10 @@ export default class Stock extends React.Component<Props,any>{
         console.log('cards in deck', this.props.cards.toString());
     };
 
+    popTop(){
+      return this.state.waste.pop();
+    }
+
     render() {
         let pileStyle={
           float:"left",
@@ -44,7 +50,7 @@ export default class Stock extends React.Component<Props,any>{
                cursor: "pointer",
                float:"left"
               }}/>
-              <Pile layout={PlayingCards.Layout.FannedRight} pile={this.state.waste} pileStyle={{
+              <Pile layout={PlayingCards.Layout.FannedRight} selectedCard={this.props.selectedCard} notifySelected={this.props.notifySelected} pile={this.state.waste} pileStyle={{
                     float:"left",
                     marginLeft:"75px"}} />
             </div>

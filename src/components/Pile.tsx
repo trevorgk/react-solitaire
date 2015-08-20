@@ -20,8 +20,9 @@ export default class Pile extends React.Component<Props,{}>{
     }
 
     notifySelected(card, row) {
-      if (this.props.notifySelected)
+      if (this.props.notifySelected){
          this.props.notifySelected(card, row, this.props.column);
+      }
     }
 
     render() {

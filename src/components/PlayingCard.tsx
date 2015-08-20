@@ -12,7 +12,7 @@ interface Props extends React.Props<any> {
 
 export default class PlayingCard extends React.Component<Props, {}>  {
 
-  constructor(props) {
+  constructor(props) { 
     super(props);
     this.state = {isSelected: false};
   }
