@@ -1,13 +1,19 @@
 export enum Suit { Spades, Clubs, Diamonds, Hearts }
+export enum Color { Red, Black }
 export enum Rank { Ace = 1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King }
-export enum Layout {Squared, FannedDown, FannedRight}	//todo FannedUp, FannedDown
+export enum Layout { Squared, FannedDown, FannedRight }	//todo FannedUp, FannedDown
 
 export class Card {
-  joker: boolean;
-  suit: Suit;
-  rank: Rank;
+  public joker: boolean;
+  public suit: Suit;
+  public rank: Rank;
 	public show = true;
 	static backFace = 'img/cards/back-purple.png';
+
+  static getPip(suit: Suit) : string {
+    let filename = 'img/pips/' + suit + '.svg';
+    return filename.toLowerCase();
+  }
 
   constructor(suit: Suit, rank: Rank) {
     this.suit = suit;
@@ -19,6 +25,11 @@ export class Card {
     let filename = 'img/cards/' + Suit[this.suit] + '/' + Rank[this.rank] + '.png';
     return filename.toLowerCase();
     //return 'img/cards/${this.suit}/${this.rank}';	wtb string interpolation
+  }
+
+
+  getColor(): Color {
+    return this.suit == Suit.Spades || this.suit == Suit.Clubs ? Color.Black : Color.Red;
   }
 
 	display(): string{

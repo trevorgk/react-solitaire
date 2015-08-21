@@ -3,6 +3,7 @@
     "sourceMap": true,
     "target": "es5",
     "jsx": "react",
+    "module": "commonjs",
     "outDir": "./build/tsc/"
   },
   "files": [
@@ -12,7 +13,6 @@
     "./src/components/Pile.tsx",
     "./src/components/PlayingCard.tsx",
     "./src/components/Solitaire.tsx",
-    "./src/components/Stock.tsx",
     "./src/components/Tableau.tsx",
     "./typings/react/react-addons.d.ts"
   ]
