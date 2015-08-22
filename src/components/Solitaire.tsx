@@ -145,10 +145,16 @@ export default class Solitaire extends React.Component<Props,any>{
     // movePiles(fromPile, column, row, toPile)
 
     canMoveCard(src:string, srcCard:PlayingCards.Card, dest:string, destCard:PlayingCards.Card) : boolean{
-      if (dest == Constants.PileType.TABLEAU){
-        return (destCard.getColor() != srcCard.getColor()) && destCard.rank == srcCard.rank + 1;
+      switch(dest){
+        case Constants.PileType.TABLEAU:
+          return (destCard.getColor() != srcCard.getColor()) && destCard.rank == srcCard.rank + 1;
+        case Constants.PileType.FOUNDATION:
+          return true;
+        default:
+          return false;
       }
-
+      if (dest == Constants.PileType.TABLEAU){
+      }
       return false;
     }
 
