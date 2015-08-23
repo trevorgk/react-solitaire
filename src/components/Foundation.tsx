@@ -6,7 +6,7 @@ import * as PlayingCards from '../playing-cards';
 interface Props extends React.Props<any> {
   pile: PlayingCards.Card[],
   column: number,
-  notifySelected?: any,
+  notifySelected?: (column: number) => void,
   suit: PlayingCards.Suit
 }
 
