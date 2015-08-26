@@ -22,7 +22,17 @@ export default class Tableau extends React.Component<Props,any>{
         return (
             <div className="Tableau" style={{padding:"130px 10px 120px", float: "right"}}>
                   {this.props.piles.map((pile, column) =>
-                    <Pile layout={PlayingCards.Layout.FannedDown} selectedCard={this.props.selectedCard} column={column} notifySelected={this.props.notifySelected} pile={pile} />
+                    <div style={{
+                      width: "80px",
+                      height: "112px",
+                      border: "1px solid #CCC",
+                      borderRadius: "5px",
+                      margin: "10px 5px",
+                      backgroundPosition: "18px 30px",
+                      float: "left"
+                    }}>
+                      <Pile layout={PlayingCards.Layout.FannedDown} selectedCard={this.props.selectedCard} column={column} notifySelected={this.props.notifySelected} pile={pile} />
+                    </div>
                   )}
             </div>
         );

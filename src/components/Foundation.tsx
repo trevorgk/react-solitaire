@@ -6,7 +6,7 @@ import * as PlayingCards from '../playing-cards';
 interface Props extends React.Props<any> {
   pile: PlayingCards.Card[],
   column: number,
-  notifySelected?: (column: number) => void,
+  notifySelected?: (foundation: number, pile: PlayingCards.Card[]) => void,
   suit: PlayingCards.Suit
 }
 
@@ -17,7 +17,7 @@ export default class Foundation extends React.Component<Props,{}> {
   }
 
   handleClick(event) {
-    this.props.notifySelected(this.props.column);
+    this.props.notifySelected(this.props.column, this.props.pile);
   };
 
   render() {

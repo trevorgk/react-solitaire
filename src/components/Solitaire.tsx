@@ -65,26 +65,33 @@ export default class Solitaire extends React.Component<Props,any>{
       else if (card.toString() == this.state.selectedCard.toString()) {
           this.resetSelection();
       }
-      else {
-
-      }
     }
 
-    foundationSelected(column: number){
+    foundationSelected(foundation: number, pile: PlayingCards.Card[]){
       if (this.state.selectedCard == null) {
-        this.setState({selectedCard: card, selectedSrc:Constants.PileType.FOUNDATION, selectedColumn: column})
+        //this.setState({selectedCard: card, selectedSrc:Constants.PileType.FOUNDATION, selectedColumn: column})
+        return;
       }
       else {
-        var pile = this.state.foundationPiles[column];
-        if (pile.length == 0) {
-
+        if (this.state.selectedCard.suit != foundation) return false;
+        if (pile.length > 0 && !this.canMoveCard(this.state.selectedSrc, this.state.selectedCard, Constants.PileType.FOUNDATION, pile[pile.length-1])) {
+          return;
         }
-        var card = pile[pile.length - 1];
-        pile.push(this.state.selectedCard);
+        var transplantCards = this.removeSelected();
+        this.addFoundationCard(transplantCards[0], foundation)
+        this.resetSelection();
+
         //this.removeTableauCard();
 
         this.resetSelection();
       }
+    }
+
+    addFoundationCard(card: PlayingCards.Card, foundation: number){
+      var foundationPiles = this.state.foundationPiles;
+      var pile = foundationPiles[foundation];
+      pile.push(card);
+      this.setState({foundationPiles})
     }
 
     tableauSelected(card:PlayingCards.Card, row: number, column: number) {
@@ -101,16 +108,7 @@ export default class Solitaire extends React.Component<Props,any>{
         if (!this.canMoveCard(this.state.selectedSrc, this.state.selectedCard, Constants.PileType.TABLEAU, card)) {
           return;
         }
-        let transplantCards = [];
-        switch(this.state.selectedSrc){
-          case Constants.PileType.TABLEAU:
-            transplantCards = this.removeTableauCard(this.state.selectedColumn, this.state.selectedRow);
-            break;
-          case Constants.PileType.STOCK:
-            transplantCards = this.removeStockCard();
-            break;
-        }
-
+        var transplantCards = this.removeSelected();
         this.addTableauCard(transplantCards, column)
         this.resetSelection();
       }
@@ -122,6 +120,19 @@ export default class Solitaire extends React.Component<Props,any>{
       let piles = this.state.piles;
       let destPile = piles[column];
       piles[column] = destPile.concat(cards);
+    }
+
+    removeSelected(){
+      let transplantCards = [];
+      switch(this.state.selectedSrc){
+        case Constants.PileType.TABLEAU:
+          transplantCards = this.removeTableauCard(this.state.selectedColumn, this.state.selectedRow);
+          break;
+        case Constants.PileType.STOCK:
+          transplantCards = this.removeStockCard();
+          break;
+      }
+      return transplantCards;
     }
 
     removeTableauCard(column: number, row: number) : PlayingCards.Card[]{
@@ -144,13 +155,13 @@ export default class Solitaire extends React.Component<Props,any>{
       return [card];
     }
     // movePiles(fromPile, column, row, toPile)
-
+    //canMoveCard(this.state.selectedSrc, this.state.selectedCard, Constants.PileType.TABLEAU, card))
     canMoveCard(src:string, srcCard:PlayingCards.Card, dest:string, destCard:PlayingCards.Card) : boolean{
       switch(dest){
         case Constants.PileType.TABLEAU:
           return (destCard.getColor() != srcCard.getColor()) && destCard.rank == srcCard.rank + 1;
         case Constants.PileType.FOUNDATION:
-          return true;
+          return (srcCard.rank == destCard.rank + 1);
         default:
           return false;
       }
