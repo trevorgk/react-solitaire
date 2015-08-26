@@ -30,10 +30,10 @@ export default class Solitaire extends React.Component<Props,any>{
       deck.shuffle();
       let piles = this.tableauPiles(this.props.pileCount, deck);
       let foundationPiles = this.foundationPiles();
-      this.state = {selectedCard: null, deck: deck, piles: piles, foundationPiles:foundationPiles, moves:0, waste: []};
+      this.state = {selectedCard: null, deck: deck, piles: piles, foundationPiles: foundationPiles, moves:0, waste: []};
     }
 
-    tableauPiles(pileCount, deck){
+    tableauPiles(pileCount: number, deck: PlayingCards.DeckOfCards){
         let piles = [];
         for (let i = 0; i < pileCount; i++) {
             for (let j = pileCount - 1; j >= i; j--) {
@@ -58,7 +58,7 @@ export default class Solitaire extends React.Component<Props,any>{
       console.log('resetting selection');
     }
 
-    wasteSelected(card){
+    wasteSelected(card: PlayingCards.Card){
       if (this.state.selectedCard == null) {
         this.setState({selectedCard: card, selectedSrc:Constants.PileType.STOCK, selectedColumn: 0})
       }
@@ -70,15 +70,16 @@ export default class Solitaire extends React.Component<Props,any>{
       }
     }
 
-    foundationSelected(card, column){
+    foundationSelected(column: number){
       if (this.state.selectedCard == null) {
         this.setState({selectedCard: card, selectedSrc:Constants.PileType.FOUNDATION, selectedColumn: column})
       }
-      else if (card.toString() == this.state.selectedCard.toString()) {
-        this.resetSelection();
-      }
       else {
         var pile = this.state.foundationPiles[column];
+        if (pile.length == 0) {
+
+        }
+        var card = pile[pile.length - 1];
         pile.push(this.state.selectedCard);
         //this.removeTableauCard();
 
@@ -86,7 +87,7 @@ export default class Solitaire extends React.Component<Props,any>{
       }
     }
 
-    tableauSelected(card, row, column) {
+    tableauSelected(card:PlayingCards.Card, row: number, column: number) {
       if (this.state.selectedCard == null) {
         this.setState({selectedCard: card, selectedSrc:Constants.PileType.TABLEAU, selectedRow: row, selectedColumn: column})
       }
@@ -117,13 +118,13 @@ export default class Solitaire extends React.Component<Props,any>{
       this.setState({moves:this.state.moves + 1})
     }
 
-    addTableauCard(cards: PlayingCards.Card[], column){
+    addTableauCard(cards: PlayingCards.Card[], column: number){
       let piles = this.state.piles;
       let destPile = piles[column];
       piles[column] = destPile.concat(cards);
     }
 
-    removeTableauCard(column, row) : PlayingCards.Card[]{
+    removeTableauCard(column: number, row: number) : PlayingCards.Card[]{
       let srcPile = this.state.piles[column];
       var cards = srcPile.splice(row, srcPile.length - row);
 
