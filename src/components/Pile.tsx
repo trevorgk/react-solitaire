@@ -42,7 +42,7 @@ export default class Pile extends React.Component<Props,{}>{
                 break;
             case PlayingCards.Layout.FannedDown:
             default:
-                pileStyle = React.addons.update({float:"left", margin:"0 5px"}, {$merge: pileStyle});
+                pileStyle = React.addons.update({float:"left", paddingTop:"95px"}, {$merge: pileStyle});
                 cardStyle = React.addons.update({marginTop:"-95px"}, {$merge: cardStyle});
                 break;
         }

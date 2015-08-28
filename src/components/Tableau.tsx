@@ -20,7 +20,7 @@ export default class Tableau extends React.Component<Props,any>{
         // });
 
         return (
-            <div className="Tableau" style={{padding:"130px 10px 120px", float: "right"}}>
+            <div className="Tableau" style={{padding:"20px 10px 120px", float: "right"}}>
                   {this.props.piles.map((pile, column) =>
                     <div style={{
                       width: "80px",

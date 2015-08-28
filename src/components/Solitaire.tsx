@@ -73,7 +73,12 @@ export default class Solitaire extends React.Component<Props,any>{
         return;
       }
       else {
-        if (this.state.selectedCard.suit != foundation) return false;
+        if (this.state.selectedCard.suit != foundation) {
+          return;
+        }
+        if (pile.length == 0 && this.state.selectedCard.rank != PlayingCards.Rank.Ace){
+          return;
+        }
         if (pile.length > 0 && !this.canMoveCard(this.state.selectedSrc, this.state.selectedCard, Constants.PileType.FOUNDATION, pile[pile.length-1])) {
           return;
         }
@@ -189,7 +194,7 @@ export default class Solitaire extends React.Component<Props,any>{
     render() {
         let style = {
           backgroundImage: "url(img/card-table-bg.png)",
-          width:"650px",
+          width:"670px",
           margin: "0 auto"
         };
         return (
@@ -197,8 +202,8 @@ export default class Solitaire extends React.Component<Props,any>{
             <div className="">
               <div className="">
                   <div className="Stock" style={{
-                      width: "240px",
-                      margin: "10px 15px",
+                      width: "255px",
+                      margin: "10px 15px 0 20px",
                       float: "left"
                   }}>
                     <img src='img/cards/back-purple.png' onClick={this.stockClicked.bind(this)} style={{
@@ -212,7 +217,7 @@ export default class Solitaire extends React.Component<Props,any>{
                           marginLeft:"75px"}} />
                   </div>
               </div>
-              <div style={{paddingRight:"10px", float: "left"}}>
+              <div>
                 {this.state.foundationPiles.map((pile, foundation)  =>
                     <Foundation notifySelected={this.foundationSelected} pile={pile} column={foundation} suit={PlayingCards.Suit[foundation]} />
                   )}
