@@ -1,6 +1,6 @@
 export const PileType = {
-  TABLEAU: 'tableau',
-  TABLEAUCARD: 'tableauCard',
+  EMPTYTABLEAU: 'tableau',
+  TABLEAUPILE: 'tableauCard',
   FOUNDATION: 'foundation',
   STOCK: 'stock'
 };

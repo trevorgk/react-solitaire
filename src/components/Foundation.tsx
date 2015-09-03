@@ -7,6 +7,7 @@ interface Props extends React.Props<any> {
   pile: PlayingCards.Card[],
   column: number,
   notifySelected?: (foundation: number, pile: PlayingCards.Card[]) => void,
+  selectedCard: PlayingCards.Card,
   suit: PlayingCards.Suit
 }
 
@@ -22,7 +23,7 @@ export default class Foundation extends React.Component<Props,{}> {
 
   render() {
     let layout = PlayingCards.Layout.Squared;
-    let pile = <Pile layout={layout} pile={this.props.pile} />;
+    let pile = <Pile layout={layout} selectedCard={this.props.selectedCard} pile={this.props.pile} />;
     return (
       <div className="Foundation" onClick={this.handleClick.bind(this)} style={{
         float: "left"

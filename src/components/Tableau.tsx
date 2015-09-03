@@ -8,7 +8,7 @@ interface Props extends React.Props<any> {
   column: number,
   selectedCard: PlayingCards.Card,
   tableauPileClicked: any,
-  tableauClicked: any,
+  emptyTableauClicked: any,
 }
 
 export default class Tableau extends React.Component<Props,any>{
@@ -17,7 +17,7 @@ export default class Tableau extends React.Component<Props,any>{
     }
 
     handleClick(event) {
-        this.props.tableauClicked(this.props.column);
+        this.props.emptyTableauClicked(this.props.column);
     };
 
     render() {
