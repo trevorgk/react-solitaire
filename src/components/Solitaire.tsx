@@ -22,15 +22,16 @@ export default class Solitaire extends React.Component<Props,any>{
 
     constructor(props) {
       super(props);
-      this.foundationSelected = this.foundationSelected.bind(this);
-      this.tableauSelected = this.tableauSelected.bind(this);
-      this.wasteSelected = this.wasteSelected.bind(this);
+      this.foundationClicked = this.foundationClicked.bind(this);
+      this.tableauPileClicked = this.tableauPileClicked.bind(this);
+      this.tableauClicked = this.tableauClicked.bind(this);
+      this.wasteClicked = this.wasteClicked.bind(this);
 
       let deck = new PlayingCards.DeckOfCards(false);
       deck.shuffle();
-      let piles = this.tableauPiles(this.props.pileCount, deck);
+      let tableauPiles = this.tableauPiles(this.props.pileCount, deck);
       let foundationPiles = this.foundationPiles();
-      this.state = {selectedCard: null, deck: deck, piles: piles, foundationPiles: foundationPiles, moves:0, waste: []};
+      this.state = {selectedCard: null, deck: deck, tableauPiles: tableauPiles, foundationPiles: foundationPiles, moves:0, waste: []};
     }
 
     tableauPiles(pileCount: number, deck: PlayingCards.DeckOfCards){
@@ -58,7 +59,7 @@ export default class Solitaire extends React.Component<Props,any>{
       console.log('resetting selection');
     }
 
-    wasteSelected(card: PlayingCards.Card){
+    wasteClicked(card: PlayingCards.Card){
       if (this.state.selectedCard == null) {
         this.setState({selectedCard: card, selectedSrc:Constants.PileType.STOCK, selectedColumn: 0})
       }
@@ -67,7 +68,7 @@ export default class Solitaire extends React.Component<Props,any>{
       }
     }
 
-    foundationSelected(foundation: number, pile: PlayingCards.Card[]){
+    foundationClicked(foundation: number, pile: PlayingCards.Card[]){
       if (this.state.selectedCard == null) {
         //this.setState({selectedCard: card, selectedSrc:Constants.PileType.FOUNDATION, selectedColumn: column})
         return;
@@ -99,7 +100,7 @@ export default class Solitaire extends React.Component<Props,any>{
       this.setState({foundationPiles})
     }
 
-    tableauSelected(card:PlayingCards.Card, row: number, column: number) {
+    tableauPileClicked(card:PlayingCards.Card, row: number, column: number) {
       if (this.state.selectedCard == null) {
         this.setState({selectedCard: card, selectedSrc:Constants.PileType.TABLEAU, selectedRow: row, selectedColumn: column})
       }
@@ -110,7 +111,7 @@ export default class Solitaire extends React.Component<Props,any>{
         console.log('move col ' + this.state.selectedColumn + ' to ' + column);
         console.log('move row ' + this.state.selectedRow + ' to ' + row);
 
-        if (!this.canMoveCard(this.state.selectedSrc, this.state.selectedCard, Constants.PileType.TABLEAU, card)) {
+        if (!this.canMoveCard(this.state.selectedSrc, this.state.selectedCard, Constants.PileType.TABLEAUCARD, card)) {
           return;
         }
         var transplantCards = this.removeSelected();
@@ -121,8 +122,21 @@ export default class Solitaire extends React.Component<Props,any>{
       this.setState({moves:this.state.moves + 1})
     }
 
+    tableauClicked(column:number){
+      if (this.state.selectedCard == null) {
+        return;
+      }
+      if (!this.canMoveCard(this.state.selectedSrc, this.state.selectedCard, Constants.PileType.TABLEAU, null)) {
+        return;
+      }
+      var transplantCards = this.removeSelected();
+      this.addTableauCard(transplantCards, column)
+      this.resetSelection();
+    }
+
+
     addTableauCard(cards: PlayingCards.Card[], column: number){
-      let piles = this.state.piles;
+      let piles = this.state.tableauPiles;
       let destPile = piles[column];
       piles[column] = destPile.concat(cards);
     }
@@ -141,7 +155,7 @@ export default class Solitaire extends React.Component<Props,any>{
     }
 
     removeTableauCard(column: number, row: number) : PlayingCards.Card[]{
-      let srcPile = this.state.piles[column];
+      let srcPile = this.state.tableauPiles[column];
       var cards = srcPile.splice(row, srcPile.length - row);
 
       this.revealTopCard(srcPile);
@@ -163,14 +177,14 @@ export default class Solitaire extends React.Component<Props,any>{
     //canMoveCard(this.state.selectedSrc, this.state.selectedCard, Constants.PileType.TABLEAU, card))
     canMoveCard(src:string, srcCard:PlayingCards.Card, dest:string, destCard:PlayingCards.Card) : boolean{
       switch(dest){
+        case Constants.PileType.TABLEAUCARD:
+          return destCard.getColor() != srcCard.getColor() && destCard.rank == srcCard.rank + 1;
         case Constants.PileType.TABLEAU:
-          return (destCard.getColor() != srcCard.getColor()) && destCard.rank == srcCard.rank + 1;
+          return destCard.rank == PlayingCards.Rank.King;
         case Constants.PileType.FOUNDATION:
-          return (srcCard.rank == destCard.rank + 1);
+          return srcCard.rank == destCard.rank + 1;
         default:
           return false;
-      }
-      if (dest == Constants.PileType.TABLEAU){
       }
       return false;
     }
@@ -212,19 +226,21 @@ export default class Solitaire extends React.Component<Props,any>{
                      cursor: "pointer",
                      float:"left"
                     }}/>
-                    <Pile layout={PlayingCards.Layout.FannedRight} selectedCard={this.state.selectedCard} notifySelected={this.wasteSelected} pile={this.state.waste} pileStyle={{
+                    <Pile layout={PlayingCards.Layout.FannedRight} selectedCard={this.state.selectedCard} notifySelected={this.wasteClicked} pile={this.state.waste} pileStyle={{
                           float:"left",
                           marginLeft:"75px"}} />
                   </div>
               </div>
               <div>
                 {this.state.foundationPiles.map((pile, foundation)  =>
-                    <Foundation notifySelected={this.foundationSelected} pile={pile} column={foundation} suit={PlayingCards.Suit[foundation]} />
+                    <Foundation notifySelected={this.foundationClicked} pile={pile} column={foundation} suit={PlayingCards.Suit[foundation]} />
                   )}
               </div>
             </div>
-            <div>
-              <Tableau selectedCard={this.state.selectedCard} notifySelected={this.tableauSelected} piles={this.state.piles}/>
+            <div style={{padding:"20px 10px 120px", float: "right"}}>
+              {this.state.tableauPiles.map((pile, tableau)  =>
+                  <Tableau selectedCard={this.state.selectedCard} tableauPileClicked={this.tableauPileClicked} tableauClicked={this.tableauClicked} pile={pile} column={tableau}/>
+                )}
             </div>
             <br style={{clear: "both"}}/>
             <div className="diagnostics">
