@@ -221,13 +221,17 @@ export default class Solitaire extends React.Component<Props,any>{
     };
 
     render() {
-        let style = {
-          backgroundImage: "url(img/card-table-bg.png)",
-          width:"670px",
-          margin: "0 auto"
-        };
         return (
-          <div className="Solitaire" style={style}>
+          <div className="Solitaire" style={{
+            width:"670px",
+            margin: "0 auto",
+            color: "white"
+          }}>
+            <div className="diagnostics" style={{
+              textAlign: "center"
+            }}>
+              {this.state.moves} {this.state.moves == 1 ? "move" : "moves"}
+            </div>
             <div className="">
               <div className="">
                   <div className="Stock" style={{
@@ -252,14 +256,10 @@ export default class Solitaire extends React.Component<Props,any>{
                   )}
               </div>
             </div>
-            <div style={{padding:"20px 10px 120px", float: "right"}}>
+            <div style={{padding:"20px 10px 0", float: "right"}}>
               {this.state.tableauPiles.map((pile, tableau)  =>
                   <Tableau selectedCard={this.state.selectedCard} tableauPileClicked={this.tableauPileClicked} emptyTableauClicked={this.emptyTableauClicked} pile={pile} column={tableau}/>
                 )}
-            </div>
-            <br style={{clear: "both"}}/>
-            <div className="diagnostics">
-              mc: {this.state.moves}
             </div>
           </div>
         );
