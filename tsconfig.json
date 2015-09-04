@@ -8,7 +8,7 @@
   },
   "files": [
     "./src/playing-cards.ts",
-    "./src/Constants.ts",
+    "./src/Common.ts",
     "./src/App.tsx",
     "./src/components/Pile.tsx",
     "./src/components/PlayingCard.tsx",

@@ -1,14 +1,15 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
 import React = require('react/addons');
 import Pile from './Pile';
-import * as Constants from '../Constants';
+import PlayingCard from './PlayingCard';
+import * as Common from '../Common';
 import * as PlayingCards from '../playing-cards';
 
 interface Props extends React.Props<any> {
   pile: PlayingCards.Card[],
   row: number,
   clickHandler?: any,
-  selected: Constants.ClickTarget,
+  selected: Common.ClickTarget,
   suit: PlayingCards.Suit
 }
 
@@ -20,18 +21,21 @@ export default class Foundation extends React.Component<Props,{}> {
   foundationClicked() {
     if (this.props.clickHandler){
       let card = this.props.pile.length > 0 ? this.props.pile[this.props.pile.length - 1] : null;
-      this.props.clickHandler({pileType: Constants.PileType.FOUNDATION, row: this.props.row, card});
+      this.props.clickHandler({pileType: Common.PileType.FOUNDATION, row: this.props.row, card});
     }
   }
 
   render() {
     let layout = PlayingCards.Layout.Squared;
-    let pile = <Pile layout={layout} pileType={Constants.PileType.FOUNDATION} selected={this.props.selected} pile={this.props.pile} row={this.props.row} />;
+    let pile = <Pile layout={layout} pileType={Common.PileType.FOUNDATION} selected={this.props.selected} pile={this.props.pile} row={this.props.row} />;
+    let card = this.props.pile.length > 0 ? this.props.pile[this.props.pile.length - 1] : null;
+    let validDropTarget = this.props.selected != null && Common.canMove(this.props.selected, {pileType: Common.PileType.FOUNDATION, row: this.props.row, card})
     return (
       <div className="Foundation" onClick={this.foundationClicked.bind(this)} style={{
         float: "left"
       }}>
         <div style={{
+          position: "relative",
           width: "80px",
           height: "112px",
           border: "1px solid #CCC",
@@ -41,6 +45,7 @@ export default class Foundation extends React.Component<Props,{}> {
           backgroundPosition: "18px 30px"
         }}>
           {pile}
+          {validDropTarget && PlayingCard.renderOverlay('orange')}
         </div>
       </div>
     );}

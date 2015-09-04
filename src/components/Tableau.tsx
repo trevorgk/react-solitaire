@@ -1,7 +1,7 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
 import React = require('react/addons');
 import Pile from './Pile';
-import * as Constants from '../Constants';
+import * as Common from '../Common';
 import * as PlayingCards from '../playing-cards';
 
 interface Props extends React.Props<any> {
@@ -18,7 +18,7 @@ export default class Tableau extends React.Component<Props,any>{
 
     emptyPileClicked(event) {
       if (this.props.clickHandler){
-        this.props.clickHandler({pileType: Constants.PileType.EMPTYTABLEAU, row: this.props.row});
+        this.props.clickHandler({pileType: Common.PileType.EMPTYTABLEAU, row: this.props.row});
       }
     };
 
@@ -37,7 +37,7 @@ export default class Tableau extends React.Component<Props,any>{
               backgroundPosition: "18px 30px",
               float: "left"
             }}>
-              <Pile layout={PlayingCards.Layout.FannedDown} pileType={Constants.PileType.TABLEAUPILE} selected={this.props.selected}
+              <Pile layout={PlayingCards.Layout.FannedDown} pileType={Common.PileType.TABLEAUPILE} selected={this.props.selected}
               row={this.props.row} pile={this.props.pile}  clickHandler={this.props.clickHandler} />
             </div>
         );

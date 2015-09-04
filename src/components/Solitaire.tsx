@@ -2,10 +2,9 @@
 import React = require('react/addons');
 import Pile from './Pile';
 import Foundation from './Foundation';
-import Stock from './Stock';
 import PlayingCard from './PlayingCard';
 import Tableau from './Tableau';
-import * as Constants from '../Constants';
+import * as Common from '../Common';
 import * as PlayingCards from '../playing-cards';
 //
 // declare module JSX {
@@ -20,7 +19,7 @@ interface Props extends React.Props<any> {
 }
 
 interface State {
-  src?: Constants.ClickTarget,
+  src?: Common.ClickTarget,
   moves?: number,
   deck?: PlayingCards.DeckOfCards,
   waste?: PlayingCards.Card[],
@@ -33,7 +32,6 @@ export default class Solitaire extends React.Component<Props,State>{
 
     constructor(props) {
       super(props);
-      this.canMove = this.canMove.bind(this);
       this.processClick = this.processClick.bind(this);
       this.move = this.move.bind(this);
 
@@ -72,7 +70,7 @@ export default class Solitaire extends React.Component<Props,State>{
       pile[pile.length - 1].show = true;
     }
 
-    processClick(target:Constants.ClickTarget){
+    processClick(target:Common.ClickTarget){
       console.log('processClick', target);
       if (this.state.src == null){
         this.setState({src: target});
@@ -81,41 +79,26 @@ export default class Solitaire extends React.Component<Props,State>{
         this.setState({src: null});
       }
       else {
-        if (this.canMove(this.state.src, target)){
+        if (Common.canMove(this.state.src, target)){
           this.move(this.state.src, target);
         }
       }
     }
 
-    canMove(src:Constants.ClickTarget, dest: Constants.ClickTarget) : boolean{
-      switch(dest.pileType){
-        case Constants.PileType.TABLEAUPILE:
-          return src.card.getColor() != dest.card.getColor() && src.card.rank == dest.card.rank - 1;
-        case Constants.PileType.EMPTYTABLEAU:
-          return src.card.rank == PlayingCards.Rank.King;
-        case Constants.PileType.FOUNDATION:
-          return src.card.suit == dest.row && (
-            (this.state.foundationPiles[dest.row].length == 0 && src.card.rank == PlayingCards.Rank.Ace) || src.card.rank == dest.card.rank + 1);
-        default:
-          return false;
-      }
-      return false;
-    }
-
-    move(src:Constants.ClickTarget, dest: Constants.ClickTarget){
+    move(src:Common.ClickTarget, dest: Common.ClickTarget){
       let transplantCards = [];
       switch(src.pileType){
-        case Constants.PileType.TABLEAUPILE:
+        case Common.PileType.TABLEAUPILE:
           var tableauPile = this.state.tableauPiles[this.state.src.row];
           transplantCards = tableauPile.splice(this.state.src.pos, tableauPile.length - this.state.src.pos);
           this.revealTopCard(tableauPile);
           break;
-        case Constants.PileType.WASTE:
+        case Common.PileType.WASTE:
           var card = this.state.waste.pop();
           this.revealTopCard(this.state.waste);
           transplantCards = [card];
           break;
-        case Constants.PileType.FOUNDATION:
+        case Common.PileType.FOUNDATION:
           transplantCards = (function(foundationPile:PlayingCards.Card[]) : PlayingCards.Card[]{
             var card = foundationPile.pop();
             return [card];
@@ -130,11 +113,11 @@ export default class Solitaire extends React.Component<Props,State>{
       let tableauPiles = this.state.tableauPiles;
 
       switch (dest.pileType){
-        case Constants.PileType.TABLEAUPILE:
-        case Constants.PileType.EMPTYTABLEAU:
+        case Common.PileType.TABLEAUPILE:
+        case Common.PileType.EMPTYTABLEAU:
           tableauPiles[dest.row] = tableauPiles[dest.row].concat(transplantCards);
           break;
-        case Constants.PileType.FOUNDATION:
+        case Common.PileType.FOUNDATION:
           foundationPiles[dest.row] = foundationPiles[dest.row].concat(transplantCards);
           break;
         }
@@ -154,7 +137,7 @@ export default class Solitaire extends React.Component<Props,State>{
             waste.push(card);
         }
         this.setState({waste, deck});
-        if (this.state.src && this.state.src.pileType == Constants.PileType.WASTE){
+        if (this.state.src && this.state.src.pileType == Common.PileType.WASTE){
           this.resetSelection();
         }
         this.setState({moves:this.state.moves + 1})
@@ -187,7 +170,7 @@ export default class Solitaire extends React.Component<Props,State>{
                      cursor: "pointer",
                      float:"left"
                     }}/>
-                    <Pile layout={PlayingCards.Layout.FannedRight} pileType={Constants.PileType.WASTE} selected={this.state.src} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
+                    <Pile layout={PlayingCards.Layout.FannedRight} pileType={Common.PileType.WASTE} selected={this.state.src} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
                           float:"left",
                           marginLeft:"75px"}} />
                   </div>

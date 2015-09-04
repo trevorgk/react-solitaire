@@ -2,7 +2,7 @@
 import React = require('react/addons');
 import PlayingCard from './PlayingCard';
 import * as PlayingCards from '../playing-cards';
-import * as Constants from '../Constants';
+import * as Common from '../Common';
 
 interface Props extends React.Props<any> {
   layout: PlayingCards.Layout,
@@ -11,7 +11,7 @@ interface Props extends React.Props<any> {
   row?: number,
   pileStyle?: Object,
   cardStyle?: Object,
-  selected?: Constants.ClickTarget,
+  selected?: Common.ClickTarget,
   pileType?: string
 }
 
@@ -21,7 +21,7 @@ export default class Pile extends React.Component<Props,{}>{
       this.clickHandler = this.clickHandler.bind(this);
     }
 
-    clickHandler(target: Constants.ClickTarget) {
+    clickHandler(target: Common.ClickTarget) {
       if (this.props.clickHandler){
         target.row = this.props.row;
         target.pileType = this.props.pileType;
@@ -57,7 +57,8 @@ export default class Pile extends React.Component<Props,{}>{
         return (
             <div className="Pile" style={pileStyle}>
               {this.props.pile && this.props.pile.map((card, pos) =>
-                  <PlayingCard card={card} selected={this.props.selected} clickHandler={this.clickHandler} pos={pos} style={React.addons.update({zIndex:pos}, {$merge: cardStyle})} />
+                  <PlayingCard card={card} selected={this.props.selected} pileType={this.props.pileType} pileSize={this.props.pile.length}
+                  clickHandler={this.clickHandler} pos={pos} row={this.props.row} style={React.addons.update({zIndex:pos}, {$merge: cardStyle})} />
               )}
             </div>
         );
