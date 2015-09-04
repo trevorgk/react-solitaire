@@ -11,7 +11,8 @@ interface Props extends React.Props<any> {
   row?: number,
   pileStyle?: Object,
   cardStyle?: Object,
-  selected?: Constants.ClickTarget
+  selected?: Constants.ClickTarget,
+  pileType?: string
 }
 
 export default class Pile extends React.Component<Props,{}>{
@@ -23,6 +24,7 @@ export default class Pile extends React.Component<Props,{}>{
     clickHandler(target: Constants.ClickTarget) {
       if (this.props.clickHandler){
         target.row = this.props.row;
+        target.pileType = this.props.pileType;
         this.props.clickHandler(target);
       }
     }

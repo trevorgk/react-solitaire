@@ -26,7 +26,7 @@ export default class Foundation extends React.Component<Props,{}> {
 
   render() {
     let layout = PlayingCards.Layout.Squared;
-    let pile = <Pile layout={layout} selected={this.props.selected} pile={this.props.pile} row={this.props.row} />;
+    let pile = <Pile layout={layout} pileType={Constants.PileType.FOUNDATION} selected={this.props.selected} pile={this.props.pile} row={this.props.row} />;
     return (
       <div className="Foundation" onClick={this.foundationClicked.bind(this)} style={{
         float: "left"

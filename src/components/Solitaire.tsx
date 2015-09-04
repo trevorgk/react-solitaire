@@ -110,7 +110,7 @@ export default class Solitaire extends React.Component<Props,State>{
           transplantCards = tableauPile.splice(this.state.src.pos, tableauPile.length - this.state.src.pos);
           this.revealTopCard(tableauPile);
           break;
-        case Constants.PileType.STOCK:
+        case Constants.PileType.WASTE:
           var card = this.state.waste.pop();
           this.revealTopCard(this.state.waste);
           transplantCards = [card];
@@ -132,7 +132,7 @@ export default class Solitaire extends React.Component<Props,State>{
       switch (dest.pileType){
         case Constants.PileType.TABLEAUPILE:
         case Constants.PileType.EMPTYTABLEAU:
-          tableauPiles[dest.pos] = tableauPiles[dest.row].concat(transplantCards);
+          tableauPiles[dest.row] = tableauPiles[dest.row].concat(transplantCards);
           break;
         case Constants.PileType.FOUNDATION:
           foundationPiles[dest.row] = foundationPiles[dest.row].concat(transplantCards);
@@ -154,7 +154,7 @@ export default class Solitaire extends React.Component<Props,State>{
             waste.push(card);
         }
         this.setState({waste, deck});
-        if (this.state.src && this.state.src.pileType == Constants.PileType.STOCK){
+        if (this.state.src && this.state.src.pileType == Constants.PileType.WASTE){
           this.resetSelection();
         }
         this.setState({moves:this.state.moves + 1})
@@ -187,7 +187,7 @@ export default class Solitaire extends React.Component<Props,State>{
                      cursor: "pointer",
                      float:"left"
                     }}/>
-                    <Pile layout={PlayingCards.Layout.FannedRight} selected={this.state.src} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
+                    <Pile layout={PlayingCards.Layout.FannedRight} pileType={Constants.PileType.WASTE} selected={this.state.src} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
                           float:"left",
                           marginLeft:"75px"}} />
                   </div>

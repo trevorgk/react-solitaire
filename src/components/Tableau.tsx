@@ -22,13 +22,6 @@ export default class Tableau extends React.Component<Props,any>{
       }
     };
 
-    pileClicked(target) {
-      if (this.props.clickHandler){
-        target.pileType = Constants.PileType.TABLEAUPILE;
-        this.props.clickHandler(target);
-      }
-    };
-
     render() {
         // let piles = this.props.piles.map(function(pile) {
         //     return <Pile  selected={this.state.selected} notify={notifySelected} pile={pile} layout={Layout.FannedDown}/>
@@ -44,7 +37,8 @@ export default class Tableau extends React.Component<Props,any>{
               backgroundPosition: "18px 30px",
               float: "left"
             }}>
-              <Pile layout={PlayingCards.Layout.FannedDown} selected={this.props.selected} row={this.props.row} clickHandler={this.pileClicked.bind(this)} pile={this.props.pile} />
+              <Pile layout={PlayingCards.Layout.FannedDown} pileType={Constants.PileType.TABLEAUPILE} selected={this.props.selected}
+              row={this.props.row} pile={this.props.pile}  clickHandler={this.props.clickHandler} />
             </div>
         );
     }
