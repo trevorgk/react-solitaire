@@ -4,9 +4,9 @@ import * as PlayingCards from '../playing-cards';
 
 interface Props extends React.Props<any> {
   card: PlayingCards.Card,
-  notifySelected: any,
+  handler: (Constants.ClickTarget) => void,,
   selectedCard: PlayingCards.Card
-  row?: number,
+  pos?: number,
   style?: any,
 }
 
@@ -33,7 +33,7 @@ export default class PlayingCard extends React.Component<Props, {}>  {
   }
 
   handleClick(event) {
-      this.props.notifySelected(this.props.card, this.props.row);
+      this.props.handler({card: this.props.card, pos: this.props.pos});
   };
 
   render() {

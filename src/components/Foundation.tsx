@@ -1,12 +1,13 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
 import React = require('react/addons');
 import Pile from './Pile';
+import * as Constants from '../Constants';
 import * as PlayingCards from '../playing-cards';
 
 interface Props extends React.Props<any> {
   pile: PlayingCards.Card[],
-  column: number,
-  notifySelected?: (foundation: number, pile: PlayingCards.Card[]) => void,
+  row: number,
+  handler?: (Constants.ClickTarget) => void,
   selectedCard: PlayingCards.Card,
   suit: PlayingCards.Suit
 }
@@ -17,8 +18,8 @@ export default class Foundation extends React.Component<Props,{}> {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(event) {
-    this.props.notifySelected(this.props.column, this.props.pile);
+  handler(target) {
+    this.props.handler({pileType: Constants.ClickTarget.FOUNDATION, row: this.props.row});
   };
 
   render() {

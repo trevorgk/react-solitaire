@@ -16,25 +16,30 @@ import * as PlayingCards from '../playing-cards';
 
 interface Props extends React.Props<any> {
   pileCount: number,
+  elapsed: number,
 }
 
-export default class Solitaire extends React.Component<Props,any>{
+interface State {
+  src?: Constants.ClickTarget,
+  moves?: number,
+  deck?: PlayingCards.DeckOfCards,
+  waste?: PlayingCards.Card[],
+  foundationPiles?: PlayingCards.Card[][],
+  tableauPiles?: PlayingCards.Card[][],
+}
+
+
+export default class Solitaire extends React.Component<Props,State>{
 
     constructor(props) {
       super(props);
-      this.foundationClicked = this.foundationClicked.bind(this);
-      this.tableauPileClicked = this.tableauPileClicked.bind(this);
-      this.emptyTableauClicked = this.emptyTableauClicked.bind(this);
-      this.wasteClicked = this.wasteClicked.bind(this);
+      this.processMove = this.processMove.bind(this);
+      this.canMove = this.canMove.bind(this);
 
       let deck = new PlayingCards.DeckOfCards(false);
       deck.shuffle();
-      let tableauPiles = this.tableauPiles(this.props.pileCount, deck);
-      let foundationPiles = this.foundationPiles();
-      this.state = {selectedCard: null, deck: deck, tableauPiles: tableauPiles, foundationPiles: foundationPiles, moves:0, waste: []};
-    }
 
-    tableauPiles(pileCount: number, deck: PlayingCards.DeckOfCards){
+      let tableauPiles = (function(pileCount: number, deck: PlayingCards.DeckOfCards) {
         let piles = [];
         for (let i = 0; i < pileCount; i++) {
             for (let j = pileCount - 1; j >= i; j--) {
@@ -48,160 +53,93 @@ export default class Solitaire extends React.Component<Props,any>{
             }
         }
         return piles;
-    }
+      })(this.props.pileCount, deck);
 
-    foundationPiles(){
-      return [[],[],[],[]];
+      let foundationPiles = (function() {
+        return [[],[],[],[]];
+      })();
+
+      this.state = {deck: deck, tableauPiles: tableauPiles, foundationPiles: foundationPiles, moves:0, waste: PlayingCards.Card[0]};
     }
 
     resetSelection(){
-      this.setState({selectedCard: null, selectedSrc:null, selectedRow: null, selectedColumn: null});
-      console.log('resetting selection');
-    }
-
-    wasteClicked(card: PlayingCards.Card){
-      if (this.state.selectedCard == null) {
-        this.setState({selectedCard: card, selectedSrc:Constants.PileType.STOCK, selectedColumn: 0})
-      }
-      else if (card.toString() == this.state.selectedCard.toString()) {
-          this.resetSelection();
-      }
-    }
-
-    foundationClicked(foundation: number, pile: PlayingCards.Card[]){
-      if (this.state.selectedCard == null) {
-        if (pile.length > 0) {
-          this.setState({selectedCard: pile[pile.length - 1], selectedSrc:Constants.PileType.FOUNDATION, selectedColumn: foundation})
-        }
-      }
-      else if (pile.length > 0 && pile[pile.length - 1].toString() == this.state.selectedCard.toString()) {
-          this.resetSelection();
-      }
-      else {
-        if (this.state.selectedCard.suit != foundation) {
-          return;
-        }
-        if (pile.length == 0 && this.state.selectedCard.rank != PlayingCards.Rank.Ace){
-          return;
-        }
-        if (pile.length > 0 && !this.canMoveCard(this.state.selectedSrc, this.state.selectedCard, Constants.PileType.FOUNDATION, pile[pile.length-1])) {
-          return;
-        }
-        var transplantCards = this.removeSelected();
-        this.addFoundationCard(transplantCards[0], foundation)
-        this.resetSelection();
-
-        //this.removeTableauCard();
-
-        this.resetSelection();
-        this.setState({moves:this.state.moves + 1})
-      }
-    }
-
-    addFoundationCard(card: PlayingCards.Card, foundation: number){
-      var foundationPiles = this.state.foundationPiles;
-      var pile = foundationPiles[foundation];
-      pile.push(card);
-      this.setState({foundationPiles})
-    }
-
-    tableauPileClicked(card:PlayingCards.Card, row: number, column: number) {
-      if (this.state.selectedCard == null) {
-        this.setState({selectedCard: card, selectedSrc:Constants.PileType.TABLEAUPILE, selectedRow: row, selectedColumn: column})
-      }
-      else if (card.toString() == this.state.selectedCard.toString()) {
-        this.resetSelection();
-      }
-      else {
-        console.log('move col ' + this.state.selectedColumn + ' to ' + column);
-        console.log('move row ' + this.state.selectedRow + ' to ' + row);
-
-        if (!this.canMoveCard(this.state.selectedSrc, this.state.selectedCard, Constants.PileType.TABLEAUPILE, card)) {
-          return;
-        }
-        var transplantCards = this.removeSelected();
-        this.addTableauCard(transplantCards, column)
-        this.resetSelection();
-        this.setState({moves:this.state.moves + 1})
-      }
-
-    }
-
-    emptyTableauClicked(column:number){
-      if (this.state.selectedCard == null) {
-        return;
-      }
-      if (!this.canMoveCard(this.state.selectedSrc, this.state.selectedCard, Constants.PileType.EMPTYTABLEAU, null)) {
-        return;
-      }
-      var transplantCards = this.removeSelected();
-      this.addTableauCard(transplantCards, column)
-      this.resetSelection();
-      this.setState({moves:this.state.moves + 1})
-    }
-
-
-    addTableauCard(cards: PlayingCards.Card[], column: number){
-      let piles = this.state.tableauPiles;
-      let destPile = piles[column];
-      piles[column] = destPile.concat(cards);
-    }
-
-    removeSelected(){
-      let transplantCards = [];
-      switch(this.state.selectedSrc){
-        case Constants.PileType.TABLEAUPILE:
-          transplantCards = this.removeTableauCard(this.state.selectedColumn, this.state.selectedRow);
-          break;
-        case Constants.PileType.STOCK:
-          transplantCards = this.removeStockCard();
-          break;
-        case Constants.PileType.FOUNDATION:
-          transplantCards = this.removeFoundationCard(this.state.selectedColumn);
-          break;
-      }
-      return transplantCards;
-    }
-
-    removeTableauCard(column: number, row: number) : PlayingCards.Card[]{
-      let srcPile = this.state.tableauPiles[column];
-      var cards = srcPile.splice(row, srcPile.length - row);
-
-      this.revealTopCard(srcPile);
-      return cards;
+      this.setState({src: null});
     }
 
     revealTopCard(pile:PlayingCards.Card[]){
-      if (pile.length > 0){
-        pile[pile.length - 1].show = true;
+      if (pile.length == 0) return;
+      pile[pile.length - 1].show = true;
+    }
+
+    processClick(target:Constants.ClickTarget){
+      if (this.state.src == null){
+        this.setState({src: target});
+      }
+      else if (this.state.src.card.toString() == target.card.toString()){
+        this.setState({src: null});
+      }
+      else {
+        if (this.canMove(this.state.src, target)){
+          this.processMove(this.state.src, target);
+        }
       }
     }
 
-    removeStockCard() : PlayingCards.Card[]{
-      var card = this.state.waste.pop();
-      this.revealTopCard(this.state.waste);
-      return [card];
-    }
-
-    removeFoundationCard(foundation:number) : PlayingCards.Card[]{
-      var card = this.state.foundationPiles[foundation].pop();
-      return [card];
-    }
-
-    // movePiles(fromPile, column, row, toPile)
-    //canMoveCard(this.state.selectedSrc, this.state.selectedCard, Constants.PileType.TABLEAU, card))
-    canMoveCard(src:string, srcCard:PlayingCards.Card, dest:string, destCard:PlayingCards.Card) : boolean{
-      switch(dest){
+    canMove(src:Constants.ClickTarget, dest: Constants.ClickTarget) : boolean{
+      switch(dest.pileType){
         case Constants.PileType.TABLEAUPILE:
-          return destCard.getColor() != srcCard.getColor() && destCard.rank == srcCard.rank + 1;
+          return src.card.getColor() != dest.card.getColor() && src.card.rank == dest.card.rank - 1;
         case Constants.PileType.EMPTYTABLEAU:
-          return srcCard.rank == PlayingCards.Rank.King;
+          return src.card.rank == PlayingCards.Rank.King;
         case Constants.PileType.FOUNDATION:
-          return srcCard.rank == destCard.rank + 1;
+          return src.card.suit == dest.row && (
+            (this.state.foundationPiles[dest.row].length == 0 && src.card.rank == PlayingCards.Rank.Ace) || src.card.rank == dest.card.rank + 1);
         default:
           return false;
       }
       return false;
+    }
+
+    processMove(src:Constants.ClickTarget, dest: Constants.ClickTarget){
+      let transplantCards = [];
+      switch(src.pileType){
+        case Constants.PileType.TABLEAUPILE:
+          var tableauPile = this.state.tableauPiles[this.state.src.row];
+          transplantCards = tableauPile.splice(this.state.src.pos, tableauPile.length - this.state.src.pos);
+          this.revealTopCard(tableauPile);
+          break;
+        case Constants.PileType.STOCK:
+          var card = this.state.waste.pop();
+          this.revealTopCard(this.state.waste);
+          transplantCards = [card];
+          break;
+        case Constants.PileType.FOUNDATION:
+          transplantCards = (function(foundationPile:PlayingCards.Card[]) : PlayingCards.Card[]{
+            var card = foundationPile.pop();
+            return [card];
+          })(this.state.foundationPiles[this.state.src.row]);
+          break;
+      }
+      if (transplantCards.length == 0){
+        throw "Cards required for move";
+      }
+
+      let foundationPiles = this.state.foundationPiles;
+      let tableauPiles = this.state.tableauPiles;
+
+      switch (dest.pileType){
+        case Constants.PileType.TABLEAUPILE:
+        case Constants.PileType.EMPTYTABLEAU:
+          tableauPiles[dest.pos] = tableauPiles[dest.row].concat(transplantCards);
+          break;
+        case Constants.PileType.FOUNDATION:
+          foundationPiles[dest.row].concat(transplantCards);
+          break;
+        }
+
+      this.resetSelection();
+      this.setState({foundationPiles})
+      this.setState({moves:this.state.moves + 1})
     }
 
     stockClicked(event) {
@@ -214,13 +152,15 @@ export default class Solitaire extends React.Component<Props,any>{
             waste.push(card);
         }
         this.setState({waste, deck});
-        if (this.state.selectedSrc == Constants.PileType.STOCK){
+        if (this.state.src.pileType == Constants.PileType.STOCK){
           this.resetSelection();
         }
         this.setState({moves:this.state.moves + 1})
     };
 
     render() {
+        var elapsed = Math.round(this.props.elapsed  / 100);
+        var seconds = elapsed / 10 + (elapsed % 10 ? '' : '.0' );
         return (
           <div className="Solitaire" style={{
             width:"670px",
@@ -230,7 +170,7 @@ export default class Solitaire extends React.Component<Props,any>{
             <div className="diagnostics" style={{
               textAlign: "center"
             }}>
-              {this.state.moves} {this.state.moves == 1 ? "move" : "moves"}
+               {seconds} seconds | {this.state.moves} {this.state.moves == 1 ? "move" : "moves"}
             </div>
             <div className="">
               <div className="">
@@ -245,20 +185,20 @@ export default class Solitaire extends React.Component<Props,any>{
                      cursor: "pointer",
                      float:"left"
                     }}/>
-                    <Pile layout={PlayingCards.Layout.FannedRight} selectedCard={this.state.selectedCard} notifySelected={this.wasteClicked} pile={this.state.waste} pileStyle={{
+                    <Pile layout={PlayingCards.Layout.FannedRight} selected={this.state.src} handler={this.processClick} pile={this.state.waste} pileStyle={{
                           float:"left",
                           marginLeft:"75px"}} />
                   </div>
               </div>
               <div>
                 {this.state.foundationPiles.map((pile, foundation)  =>
-                    <Foundation selectedCard={this.state.selectedCard} notifySelected={this.foundationClicked} pile={pile} column={foundation} suit={PlayingCards.Suit[foundation]} />
+                    <Foundation selected={this.state.src} handler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]} />
                   )}
               </div>
             </div>
             <div style={{padding:"20px 10px 0", float: "right"}}>
               {this.state.tableauPiles.map((pile, tableau)  =>
-                  <Tableau selectedCard={this.state.selectedCard} tableauPileClicked={this.tableauPileClicked} emptyTableauClicked={this.emptyTableauClicked} pile={pile} column={tableau}/>
+                  <Tableau selected={this.state.src} handler={this.processClick} pile={pile} row={tableau}/>
                 )}
             </div>
           </div>

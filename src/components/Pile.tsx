@@ -2,12 +2,13 @@
 import React = require('react/addons');
 import PlayingCard from './PlayingCard';
 import * as PlayingCards from '../playing-cards';
+import * as Constants from '../Constants';
 
 interface Props extends React.Props<any> {
   layout: PlayingCards.Layout,
   pile: PlayingCards.Card[],
-  notifySelected?: any,
-  column?: number,
+  handler?: (Constants.ClickTarget) => void,
+  row?: number,
   pileStyle?: Object,
   cardStyle?: Object,
   selectedCard?: PlayingCards.Card
@@ -16,12 +17,12 @@ interface Props extends React.Props<any> {
 export default class Pile extends React.Component<Props,{}>{
     constructor(props) {
       super(props);
-      this.notifySelected = this.notifySelected.bind(this);
+      this.handler = this.handler.bind(this);
     }
 
-    notifySelected(card, row) {
-      if (this.props.notifySelected){
-         this.props.notifySelected(card, row, this.props.column);
+    handler(target: Constants.ClickTarget) {
+      if (this.props.handler){
+         this.props.handler({card: target.card, pos: target.pos, row: this.props.row});
       }
     }
 
@@ -52,8 +53,8 @@ export default class Pile extends React.Component<Props,{}>{
 
         return (
             <div className="Pile" style={pileStyle}>
-              {this.props.pile.map((card, row) =>
-                  <PlayingCard card={card} selectedCard={this.props.selectedCard} notifySelected={this.notifySelected} row={row} style={React.addons.update({zIndex:row}, {$merge: cardStyle})} />
+              {this.props.pile.map((card, pos) =>
+                  <PlayingCard card={card} selectedCard={this.props.selectedCard} handler={this.handler} pos={pos} style={React.addons.update({zIndex:pos}, {$merge: cardStyle})} />
               )}
             </div>
         );
