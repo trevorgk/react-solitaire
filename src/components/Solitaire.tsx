@@ -33,8 +33,9 @@ export default class Solitaire extends React.Component<Props,State>{
 
     constructor(props) {
       super(props);
-      this.processMove = this.processMove.bind(this);
       this.canMove = this.canMove.bind(this);
+      this.processClick = this.processClick.bind(this);
+      this.move = this.move.bind(this);
 
       let deck = new PlayingCards.DeckOfCards(false);
       deck.shuffle();
@@ -59,7 +60,7 @@ export default class Solitaire extends React.Component<Props,State>{
         return [[],[],[],[]];
       })();
 
-      this.state = {deck: deck, tableauPiles: tableauPiles, foundationPiles: foundationPiles, moves:0, waste: PlayingCards.Card[0]};
+      this.state = {deck: deck, tableauPiles: tableauPiles, foundationPiles: foundationPiles, moves:0, waste: []};
     }
 
     resetSelection(){
@@ -72,15 +73,16 @@ export default class Solitaire extends React.Component<Props,State>{
     }
 
     processClick(target:Constants.ClickTarget){
+      console.log('processClick', target);
       if (this.state.src == null){
         this.setState({src: target});
       }
-      else if (this.state.src.card.toString() == target.card.toString()){
+      else if (this.state.src.card == target.card){
         this.setState({src: null});
       }
       else {
         if (this.canMove(this.state.src, target)){
-          this.processMove(this.state.src, target);
+          this.move(this.state.src, target);
         }
       }
     }
@@ -100,7 +102,7 @@ export default class Solitaire extends React.Component<Props,State>{
       return false;
     }
 
-    processMove(src:Constants.ClickTarget, dest: Constants.ClickTarget){
+    move(src:Constants.ClickTarget, dest: Constants.ClickTarget){
       let transplantCards = [];
       switch(src.pileType){
         case Constants.PileType.TABLEAUPILE:
@@ -133,7 +135,7 @@ export default class Solitaire extends React.Component<Props,State>{
           tableauPiles[dest.pos] = tableauPiles[dest.row].concat(transplantCards);
           break;
         case Constants.PileType.FOUNDATION:
-          foundationPiles[dest.row].concat(transplantCards);
+          foundationPiles[dest.row] = foundationPiles[dest.row].concat(transplantCards);
           break;
         }
 
@@ -152,7 +154,7 @@ export default class Solitaire extends React.Component<Props,State>{
             waste.push(card);
         }
         this.setState({waste, deck});
-        if (this.state.src.pileType == Constants.PileType.STOCK){
+        if (this.state.src && this.state.src.pileType == Constants.PileType.STOCK){
           this.resetSelection();
         }
         this.setState({moves:this.state.moves + 1})
@@ -185,20 +187,20 @@ export default class Solitaire extends React.Component<Props,State>{
                      cursor: "pointer",
                      float:"left"
                     }}/>
-                    <Pile layout={PlayingCards.Layout.FannedRight} selected={this.state.src} handler={this.processClick} pile={this.state.waste} pileStyle={{
+                    <Pile layout={PlayingCards.Layout.FannedRight} selected={this.state.src} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
                           float:"left",
                           marginLeft:"75px"}} />
                   </div>
               </div>
               <div>
                 {this.state.foundationPiles.map((pile, foundation)  =>
-                    <Foundation selected={this.state.src} handler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]} />
+                    <Foundation selected={this.state.src} clickHandler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]} />
                   )}
               </div>
             </div>
             <div style={{padding:"20px 10px 0", float: "right"}}>
               {this.state.tableauPiles.map((pile, tableau)  =>
-                  <Tableau selected={this.state.src} handler={this.processClick} pile={pile} row={tableau}/>
+                  <Tableau selected={this.state.src} clickHandler={this.processClick} pile={pile} row={tableau}/>
                 )}
             </div>
           </div>

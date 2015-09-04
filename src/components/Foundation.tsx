@@ -7,26 +7,28 @@ import * as PlayingCards from '../playing-cards';
 interface Props extends React.Props<any> {
   pile: PlayingCards.Card[],
   row: number,
-  handler?: (Constants.ClickTarget) => void,
-  selectedCard: PlayingCards.Card,
+  clickHandler?: any,
+  selected: Constants.ClickTarget,
   suit: PlayingCards.Suit
 }
 
 export default class Foundation extends React.Component<Props,{}> {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
   }
 
-  handler(target) {
-    this.props.handler({pileType: Constants.ClickTarget.FOUNDATION, row: this.props.row});
-  };
+  foundationClicked() {
+    if (this.props.clickHandler){
+      let card = this.props.pile.length > 0 ? this.props.pile[this.props.pile.length - 1] : null;
+      this.props.clickHandler({pileType: Constants.PileType.FOUNDATION, row: this.props.row, card});
+    }
+  }
 
   render() {
     let layout = PlayingCards.Layout.Squared;
-    let pile = <Pile layout={layout} selectedCard={this.props.selectedCard} pile={this.props.pile} />;
+    let pile = <Pile layout={layout} selected={this.props.selected} pile={this.props.pile} row={this.props.row} />;
     return (
-      <div className="Foundation" onClick={this.handleClick.bind(this)} style={{
+      <div className="Foundation" onClick={this.foundationClicked.bind(this)} style={{
         float: "left"
       }}>
         <div style={{

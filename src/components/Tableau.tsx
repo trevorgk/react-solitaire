@@ -1,14 +1,14 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
 import React = require('react/addons');
 import Pile from './Pile';
+import * as Constants from '../Constants';
 import * as PlayingCards from '../playing-cards';
 
 interface Props extends React.Props<any> {
   pile: PlayingCards.Card[],
-  column: number,
-  selectedCard: PlayingCards.Card,
-  tableauPileClicked: any,
-  emptyTableauClicked: any,
+  row: number,
+  selected: PlayingCards.Card,
+  clickHandler: any,
 }
 
 export default class Tableau extends React.Component<Props,any>{
@@ -16,17 +16,26 @@ export default class Tableau extends React.Component<Props,any>{
       super(props);
     }
 
-    handleClick(event) {
-        this.props.emptyTableauClicked(this.props.column);
+    emptyPileClicked(event) {
+      if (this.props.clickHandler){
+        this.props.clickHandler({pileType: Constants.PileType.EMPTYTABLEAU, row: this.props.row});
+      }
+    };
+
+    pileClicked(target) {
+      if (this.props.clickHandler){
+        target.pileType = Constants.PileType.TABLEAUPILE;
+        this.props.clickHandler(target);
+      }
     };
 
     render() {
         // let piles = this.props.piles.map(function(pile) {
-        //     return <Pile  selected={this.state.selectedCard} notify={notifySelected} pile={pile} layout={Layout.FannedDown}/>
+        //     return <Pile  selected={this.state.selected} notify={notifySelected} pile={pile} layout={Layout.FannedDown}/>
         // });
 
         return (
-          <div className="Tableau" onClick={this.props.pile.length == 0 && this.handleClick.bind(this)} style={{
+          <div className="Tableau" onClick={this.props.pile.length == 0 && this.emptyPileClicked.bind(this)} style={{
               width: "80px",
               height: "112px",
               border: "1px solid #CCC",
@@ -35,7 +44,7 @@ export default class Tableau extends React.Component<Props,any>{
               backgroundPosition: "18px 30px",
               float: "left"
             }}>
-              <Pile layout={PlayingCards.Layout.FannedDown} selectedCard={this.props.selectedCard} column={this.props.column} notifySelected={this.props.tableauPileClicked} pile={this.props.pile} />
+              <Pile layout={PlayingCards.Layout.FannedDown} selected={this.props.selected} row={this.props.row} clickHandler={this.pileClicked.bind(this)} pile={this.props.pile} />
             </div>
         );
     }

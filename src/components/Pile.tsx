@@ -7,22 +7,23 @@ import * as Constants from '../Constants';
 interface Props extends React.Props<any> {
   layout: PlayingCards.Layout,
   pile: PlayingCards.Card[],
-  handler?: (Constants.ClickTarget) => void,
+  clickHandler?: any,
   row?: number,
   pileStyle?: Object,
   cardStyle?: Object,
-  selectedCard?: PlayingCards.Card
+  selected?: Constants.ClickTarget
 }
 
 export default class Pile extends React.Component<Props,{}>{
     constructor(props) {
       super(props);
-      this.handler = this.handler.bind(this);
+      this.clickHandler = this.clickHandler.bind(this);
     }
 
-    handler(target: Constants.ClickTarget) {
-      if (this.props.handler){
-         this.props.handler({card: target.card, pos: target.pos, row: this.props.row});
+    clickHandler(target: Constants.ClickTarget) {
+      if (this.props.clickHandler){
+        target.row = this.props.row;
+        this.props.clickHandler(target);
       }
     }
 
@@ -53,8 +54,8 @@ export default class Pile extends React.Component<Props,{}>{
 
         return (
             <div className="Pile" style={pileStyle}>
-              {this.props.pile.map((card, pos) =>
-                  <PlayingCard card={card} selectedCard={this.props.selectedCard} handler={this.handler} pos={pos} style={React.addons.update({zIndex:pos}, {$merge: cardStyle})} />
+              {this.props.pile && this.props.pile.map((card, pos) =>
+                  <PlayingCard card={card} selected={this.props.selected} clickHandler={this.clickHandler} pos={pos} style={React.addons.update({zIndex:pos}, {$merge: cardStyle})} />
               )}
             </div>
         );

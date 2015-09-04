@@ -1,11 +1,12 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
 import React = require('react/addons');
 import * as PlayingCards from '../playing-cards';
+import * as Constants from '../Constants';
 
 interface Props extends React.Props<any> {
   card: PlayingCards.Card,
-  handler: (Constants.ClickTarget) => void,,
-  selectedCard: PlayingCards.Card
+  clickHandler: any,
+  selected: Constants.ClickTarget
   pos?: number,
   style?: any,
 }
@@ -32,13 +33,13 @@ export default class PlayingCard extends React.Component<Props, {}>  {
     );
   }
 
-  handleClick(event) {
-      this.props.handler({card: this.props.card, pos: this.props.pos});
+  handleClick() {
+      this.props.clickHandler({card: this.props.card, pos: this.props.pos});
   };
 
   render() {
       let style = React.addons.update({position: "relative", width:"80px",height:"112px"}, {$merge: this.props.style});
-      let selected = this.props.selectedCard != null && this.props.card.toString() == this.props.selectedCard.toString();
+      let selected = this.props.selected != null && this.props.selected.card.toString() == this.props.card.toString();
       return (
           <div className="PlayingCard" onClick={this.props.card.show && this.handleClick.bind(this)} style={style}>
               <img style={{width:"100%"}} src={this.props.card.display()} />
