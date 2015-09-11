@@ -1,7 +1,7 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
 import React = require('react/addons');
 import Pile from './Pile';
-import PlayingCard from './PlayingCard';
+import KlondikeCard from './KlondikeCard';
 import * as Common from '../Common';
 import * as PlayingCards from '../playing-cards';
 
@@ -45,7 +45,7 @@ export default class Foundation extends React.Component<Props,{}> {
           backgroundPosition: "18px 30px"
         }}>
           {pile}
-          {validDropTarget && PlayingCard.renderOverlay('orange')}
+          {validDropTarget && KlondikeCard.renderOverlay('orange')}
         </div>
       </div>
     );}

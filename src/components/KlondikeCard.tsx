@@ -14,7 +14,7 @@ interface Props extends React.Props<any> {
   pileType: string
 }
 
-export default class PlayingCard extends React.Component<Props, {}>  {
+export default class KlondikeCard extends React.Component<Props, {}>  {
 
   constructor(props) {
     super(props);
@@ -45,10 +45,10 @@ export default class PlayingCard extends React.Component<Props, {}>  {
       let validDropTarget = !selected && this.props.card.show && this.props.selected != null && Common.canMove(this.props.selected,
         {pileType: this.props.pileType, card: this.props.card, row: this.props.row, pos: this.props.pos, pileSize: this.props.pileSize})
       return (
-          <div className="PlayingCard" onClick={this.props.card.show && this.handleClick.bind(this)} style={style}>
+          <div className="KlondikeCard" onClick={this.props.card.show && this.handleClick.bind(this)} style={style}>
               <img style={{width:"100%"}} src={this.props.card.display()} />
-              {selected && PlayingCard.renderOverlay('aquamarine')}
-              {validDropTarget && PlayingCard.renderOverlay('orange')}
+              {selected && KlondikeCard.renderOverlay('aquamarine')}
+              {validDropTarget && KlondikeCard.renderOverlay('orange')}
           </div>
       );
   }

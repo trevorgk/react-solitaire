@@ -2,7 +2,7 @@
 import React = require('react/addons');
 import Pile from './Pile';
 import Foundation from './Foundation';
-import PlayingCard from './PlayingCard';
+import KlondikeCard from './KlondikeCard';
 import Tableau from './Tableau';
 import Diagnostics from './Diagnostics';
 import * as Common from '../Common';

@@ -1,6 +1,6 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
 import React = require('react/addons');
-import PlayingCard from './PlayingCard';
+import KlondikeCard from './KlondikeCard';
 import * as PlayingCards from '../playing-cards';
 import * as Common from '../Common';
 
@@ -51,13 +51,13 @@ export default class Pile extends React.Component<Props,{}>{
                 break;
         }
         // let cards = this.props.pile.map(function(card, z){
-        //     return <PlayingCard card={card} style={React.addons.update({zIndex:z}, {$merge: cardStyle})} />
+        //     return <KlondikeCard card={card} style={React.addons.update({zIndex:z}, {$merge: cardStyle})} />
         // });
 
         return (
             <div className="Pile" style={pileStyle}>
               {this.props.pile && this.props.pile.map((card, pos) =>
-                  <PlayingCard card={card} selected={this.props.selected} pileType={this.props.pileType} pileSize={this.props.pile.length}
+                  <KlondikeCard card={card} selected={this.props.selected} pileType={this.props.pileType} pileSize={this.props.pile.length}
                   clickHandler={this.clickHandler} pos={pos} row={this.props.row} style={React.addons.update({zIndex:pos}, {$merge: cardStyle})} />
               )}
             </div>
