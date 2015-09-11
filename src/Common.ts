@@ -22,6 +22,7 @@ export interface ClickTarget {
         case PileType.EMPTYTABLEAU:
           return src.card.rank == PlayingCards.Rank.King;
         case PileType.FOUNDATION:
+          if (src.pileType == PileType.TABLEAUPILE && src.pos != src.pileSize - 1) return false;
           return src.card.suit == dest.row && (
             (src.card.rank == PlayingCards.Rank.Ace) || (dest.card && src.card.rank == dest.card.rank + 1));
         default:

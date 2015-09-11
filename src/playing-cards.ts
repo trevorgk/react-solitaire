@@ -91,6 +91,13 @@ export class DeckOfCards {
     return this.cards.pop();
   }
 
+  getNextCards(n: number): Card[] {
+    if (n > this.cards.length) {
+      n = this.cards.length;
+    }
+    return this.cards.reverse().splice(0, n);
+  }
+
   toString(): string {
     return this.cards.join(", ")
   }

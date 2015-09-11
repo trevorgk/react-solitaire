@@ -4,6 +4,7 @@ import Pile from './Pile';
 import Foundation from './Foundation';
 import PlayingCard from './PlayingCard';
 import Tableau from './Tableau';
+import Diagnostics from './Diagnostics';
 import * as Common from '../Common';
 import * as PlayingCards from '../playing-cards';
 //
@@ -21,6 +22,7 @@ interface Props extends React.Props<any> {
 interface State {
   src?: Common.ClickTarget,
   moves?: number,
+  initialDeckSize?: number,
   deck?: PlayingCards.DeckOfCards,
   waste?: PlayingCards.Card[],
   foundationPiles?: PlayingCards.Card[][],
@@ -37,6 +39,10 @@ export default class Solitaire extends React.Component<Props,State>{
 
       let deck = new PlayingCards.DeckOfCards(false);
       deck.shuffle();
+
+      // let trash = deck.getNextCards(20);
+
+      let initialDeckSize = deck.length();
 
       let tableauPiles = (function(pileCount: number, deck: PlayingCards.DeckOfCards) {
         let piles = [];
@@ -57,8 +63,8 @@ export default class Solitaire extends React.Component<Props,State>{
       let foundationPiles = (function() {
         return [[],[],[],[]];
       })();
-
-      this.state = {deck: deck, tableauPiles: tableauPiles, foundationPiles: foundationPiles, moves:0, waste: []};
+      this.state = {deck, tableauPiles, foundationPiles, moves:0, waste: [], initialDeckSize};
+      console.log(this.state);
     }
 
     resetSelection(){
@@ -128,8 +134,13 @@ export default class Solitaire extends React.Component<Props,State>{
     }
 
     stockClicked(event) {
-        const wasteSize = 3;
         let deck = this.state.deck.concat(this.state.waste.reverse());
+
+        let wasteSize = 3;
+        if (this.state.deck.length() < wasteSize){
+          wasteSize = this.state.deck.length();
+        }
+
         let waste = [];
         for (let i = 0; i < wasteSize; i++){
             let card = deck.getNextCard();
@@ -147,46 +158,50 @@ export default class Solitaire extends React.Component<Props,State>{
         var elapsed = Math.round(this.props.elapsed  / 100);
         var seconds = elapsed / 10 + (elapsed % 10 ? '' : '.0' );
         return (
-          <div className="Solitaire" style={{
-            width:"670px",
-            margin: "0 auto",
-            color: "white"
-          }}>
-            <div className="diagnostics" style={{
-              textAlign: "center"
+          <div className="Solitaire">
+            <Diagnostics initialDeckSize={this.state.initialDeckSize} deck={this.state.deck} foundations={this.state.foundationPiles} tableaus={this.state.tableauPiles} waste={this.state.waste} />
+            <div style={{
+              width:"670px",
+              margin: "0 auto",
+              color: "white"
             }}>
-               {seconds} seconds | {this.state.moves} {this.state.moves == 1 ? "move" : "moves"}
-            </div>
-            <div className="">
-              <div className="">
-                  <div className="Stock" style={{
-                      width: "255px",
-                      margin: "10px 15px 0 20px",
-                      float: "left"
-                  }}>
-                    <img src='img/cards/back-purple.png' onClick={this.stockClicked.bind(this)} style={{
-                     width: "80px",
-                     height: "112px",
-                     cursor: "pointer",
-                     float:"left"
-                    }}/>
-                    <Pile layout={PlayingCards.Layout.FannedRight} pileType={Common.PileType.WASTE} selected={this.state.src} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
-                          float:"left",
-                          marginLeft:"75px"}} />
-                  </div>
+              <div className="diagnostics" style={{
+                textAlign: "center"
+              }}>
+                 {seconds} seconds | {this.state.moves} {this.state.moves == 1 ? "move" : "moves"}
               </div>
-              <div>
-                {this.state.foundationPiles.map((pile, foundation)  =>
-                    <Foundation selected={this.state.src} clickHandler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]} />
+              <div className="">
+                <div className="">
+                    <div className="Stock" style={{
+                        width: "255px",
+                        margin: "10px 15px 0 20px",
+                        float: "left"
+                    }}>
+                      <img src='img/cards/back-purple.png' onClick={this.stockClicked.bind(this)} style={{
+                       width: "80px",
+                       height: "112px",
+                       cursor: "pointer",
+                       float:"left"
+                      }}/>
+                      <Pile layout={PlayingCards.Layout.FannedRight} pileType={Common.PileType.WASTE} selected={this.state.src} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
+                            float:"left",
+                            marginLeft:"75px"}} />
+                    </div>
+                </div>
+                <div>
+                  {this.state.foundationPiles.map((pile, foundation)  =>
+                      <Foundation selected={this.state.src} clickHandler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]} />
+                    )}
+                </div>
+              </div>
+              <div style={{padding:"20px 10px 0", float: "right"}}>
+                {this.state.tableauPiles.map((pile, tableau)  =>
+                    <Tableau selected={this.state.src} clickHandler={this.processClick} pile={pile} row={tableau}/>
                   )}
               </div>
             </div>
-            <div style={{padding:"20px 10px 0", float: "right"}}>
-              {this.state.tableauPiles.map((pile, tableau)  =>
-                  <Tableau selected={this.state.src} clickHandler={this.processClick} pile={pile} row={tableau}/>
-                )}
-            </div>
           </div>
+
         );
       }
 }
