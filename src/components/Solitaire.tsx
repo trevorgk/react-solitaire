@@ -92,7 +92,7 @@ export default class Solitaire extends React.Component<Props,State>{
     processDoubleClick(src:Common.ClickTarget){
       console.log('processDoubleClick', src);
       this.state.foundationPiles[src.row]
-      var foundationPile = this.state.foundationPiles[src.row];
+      var foundationPile = this.state.foundationPiles[src.card.suit];
       let card = foundationPile.length > 0 ? foundationPile[foundationPile.length - 1] : null;
       let target = {pileType: Common.PileType.FOUNDATION, row: src.card.suit, card}
       if (KlondikeCard.canMove(src, target)){

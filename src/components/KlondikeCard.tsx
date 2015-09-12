@@ -18,10 +18,9 @@ interface Props extends React.Props<any> {
 export default class KlondikeCard extends React.Component<Props, {}>  {
 
   constructor(props) {
-    this.singleClick = this.singleClick.bind(this);
-    this.doubleClick = this.doubleClick.bind(this);
-
     super(props);
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
   public static canMove(src:Common.ClickTarget, dest: Common.ClickTarget) : boolean{
@@ -55,26 +54,18 @@ export default class KlondikeCard extends React.Component<Props, {}>  {
     );
   }
 
+  private timeoutID = null;
   handleClick() {
-      var timeoutID = null;
-      var delay = 250;
-        if (!timeoutID) {
-            timeoutID = setTimeout(function () {
-                this.props.clickHandler({card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
-                timeoutID = null
-            }, delay);
-        } else {
-            timeoutID = clearTimeout(timeoutID);
-            this.props.doubleClickHandler({pileType: this.props.pileType, row:this.props.row, card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
-        }
-  }
-
-  singleClick() {
-      this.props.clickHandler({card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
-  };
-
-  doubleClick() {
-    this.props.doubleClickHandler({pileType: this.props.pileType, row:this.props.row, card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
+      var delay = 150;
+      if (!this.timeoutID) {
+          this.timeoutID = setTimeout(() => {
+              this.props.clickHandler({card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
+              this.timeoutID = null
+          }, delay);
+      } else {
+          this.timeoutID = clearTimeout(this.timeoutID);
+          this.props.doubleClickHandler({pileType: this.props.pileType, row:this.props.row, card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
+      }
   }
 
   render() {
