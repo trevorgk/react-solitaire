@@ -42,7 +42,7 @@ export default class Tableau extends React.Component<Props,any>{
             }}>
               <Pile layout={PlayingCards.Layout.FannedDown} pileType={Common.PileType.TABLEAUPILE} selected={this.props.selected}
               row={this.props.row} pile={this.props.pile}  clickHandler={this.props.clickHandler} />
-              {validDropTarget && KlondikeCard.renderOverlay('orange')}
+              {/* validDropTarget && KlondikeCard.renderOverlay('orange')*/}
             </div>
         );
     }

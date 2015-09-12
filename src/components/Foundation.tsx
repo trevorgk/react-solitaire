@@ -45,7 +45,7 @@ export default class Foundation extends React.Component<Props,{}> {
           backgroundPosition: "18px 30px"
         }}>
           {pile}
-          {validDropTarget && KlondikeCard.renderOverlay('orange')}
+          {/* validDropTarget && KlondikeCard.renderOverlay('orange')*/}
         </div>
       </div>
     );}

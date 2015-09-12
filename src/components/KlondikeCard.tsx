@@ -64,7 +64,7 @@ export default class KlondikeCard extends React.Component<Props, {}>  {
           <div className="KlondikeCard" onClick={this.props.card.show && this.handleClick.bind(this)} style={style}>
               <img style={{width:"100%"}} src={this.props.card.display()} />
               {selected && KlondikeCard.renderOverlay('aquamarine')}
-              {validDropTarget && KlondikeCard.renderOverlay('orange')}
+              {/* validDropTarget && KlondikeCard.renderOverlay('orange')*/}
           </div>
       );
   }
