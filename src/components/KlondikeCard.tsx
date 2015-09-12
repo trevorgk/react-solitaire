@@ -6,6 +6,7 @@ import * as Common from '../Common';
 interface Props extends React.Props<any> {
   card: PlayingCards.Card,
   clickHandler: any,
+  doubleClickHandler?: any,
   selected: Common.ClickTarget
   pos?: number,
   row?: number,
@@ -17,6 +18,9 @@ interface Props extends React.Props<any> {
 export default class KlondikeCard extends React.Component<Props, {}>  {
 
   constructor(props) {
+    this.singleClick = this.singleClick.bind(this);
+    this.doubleClick = this.doubleClick.bind(this);
+
     super(props);
   }
 
@@ -52,8 +56,26 @@ export default class KlondikeCard extends React.Component<Props, {}>  {
   }
 
   handleClick() {
+      var timeoutID = null;
+      var delay = 250;
+        if (!timeoutID) {
+            timeoutID = setTimeout(function () {
+                this.props.clickHandler({card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
+                timeoutID = null
+            }, delay);
+        } else {
+            timeoutID = clearTimeout(timeoutID);
+            this.props.doubleClickHandler({pileType: this.props.pileType, row:this.props.row, card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
+        }
+  }
+
+  singleClick() {
       this.props.clickHandler({card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
   };
+
+  doubleClick() {
+    this.props.doubleClickHandler({pileType: this.props.pileType, row:this.props.row, card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
+  }
 
   render() {
       let style = React.addons.update({position: "relative", width:"80px",height:"112px"}, {$merge: this.props.style});
@@ -61,7 +83,8 @@ export default class KlondikeCard extends React.Component<Props, {}>  {
       let validDropTarget = !selected && this.props.card.show && this.props.selected != null && KlondikeCard.canMove(this.props.selected,
         {pileType: this.props.pileType, card: this.props.card, row: this.props.row, pos: this.props.pos, pileSize: this.props.pileSize})
       return (
-          <div className="KlondikeCard" onClick={this.props.card.show && this.handleClick.bind(this)} style={style}>
+          <div className="KlondikeCard" onClick={this.props.card.show && this.handleClick.bind(this)}
+            style={style}>
               <img style={{width:"100%"}} src={this.props.card.display()} />
               {selected && KlondikeCard.renderOverlay('aquamarine')}
               {validDropTarget && KlondikeCard.renderOverlay('orange')}

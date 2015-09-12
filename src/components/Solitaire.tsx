@@ -31,16 +31,14 @@ interface State {
 
 
 export default class Solitaire extends React.Component<Props,State>{
-
     constructor(props) {
       super(props);
       this.processClick = this.processClick.bind(this);
+      this.processDoubleClick = this.processDoubleClick.bind(this);
       this.move = this.move.bind(this);
 
       let deck = new PlayingCards.DeckOfCards(false);
       deck.shuffle();
-
-      // let trash = deck.getNextCards(20);
 
       let initialDeckSize = deck.length();
 
@@ -91,12 +89,23 @@ export default class Solitaire extends React.Component<Props,State>{
       }
     }
 
+    processDoubleClick(src:Common.ClickTarget){
+      console.log('processDoubleClick', src);
+      this.state.foundationPiles[src.row]
+      var foundationPile = this.state.foundationPiles[src.row];
+      let card = foundationPile.length > 0 ? foundationPile[foundationPile.length - 1] : null;
+      let target = {pileType: Common.PileType.FOUNDATION, row: src.card.suit, card}
+      if (KlondikeCard.canMove(src, target)){
+        this.move(src, target);
+      }
+    }
+
     move(src:Common.ClickTarget, dest: Common.ClickTarget){
       let transplantCards = [];
       switch(src.pileType){
         case Common.PileType.TABLEAUPILE:
-          var tableauPile = this.state.tableauPiles[this.state.src.row];
-          transplantCards = tableauPile.splice(this.state.src.pos, tableauPile.length - this.state.src.pos);
+          var tableauPile = this.state.tableauPiles[src.row];
+          transplantCards = tableauPile.splice(src.pos, tableauPile.length - src.pos);
           this.revealTopCard(tableauPile);
           break;
         case Common.PileType.WASTE:
@@ -159,7 +168,6 @@ export default class Solitaire extends React.Component<Props,State>{
         if( e.keyCode == ESCAPE ) {
             this.resetSelection();
         }
-
     }
 
     render() {
@@ -191,7 +199,7 @@ export default class Solitaire extends React.Component<Props,State>{
                        cursor: "pointer",
                        float:"left"
                       }}/>
-                      <Pile layout={PlayingCards.Layout.FannedRight} pileType={Common.PileType.WASTE} selected={this.state.src} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
+                      <Pile layout={PlayingCards.Layout.FannedRight} doubleClickHandler={this.processDoubleClick} pileType={Common.PileType.WASTE} selected={this.state.src} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
                             float:"left",
                             marginLeft:"75px"}} />
                     </div>
@@ -204,7 +212,7 @@ export default class Solitaire extends React.Component<Props,State>{
               </div>
               <div style={{padding:"20px 10px 0", float: "right"}}>
                 {this.state.tableauPiles.map((pile, tableau)  =>
-                    <Tableau selected={this.state.src} clickHandler={this.processClick} pile={pile} row={tableau}/>
+                    <Tableau selected={this.state.src} clickHandler={this.processClick} doubleClickHandler={this.processDoubleClick} pile={pile} row={tableau}/>
                   )}
               </div>
             </div>

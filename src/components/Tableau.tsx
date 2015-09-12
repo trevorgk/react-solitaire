@@ -10,6 +10,7 @@ interface Props extends React.Props<any> {
   row: number,
   selected: Common.ClickTarget,
   clickHandler: any,
+  doubleClickHandler: any,
 }
 
 export default class Tableau extends React.Component<Props,any>{
@@ -41,7 +42,7 @@ export default class Tableau extends React.Component<Props,any>{
               float: "left"
             }}>
               <Pile layout={PlayingCards.Layout.FannedDown} pileType={Common.PileType.TABLEAUPILE} selected={this.props.selected}
-              row={this.props.row} pile={this.props.pile}  clickHandler={this.props.clickHandler} />
+              row={this.props.row} pile={this.props.pile} clickHandler={this.props.clickHandler} doubleClickHandler={this.props.doubleClickHandler}/>
               {validDropTarget && KlondikeCard.renderOverlay('orange')}
             </div>
         );

@@ -8,6 +8,7 @@ interface Props extends React.Props<any> {
   layout: PlayingCards.Layout,
   pile: PlayingCards.Card[],
   clickHandler?: any,
+  doubleClickHandler?: any,
   row?: number,
   pileStyle?: Object,
   cardStyle?: Object,
@@ -58,7 +59,8 @@ export default class Pile extends React.Component<Props,{}>{
             <div className="Pile" style={pileStyle}>
               {this.props.pile && this.props.pile.map((card, pos) =>
                   <KlondikeCard card={card} selected={this.props.selected} pileType={this.props.pileType} pileSize={this.props.pile.length}
-                  clickHandler={this.clickHandler} pos={pos} row={this.props.row} style={React.addons.update({zIndex:pos}, {$merge: cardStyle})} />
+                  clickHandler={this.clickHandler} doubleClickHandler={this.props.doubleClickHandler} pos={pos} row={this.props.row} 
+                  style={React.addons.update({zIndex:pos}, {$merge: cardStyle})} />
               )}
             </div>
         );
