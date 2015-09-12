@@ -3,11 +3,12 @@ import React = require('react/addons');
 import Pile from './Pile';
 import * as Common from '../Common';
 import * as PlayingCards from '../playing-cards';
+import KlondikeCard from './KlondikeCard';
 
 interface Props extends React.Props<any> {
   pile: PlayingCards.Card[],
   row: number,
-  selected: PlayingCards.Card,
+  selected: Common.ClickTarget,
   clickHandler: any,
 }
 
@@ -26,9 +27,11 @@ export default class Tableau extends React.Component<Props,any>{
         // let piles = this.props.piles.map(function(pile) {
         //     return <Pile  selected={this.state.selected} notify={notifySelected} pile={pile} layout={Layout.FannedDown}/>
         // });
+        let validDropTarget = this.props.selected != null && this.props.pile.length == 0 && KlondikeCard.canMove(this.props.selected, {pileType: Common.PileType.EMPTYTABLEAU, row: this.props.row, card: null});
 
         return (
           <div className="Tableau" onClick={this.props.pile.length == 0 && this.emptyPileClicked.bind(this)} style={{
+              position: "relative",
               width: "80px",
               height: "112px",
               border: "1px solid #CCC",
@@ -39,6 +42,7 @@ export default class Tableau extends React.Component<Props,any>{
             }}>
               <Pile layout={PlayingCards.Layout.FannedDown} pileType={Common.PileType.TABLEAUPILE} selected={this.props.selected}
               row={this.props.row} pile={this.props.pile}  clickHandler={this.props.clickHandler} />
+              {validDropTarget && KlondikeCard.renderOverlay('orange')}
             </div>
         );
     }

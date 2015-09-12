@@ -29,7 +29,7 @@ export default class Foundation extends React.Component<Props,{}> {
     let layout = PlayingCards.Layout.Squared;
     let pile = <Pile layout={layout} pileType={Common.PileType.FOUNDATION} selected={this.props.selected} pile={this.props.pile} row={this.props.row} />;
     let card = this.props.pile.length > 0 ? this.props.pile[this.props.pile.length - 1] : null;
-    let validDropTarget = this.props.selected != null && Common.canMove(this.props.selected, {pileType: Common.PileType.FOUNDATION, row: this.props.row, card})
+    let validDropTarget = this.props.selected != null && KlondikeCard.canMove(this.props.selected, {pileType: Common.PileType.FOUNDATION, row: this.props.row, card});
     return (
       <div className="Foundation" onClick={this.foundationClicked.bind(this)} style={{
         float: "left"

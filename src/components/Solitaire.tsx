@@ -85,7 +85,7 @@ export default class Solitaire extends React.Component<Props,State>{
         this.setState({src: null});
       }
       else {
-        if (Common.canMove(this.state.src, target)){
+        if (KlondikeCard.canMove(this.state.src, target)){
           this.move(this.state.src, target);
         }
       }
@@ -153,6 +153,14 @@ export default class Solitaire extends React.Component<Props,State>{
         }
         this.setState({moves:this.state.moves + 1})
     };
+
+    handleKeyDown(e) {
+        var ESCAPE = 27;
+        if( e.keyCode == ESCAPE ) {
+            this.resetSelection();
+        }
+
+    }
 
     render() {
         var elapsed = Math.round(this.props.elapsed  / 100);
