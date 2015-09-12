@@ -78,16 +78,16 @@ export default class Solitaire extends React.Component<Props,State>{
 
     processClick(target:Common.ClickTarget){
       console.log('processClick', target);
-      if (this.state.src == null){
+      if (this.state.src == null && target.card != null){
         this.setState({src: target});
       }
       else if (this.state.src.card == target.card){
-        this.setState({src: null});
+        this.resetSelection();
       }
       else {
         if (KlondikeCard.canMove(this.state.src, target)){
           this.move(this.state.src, target);
-        }
+        } else this.setState({src: target});
       }
     }
 
