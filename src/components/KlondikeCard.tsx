@@ -56,7 +56,7 @@ export default class KlondikeCard extends React.Component<Props, {}>  {
 
   private timeoutID = null;
   handleClick() {
-      var delay = 150;
+      let delay = 225;
       if (!this.timeoutID) {
           this.timeoutID = setTimeout(() => {
               this.props.clickHandler({card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
