@@ -19,15 +19,6 @@ interface Props extends React.Props<any> {
 export default class Pile extends React.Component<Props,{}>{
     constructor(props) {
       super(props);
-      this.clickHandler = this.clickHandler.bind(this);
-    }
-
-    clickHandler(target: Common.ClickTarget) {
-      if (this.props.clickHandler){
-        target.row = this.props.row;
-        target.pileType = this.props.pileType;
-        this.props.clickHandler(target);
-      }
     }
 
     render() {
@@ -59,7 +50,7 @@ export default class Pile extends React.Component<Props,{}>{
             <div className="Pile" style={pileStyle}>
               {this.props.pile && this.props.pile.map((card, pos) =>
                   <KlondikeCard card={card} selected={this.props.selected} pileType={this.props.pileType} pileSize={this.props.pile.length}
-                  clickHandler={this.clickHandler} doubleClickHandler={this.props.doubleClickHandler} pos={pos} row={this.props.row} 
+                  clickHandler={this.props.clickHandler} doubleClickHandler={this.props.doubleClickHandler} pos={pos} row={this.props.row}
                   style={React.addons.update({zIndex:pos}, {$merge: cardStyle})} />
               )}
             </div>

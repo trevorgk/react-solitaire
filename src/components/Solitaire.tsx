@@ -120,6 +120,7 @@ export default class Solitaire extends React.Component<Props,State>{
           })(this.state.foundationPiles[this.state.src.row]);
           break;
       }
+      
       if (transplantCards.length == 0){
         throw "Cards required for move";
       }

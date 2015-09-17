@@ -18,7 +18,7 @@ export default class Foundation extends React.Component<Props,{}> {
     super(props);
   }
 
-  foundationClicked() {
+  emptyFoundationClicked() {
     if (this.props.clickHandler){
       let card = this.props.pile.length > 0 ? this.props.pile[this.props.pile.length - 1] : null;
       this.props.clickHandler({pileType: Common.PileType.FOUNDATION, row: this.props.row, card});
@@ -27,11 +27,10 @@ export default class Foundation extends React.Component<Props,{}> {
 
   render() {
     let layout = PlayingCards.Layout.Squared;
-    let pile = <Pile layout={layout} pileType={Common.PileType.FOUNDATION} selected={this.props.selected} pile={this.props.pile} row={this.props.row} />;
     let card = this.props.pile.length > 0 ? this.props.pile[this.props.pile.length - 1] : null;
     let validDropTarget = this.props.selected != null && KlondikeCard.canMove(this.props.selected, {pileType: Common.PileType.FOUNDATION, row: this.props.row, card});
     return (
-      <div className="Foundation" onClick={this.foundationClicked.bind(this)} style={{
+      <div className="Foundation"onClick={this.props.pile.length == 0 && this.emptyFoundationClicked.bind(this)} style={{
         float: "left"
       }}>
         <div style={{
@@ -44,7 +43,7 @@ export default class Foundation extends React.Component<Props,{}> {
           backgroundImage: "url(" + PlayingCards.Card.getPip(this.props.suit) + ")",
           backgroundPosition: "18px 30px"
         }}>
-          {pile}
+          <Pile layout={layout} pileType={Common.PileType.FOUNDATION} selected={this.props.selected} pile={this.props.pile} row={this.props.row} clickHandler={this.props.clickHandler}/>
           {/* validDropTarget && KlondikeCard.renderOverlay('orange')*/}
         </div>
       </div>

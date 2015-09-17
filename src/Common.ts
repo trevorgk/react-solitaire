@@ -9,7 +9,7 @@ export const PileType = {
 
 export interface ClickTarget {
   pileType: string,
-  card: PlayingCards.Card,
+  card?: PlayingCards.Card,
   row?: number
   pos?: number
   pileSize?: number

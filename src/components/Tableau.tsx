@@ -18,7 +18,7 @@ export default class Tableau extends React.Component<Props,any>{
       super(props);
     }
 
-    emptyPileClicked(event) {
+    emptyPileClickHandler(event) {
       if (this.props.clickHandler){
         this.props.clickHandler({pileType: Common.PileType.EMPTYTABLEAU, row: this.props.row});
       }
@@ -28,10 +28,10 @@ export default class Tableau extends React.Component<Props,any>{
         // let piles = this.props.piles.map(function(pile) {
         //     return <Pile  selected={this.state.selected} notify={notifySelected} pile={pile} layout={Layout.FannedDown}/>
         // });
-        let validDropTarget = this.props.selected != null && this.props.pile.length == 0 && KlondikeCard.canMove(this.props.selected, {pileType: Common.PileType.EMPTYTABLEAU, row: this.props.row, card: null});
-
+        let validDropTarget = this.props.selected != null && this.props.pile.length == 0 && KlondikeCard.canMove(this.props.selected,
+          {pileType: Common.PileType.EMPTYTABLEAU, row: this.props.row});
         return (
-          <div className="Tableau" onClick={this.props.pile.length == 0 && this.emptyPileClicked.bind(this)} style={{
+          <div className="Tableau" onClick={this.props.pile.length == 0 && this.emptyPileClickHandler.bind(this)} style={{
               position: "relative",
               width: "80px",
               height: "112px",

@@ -54,17 +54,18 @@ export default class KlondikeCard extends React.Component<Props, {}>  {
     );
   }
 
-  private timeoutID = null;
+  private clickTimeoutId = null;
   handleClick() {
       let delay = 225;
-      if (!this.timeoutID) {
-          this.timeoutID = setTimeout(() => {
-              this.props.clickHandler({card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
-              this.timeoutID = null
+      let payload = {pileType: this.props.pileType, row:this.props.row, card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize};
+      if (!this.clickTimeoutId) {
+          this.clickTimeoutId = setTimeout(() => {
+              this.props.clickHandler(payload);
+              this.clickTimeoutId = null
           }, delay);
       } else {
-          this.timeoutID = clearTimeout(this.timeoutID);
-          this.props.doubleClickHandler({pileType: this.props.pileType, row:this.props.row, card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize});
+          this.clickTimeoutId = clearTimeout(this.clickTimeoutId);
+          this.props.doubleClickHandler(payload);
       }
   }
 
