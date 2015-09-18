@@ -17,11 +17,13 @@ import * as PlayingCards from '../playing-cards';
 interface Props extends React.Props<any> {
   pileCount: number,
   elapsed: number,
+  wasteSize: number
 }
 
 interface State {
   src?: Common.ClickTarget,
-  moves?: number,
+  moves?: Common.MoveHistory[],
+  moveCount?: number,
   initialDeckSize?: number,
   deck?: PlayingCards.DeckOfCards,
   waste?: PlayingCards.Card[],
@@ -36,6 +38,7 @@ export default class Solitaire extends React.Component<Props,State>{
       this.processClick = this.processClick.bind(this);
       this.processDoubleClick = this.processDoubleClick.bind(this);
       this.move = this.move.bind(this);
+      this.logMove = this.logMove.bind(this);
 
       let deck = new PlayingCards.DeckOfCards(false);
       deck.shuffle();
@@ -61,7 +64,7 @@ export default class Solitaire extends React.Component<Props,State>{
       let foundationPiles = (function() {
         return [[],[],[],[]];
       })();
-      this.state = {deck, tableauPiles, foundationPiles, moves:0, waste: [], initialDeckSize};
+      this.state = {deck, tableauPiles, foundationPiles, moves: [], moveCount:0, waste: [], initialDeckSize};
       console.log(this.state);
     }
 
@@ -69,15 +72,22 @@ export default class Solitaire extends React.Component<Props,State>{
       this.setState({src: null});
     }
 
-    revealTopCard(pile:PlayingCards.Card[]){
-      if (pile.length == 0) return;
-      pile[pile.length - 1].show = true;
+    revealTopCard(pile:PlayingCards.Card[]) : boolean{
+      if (pile.length == 0) return false;
+
+      let topCard = pile[pile.length - 1];
+      if (!topCard.show){
+        return topCard.show = true;
+      }
+      return false
     }
 
     processClick(target:Common.ClickTarget){
       console.log('processClick', target);
       if (this.state.src == null && target.card != null){
-        this.setState({src: target});
+        if (KlondikeCard.canSelect(target)){
+          this.setState({src: target});
+        }
       }
       else if (this.state.src.card == target.card){
         this.resetSelection();
@@ -102,25 +112,23 @@ export default class Solitaire extends React.Component<Props,State>{
 
     move(src:Common.ClickTarget, dest: Common.ClickTarget){
       let transplantCards = [];
+      var move:Common.MoveHistory = {moveType: Common.MoveType.MOVECARD, src, dest};
       switch(src.pileType){
         case Common.PileType.TABLEAUPILE:
           var tableauPile = this.state.tableauPiles[src.row];
           transplantCards = tableauPile.splice(src.pos, tableauPile.length - src.pos);
-          this.revealTopCard(tableauPile);
+          move.reveal = this.revealTopCard(tableauPile);
           break;
         case Common.PileType.WASTE:
           var card = this.state.waste.pop();
-          this.revealTopCard(this.state.waste);
+          move.reveal = this.revealTopCard(this.state.waste);
           transplantCards = [card];
           break;
         case Common.PileType.FOUNDATION:
-          transplantCards = (function(foundationPile:PlayingCards.Card[]) : PlayingCards.Card[]{
-            var card = foundationPile.pop();
-            return [card];
-          })(this.state.foundationPiles[this.state.src.row]);
+          var card = this.state.foundationPiles[this.state.src.row].pop()
           break;
       }
-      
+
       if (transplantCards.length == 0){
         throw "Cards required for move";
       }
@@ -139,14 +147,20 @@ export default class Solitaire extends React.Component<Props,State>{
         }
 
       this.resetSelection();
-      this.setState({foundationPiles})
-      this.setState({moves:this.state.moves + 1})
+      this.setState({foundationPiles});
+      this.logMove(move);
+    }
+
+    logMove(move: Common.MoveHistory){
+      let moves = this.state.moves;
+      moves.push(move);
+      this.setState({moves, moveCount:this.state.moveCount + 1})
     }
 
     stockClicked(event) {
         let deck = this.state.deck.concat(this.state.waste.reverse());
 
-        let wasteSize = 3;
+        let wasteSize = this.props.wasteSize;
         if (this.state.deck.length() < wasteSize){
           wasteSize = this.state.deck.length();
         }
@@ -154,14 +168,14 @@ export default class Solitaire extends React.Component<Props,State>{
         let waste = [];
         for (let i = 0; i < wasteSize; i++){
             let card = deck.getNextCard();
-            card.show = i == wasteSize - 1;
+            card.show = true;//i == wasteSize - 1;
             waste.push(card);
         }
         this.setState({waste, deck});
         if (this.state.src && this.state.src.pileType == Common.PileType.WASTE){
           this.resetSelection();
         }
-        this.setState({moves:this.state.moves + 1})
+        this.logMove({moveType: Common.MoveType.FLIPFROMSTOCK, wasteSize})
     };
 
     handleKeyDown(e) {
@@ -176,7 +190,8 @@ export default class Solitaire extends React.Component<Props,State>{
         var seconds = elapsed / 10 + (elapsed % 10 ? '' : '.0' );
         return (
           <div className="Solitaire">
-            <Diagnostics initialDeckSize={this.state.initialDeckSize} deck={this.state.deck} foundations={this.state.foundationPiles} tableaus={this.state.tableauPiles} waste={this.state.waste} />
+            <Diagnostics initialDeckSize={this.state.initialDeckSize} deck={this.state.deck} foundations={this.state.foundationPiles} tableaus={this.state.tableauPiles} waste={this.state.waste}
+              moves={this.state.moves}/>
             <div style={{
               width:"670px",
               margin: "0 auto",
@@ -185,7 +200,7 @@ export default class Solitaire extends React.Component<Props,State>{
               <div className="diagnostics" style={{
                 textAlign: "center"
               }}>
-                 {seconds} seconds | {this.state.moves} {this.state.moves == 1 ? "move" : "moves"}
+                 {seconds} seconds | {this.state.moveCount} {this.state.moveCount == 1 ? "move" : "moves"}
               </div>
               <div className="">
                 <div className="">
@@ -200,7 +215,8 @@ export default class Solitaire extends React.Component<Props,State>{
                        cursor: "pointer",
                        float:"left"
                       }}/>
-                      <Pile layout={PlayingCards.Layout.FannedRight} doubleClickHandler={this.processDoubleClick} pileType={Common.PileType.WASTE} selected={this.state.src} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
+                      <Pile layout={PlayingCards.Layout.FannedRight} pileType={Common.PileType.WASTE} selected={this.state.src}
+                        doubleClickHandler={this.processDoubleClick} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
                             float:"left",
                             marginLeft:"75px"}} />
                     </div>

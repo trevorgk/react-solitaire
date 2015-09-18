@@ -5,5 +5,5 @@ import Solitaire from './components/Solitaire';
 const rootEl = document.getElementById('solitaire');
 var start = new Date().getTime();
 React.render(
-    <Solitaire pileCount={7} elapsed={new Date().getTime() - start} />, rootEl
+    <Solitaire pileCount={7} wasteSize={3} elapsed={new Date().getTime() - start} />, rootEl
 );
