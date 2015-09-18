@@ -25,3 +25,6 @@ If you plan on doing any development of your own, I recommend running <br/>
 
 And if your editor doesn't support tsx compilation, you will also need to have typescript watch task running simultaneously: <br/>
 `$ tsc --watch`
+
+*Now, for a single point of control, we can now use npm to launch both the watch tasks*<br/>
+`$ npm run watch`
