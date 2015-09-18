@@ -12,7 +12,7 @@
     "./src/App.tsx",
     "./src/components/Pile.tsx",
     "./src/components/KlondikeCard.tsx",
-    "./src/components/Solitaire.tsx",
+    "./src/components/Klondike.tsx",
     "./src/components/Tableau.tsx",
     "./src/components/Diagnostics.tsx",
     "./typings/react/react-addons.d.ts"

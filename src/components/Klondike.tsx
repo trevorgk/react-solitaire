@@ -32,7 +32,7 @@ interface State {
 }
 
 
-export default class Solitaire extends React.Component<Props,State>{
+export default class Klondike extends React.Component<Props,State>{
     constructor(props) {
       super(props);
       this.processClick = this.processClick.bind(this);
