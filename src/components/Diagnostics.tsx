@@ -1,6 +1,7 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
 import React = require('react/addons');
 import * as PlayingCards from '../playing-cards';
+import * as Common from '../Common';
 
 interface Props extends React.Props<any> {
   initialDeckSize: number,
@@ -8,6 +9,7 @@ interface Props extends React.Props<any> {
   waste: PlayingCards.Card[],
   foundations: PlayingCards.Card[][],
   tableaus: PlayingCards.Card[][],
+  moves?: Common.MoveHistory[]
 }
 
 export default class Diagnostics extends React.Component<Props, {}>  {
@@ -31,6 +33,8 @@ export default class Diagnostics extends React.Component<Props, {}>  {
             <div>waste: {wasteLength}</div>
             <div>foundation: {foundationLength}</div>
             <div>tableau: {tableauLength}</div>
+            <button onClick={() => console.log(this.props.moves)}>log history</button><br/>
+            <button onClick={() => console.log(this.props.deck.toString())}>log stock</button>
           </div>
       );
   }
