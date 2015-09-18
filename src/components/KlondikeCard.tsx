@@ -16,11 +16,18 @@ interface Props extends React.Props<any> {
 }
 
 export default class KlondikeCard extends React.Component<Props, {}>  {
-
   constructor(props) {
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  public static canSelect(target:Common.ClickTarget) : boolean {
+    switch(target.pileType){
+      case Common.PileType.WASTE:
+        return target.pos == target.pileSize - 1;
+    }
+    return true;
   }
 
   public static canMove(src:Common.ClickTarget, dest: Common.ClickTarget) : boolean{
