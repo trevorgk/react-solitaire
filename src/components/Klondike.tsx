@@ -176,7 +176,18 @@ export default class Klondike extends React.Component<Props,State>{
           this.resetSelection();
         }
         this.logMove({moveType: Common.MoveType.FLIPFROMSTOCK, wasteSize})
-    };
+    }
+
+    undoClicked() {
+      let moves = this.state.moves;
+      if (moves.length == 0){
+        console.log('Nothing to undo...');
+        return;
+      }
+      let move = moves.pop();
+      console.log('undo clicked', move);
+      this.setState({moves, moveCount:this.state.moveCount + 1})
+    }
 
     handleKeyDown(e) {
         var ESCAPE = 27;
@@ -197,10 +208,13 @@ export default class Klondike extends React.Component<Props,State>{
               margin: "0 auto",
               color: "white"
             }}>
-              <div className="diagnostics" style={{
+              <div style={{
                 textAlign: "center"
               }}>
                  {seconds} seconds | {this.state.moveCount} {this.state.moveCount == 1 ? "move" : "moves"}
+                 <div>
+                   <input type="button" value="undo move" onClick={this.undoClicked.bind(this)} />
+                 </div>
               </div>
               <div className="">
                 <div className="">
