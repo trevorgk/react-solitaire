@@ -82,7 +82,7 @@ export default class KlondikeCard extends React.Component<Props, {}>  {
       let validDropTarget = !selected && this.props.card.show && this.props.selected != null && KlondikeCard.canMove(this.props.selected,
         {pileType: this.props.pileType, card: this.props.card, row: this.props.row, pos: this.props.pos, pileSize: this.props.pileSize})
       return (
-          <div className="KlondikeCard" onClick={this.props.card.show && this.handleClick.bind(this)}
+          <div className="KlondikeCard" onClick={this.props.card.show && this.handleClick.bind(this)} title={this.props.card.toString()}
             style={style}>
               <img style={{width:"100%"}} src={this.props.card.display()} />
               {selected && KlondikeCard.renderOverlay('aquamarine')}
