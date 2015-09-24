@@ -27,4 +27,5 @@ And if your editor doesn't support tsx compilation, you will also need to have t
 `$ tsc --watch`
 
 *Now, for a single point of control, we can now use npm to launch both the watch tasks*<br/>
-`$ npm run watch`
+`$ npm run watch`<br/>
+or if you're using windows simply run `watch.bat`
