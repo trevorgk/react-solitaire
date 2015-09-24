@@ -87,8 +87,20 @@ export class DeckOfCards {
     }
  	}
 
-  getNextCard(): Card {
+  getTopCard(): Card {
     return this.cards.pop();
+  }
+
+  getBottomCard(): Card {
+    return this.cards.shift();
+  }
+
+  addTopCard(card:Card) {
+    this.cards.push(card);
+  }
+
+  addBottomCard(card:Card) {
+    this.cards.unshift(card);
   }
 
   getNextCards(n: number): Card[] {
@@ -104,10 +116,6 @@ export class DeckOfCards {
 
   length(): number {
     return this.cards.length;
-  }
-
-  push(card:Card) {
-    this.cards.push(card);
   }
 
   concat(cards: Card[]): DeckOfCards{

@@ -52,7 +52,7 @@ export default class Klondike extends React.Component<Props,State>{
                 if (!piles[j]) {
                     piles[j] = [];
                 }
-                let card = deck.getNextCard();
+                let card = deck.getTopCard();
                 card.show = j == i;
 
                 piles[j].push(card);
@@ -147,7 +147,7 @@ export default class Klondike extends React.Component<Props,State>{
         }
 
       this.resetSelection();
-      this.setState({foundationPiles});
+      // this.setState({foundationPiles});
       this.logMove(move);
     }
 
@@ -159,7 +159,7 @@ export default class Klondike extends React.Component<Props,State>{
 
     stockClicked(event) {
         let deck = this.state.deck.concat(this.state.waste.reverse());
-
+        let move = {moveType: Common.MoveType.FLIPFROMSTOCK, wasteSize: this.state.waste.length}
         let wasteSize = this.props.wasteSize;
         if (this.state.deck.length() < wasteSize){
           wasteSize = this.state.deck.length();
@@ -167,7 +167,7 @@ export default class Klondike extends React.Component<Props,State>{
 
         let waste = [];
         for (let i = 0; i < wasteSize; i++){
-            let card = deck.getNextCard();
+            let card = deck.getTopCard();
             card.show = true;//i == wasteSize - 1;
             waste.push(card);
         }
@@ -175,24 +175,26 @@ export default class Klondike extends React.Component<Props,State>{
         if (this.state.src && this.state.src.pileType == Common.PileType.WASTE){
           this.resetSelection();
         }
-        this.logMove({moveType: Common.MoveType.FLIPFROMSTOCK, wasteSize})
+        this.logMove(move);
     }
 
     undoClicked() {
       let moves = this.state.moves;
       if (moves.length == 0){
-        console.log('Nothing to undo...');
+        alert('Nothing to undo...');
         return;
       }
       let move = moves.pop();
       console.log('undo clicked', move);
+      let tableauPiles = this.state.tableauPiles;
 
       switch(move.moveType){
         case Common.MoveType.MOVECARD:
           let transplantCards:PlayingCards.Card[] = [];
           switch(move.dest.pileType){
+            case Common.PileType.EMPTYTABLEAU:
             case Common.PileType.TABLEAUPILE:
-              var tableauPile = this.state.tableauPiles[move.dest.row];
+              let tableauPile = this.state.tableauPiles[move.dest.row];
               transplantCards = tableauPile.splice(move.dest.pos + 1, tableauPile.length - move.dest.pos);
               break;
             case Common.PileType.WASTE:
@@ -206,8 +208,39 @@ export default class Klondike extends React.Component<Props,State>{
             throw "Cards required for undo";
           }
 
+          switch (move.src.pileType){
+            case Common.PileType.TABLEAUPILE:
+              let tableauPile = this.state.tableauPiles[move.src.row];
+              if (move.reveal){
+                tableauPile[tableauPile.length - 1].show = false;
+              }
+              tableauPile = tableauPile.concat(transplantCards);
+              this.state.tableauPiles[move.src.row] = tableauPile;
+              break;
+            case Common.PileType.FOUNDATION:
+              this.state.foundationPiles[move.src.row] = this.state.foundationPiles[move.src.row].concat(transplantCards);
+              break;
+            case Common.PileType.WASTE:
+              this.state.waste = this.state.waste.concat(transplantCards);
+              break;
+          }
           break;
         case Common.MoveType.FLIPFROMSTOCK:
+          let deck = this.state.deck;
+          let waste = this.state.waste;
+
+          while (waste.length > 0){
+            let card = waste.pop();
+            card.show = false;
+            deck.addTopCard(card);
+          }
+
+          for (let i = 0; i < move.wasteSize; i++){
+              let card = deck.getBottomCard();
+              card.show = true;//i == wasteSize - 1;
+              waste.unshift(card);
+          }
+          this.setState({waste, deck});
           break;
 
       }
