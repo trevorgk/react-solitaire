@@ -185,8 +185,33 @@ export default class Klondike extends React.Component<Props,State>{
         return;
       }
       let move = moves.pop();
-
       console.log('undo clicked', move);
+
+      switch(move.moveType){
+        case Common.MoveType.MOVECARD:
+          let transplantCards:PlayingCards.Card[] = [];
+          switch(move.dest.pileType){
+            case Common.PileType.TABLEAUPILE:
+              var tableauPile = this.state.tableauPiles[move.dest.row];
+              transplantCards = tableauPile.splice(move.dest.pos + 1, tableauPile.length - move.dest.pos);
+              break;
+            case Common.PileType.WASTE:
+              throw "Invalid undo source WASTE";
+            case Common.PileType.FOUNDATION:
+              transplantCards = [this.state.foundationPiles[move.dest.row].pop()]
+              break;
+          }
+
+          if (transplantCards.length == 0){
+            throw "Cards required for undo";
+          }
+
+          break;
+        case Common.MoveType.FLIPFROMSTOCK:
+          break;
+
+      }
+
       this.setState({moves, moveCount:this.state.moveCount + 1})
     }
 
