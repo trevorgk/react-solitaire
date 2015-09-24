@@ -111,7 +111,7 @@ export default class Klondike extends React.Component<Props,State>{
     }
 
     move(src:Common.ClickTarget, dest: Common.ClickTarget){
-      let transplantCards = [];
+      let transplantCards:PlayingCards.Card[] = [];
       var move:Common.MoveHistory = {moveType: Common.MoveType.MOVECARD, src, dest};
       switch(src.pileType){
         case Common.PileType.TABLEAUPILE:
@@ -125,7 +125,7 @@ export default class Klondike extends React.Component<Props,State>{
           transplantCards = [card];
           break;
         case Common.PileType.FOUNDATION:
-          var card = this.state.foundationPiles[this.state.src.row].pop()
+          transplantCards = [this.state.foundationPiles[this.state.src.row].pop()]
           break;
       }
 
@@ -185,6 +185,7 @@ export default class Klondike extends React.Component<Props,State>{
         return;
       }
       let move = moves.pop();
+
       console.log('undo clicked', move);
       this.setState({moves, moveCount:this.state.moveCount + 1})
     }
