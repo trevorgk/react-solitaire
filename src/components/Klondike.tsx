@@ -193,6 +193,8 @@ export default class Klondike extends React.Component<Props,State>{
           let transplantCards:PlayingCards.Card[] = [];
           switch(move.dest.pileType){
             case Common.PileType.EMPTYTABLEAU:
+              transplantCards = [this.state.tableauPiles[move.dest.row].pop()];
+              break;
             case Common.PileType.TABLEAUPILE:
               let tableauPile = this.state.tableauPiles[move.dest.row];
               transplantCards = tableauPile.splice(move.dest.pos + 1, tableauPile.length - move.dest.pos);

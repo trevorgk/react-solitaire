@@ -1,7 +1,7 @@
 import * as PlayingCards from './playing-cards';
 
 export const PileType = {
-  EMPTYTABLEAU: 'tableau',
+  EMPTYTABLEAU: 'emptyTableau',
   TABLEAUPILE: 'tableauCard',
   FOUNDATION: 'foundation',
   WASTE: 'waste'
