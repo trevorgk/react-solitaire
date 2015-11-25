@@ -1,8 +1,8 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
-import React = require('react/addons');
+import * as React from 'react';
+import * as PlayingCards from '../playing-cards';
 import Pile from './Pile';
 import * as Common from '../Common';
-import * as PlayingCards from '../playing-cards';
 import KlondikeCard from './KlondikeCard';
 
 interface Props extends React.Props<any> {
@@ -20,7 +20,7 @@ export default class Tableau extends React.Component<Props,any>{
 
     emptyPileClickHandler(event) {
       if (this.props.clickHandler){
-        this.props.clickHandler({pileType: Common.PileType.EMPTYTABLEAU, row: this.props.row});
+        this.props.clickHandler({pileType: Common.PileTypes.EMPTYTABLEAU, row: this.props.row});
       }
     };
 
@@ -29,7 +29,7 @@ export default class Tableau extends React.Component<Props,any>{
         //     return <Pile  selected={this.state.selected} notify={notifySelected} pile={pile} layout={Layout.FannedDown}/>
         // });
         let validDropTarget = this.props.selected != null && this.props.pile.length == 0 && KlondikeCard.canMove(this.props.selected,
-          {pileType: Common.PileType.EMPTYTABLEAU, row: this.props.row});
+          {pileType: Common.PileTypes.EMPTYTABLEAU, row: this.props.row});
         return (
           <div className="Tableau" onClick={this.props.pile.length == 0 && this.emptyPileClickHandler.bind(this)} style={{
               position: "relative",
@@ -41,7 +41,7 @@ export default class Tableau extends React.Component<Props,any>{
               backgroundPosition: "18px 30px",
               float: "left"
             }}>
-              <Pile layout={PlayingCards.Layout.FannedDown} pileType={Common.PileType.TABLEAUPILE} selected={this.props.selected}
+              <Pile layout={PlayingCards.Layout.FannedDown} pileType={Common.PileTypes.TABLEAUPILE} selected={this.props.selected}
               row={this.props.row} pile={this.props.pile} clickHandler={this.props.clickHandler} doubleClickHandler={this.props.doubleClickHandler}/>
               {/*validDropTarget && KlondikeCard.renderOverlay('orange')*/}
             </div>

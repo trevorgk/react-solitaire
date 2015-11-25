@@ -1,5 +1,5 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
-import React = require('react/addons');
+import * as React from 'react';
 import * as PlayingCards from '../playing-cards';
 import * as Common from '../Common';
 
@@ -24,7 +24,7 @@ export default class KlondikeCard extends React.Component<Props, {}>  {
 
   public static canSelect(target:Common.ClickTarget) : boolean {
     switch(target.pileType){
-      case Common.PileType.WASTE:
+      case Common.PileTypes.WASTE:
         return target.pos == target.pileSize - 1;
     }
     return true;
@@ -32,12 +32,12 @@ export default class KlondikeCard extends React.Component<Props, {}>  {
 
   public static canMove(src:Common.ClickTarget, dest: Common.ClickTarget) : boolean{
     switch(dest.pileType){
-      case Common.PileType.TABLEAUPILE:
+      case Common.PileTypes.TABLEAUPILE:
         return dest.pos == dest.pileSize - 1 && src.card.getColor() != dest.card.getColor() && src.card.rank == dest.card.rank - 1;
-      case Common.PileType.EMPTYTABLEAU:
+      case Common.PileTypes.EMPTYTABLEAU:
         return src.card.rank == PlayingCards.Rank.King;
-      case Common.PileType.FOUNDATION:
-        if (src.pileType == Common.PileType.TABLEAUPILE && src.pos != src.pileSize - 1) return false;
+      case Common.PileTypes.FOUNDATION:
+        if (src.pileType == Common.PileTypes.TABLEAUPILE && src.pos != src.pileSize - 1) return false;
         return src.card.suit == dest.row && (
           (src.card.rank == PlayingCards.Rank.Ace) || (dest.card && src.card.rank == dest.card.rank + 1));
       default:

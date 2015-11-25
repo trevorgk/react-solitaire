@@ -1,12 +1,12 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
-import React = require('react/addons');
+import * as React from 'react';
+import * as PlayingCards from '../playing-cards';
 import Pile from './Pile';
 import Foundation from './Foundation';
 import KlondikeCard from './KlondikeCard';
 import Tableau from './Tableau';
 import Diagnostics from './Diagnostics';
 import * as Common from '../Common';
-import * as PlayingCards from '../playing-cards';
 //
 // declare module JSX {
 //     interface IntrinsicElements {
@@ -104,7 +104,7 @@ export default class Klondike extends React.Component<Props,State>{
       this.state.foundationPiles[src.row]
       var foundationPile = this.state.foundationPiles[src.card.suit];
       let card = foundationPile.length > 0 ? foundationPile[foundationPile.length - 1] : null;
-      let target = {pileType: Common.PileType.FOUNDATION, row: src.card.suit, card}
+      let target = {pileType: Common.PileTypes.FOUNDATION, row: src.card.suit, card}
       if (KlondikeCard.canMove(src, target)){
         this.move(src, target);
       }
@@ -114,17 +114,17 @@ export default class Klondike extends React.Component<Props,State>{
       let transplantCards:PlayingCards.Card[] = [];
       var move:Common.MoveHistory = {moveType: Common.MoveType.MOVECARD, src, dest};
       switch(src.pileType){
-        case Common.PileType.TABLEAUPILE:
+        case Common.PileTypes.TABLEAUPILE:
           var tableauPile = this.state.tableauPiles[src.row];
           transplantCards = tableauPile.splice(src.pos, tableauPile.length - src.pos);
           move.reveal = this.revealTopCard(tableauPile);
           break;
-        case Common.PileType.WASTE:
+        case Common.PileTypes.WASTE:
           var card = this.state.waste.pop();
           move.reveal = this.revealTopCard(this.state.waste);
           transplantCards = [card];
           break;
-        case Common.PileType.FOUNDATION:
+        case Common.PileTypes.FOUNDATION:
           transplantCards = [this.state.foundationPiles[this.state.src.row].pop()]
           break;
       }
@@ -137,11 +137,11 @@ export default class Klondike extends React.Component<Props,State>{
       let tableauPiles = this.state.tableauPiles;
 
       switch (dest.pileType){
-        case Common.PileType.TABLEAUPILE:
-        case Common.PileType.EMPTYTABLEAU:
+        case Common.PileTypes.TABLEAUPILE:
+        case Common.PileTypes.EMPTYTABLEAU:
           tableauPiles[dest.row] = tableauPiles[dest.row].concat(transplantCards);
           break;
-        case Common.PileType.FOUNDATION:
+        case Common.PileTypes.FOUNDATION:
           foundationPiles[dest.row] = foundationPiles[dest.row].concat(transplantCards);
           break;
         }
@@ -172,7 +172,7 @@ export default class Klondike extends React.Component<Props,State>{
             waste.push(card);
         }
         this.setState({waste, deck});
-        if (this.state.src && this.state.src.pileType == Common.PileType.WASTE){
+        if (this.state.src && this.state.src.pileType == Common.PileTypes.WASTE){
           this.resetSelection();
         }
         this.logMove(move);
@@ -192,16 +192,16 @@ export default class Klondike extends React.Component<Props,State>{
         case Common.MoveType.MOVECARD:
           let transplantCards:PlayingCards.Card[] = [];
           switch(move.dest.pileType){
-            case Common.PileType.EMPTYTABLEAU:
+            case Common.PileTypes.EMPTYTABLEAU:
               transplantCards = [this.state.tableauPiles[move.dest.row].pop()];
               break;
-            case Common.PileType.TABLEAUPILE:
+            case Common.PileTypes.TABLEAUPILE:
               let tableauPile = this.state.tableauPiles[move.dest.row];
               transplantCards = tableauPile.splice(move.dest.pos + 1, tableauPile.length - move.dest.pos);
               break;
-            case Common.PileType.WASTE:
+            case Common.PileTypes.WASTE:
               throw "Invalid undo source WASTE";
-            case Common.PileType.FOUNDATION:
+            case Common.PileTypes.FOUNDATION:
               transplantCards = [this.state.foundationPiles[move.dest.row].pop()]
               break;
           }
@@ -211,7 +211,7 @@ export default class Klondike extends React.Component<Props,State>{
           }
 
           switch (move.src.pileType){
-            case Common.PileType.TABLEAUPILE:
+            case Common.PileTypes.TABLEAUPILE:
               let tableauPile = this.state.tableauPiles[move.src.row];
               if (move.reveal){
                 tableauPile[tableauPile.length - 1].show = false;
@@ -219,10 +219,10 @@ export default class Klondike extends React.Component<Props,State>{
               tableauPile = tableauPile.concat(transplantCards);
               this.state.tableauPiles[move.src.row] = tableauPile;
               break;
-            case Common.PileType.FOUNDATION:
+            case Common.PileTypes.FOUNDATION:
               this.state.foundationPiles[move.src.row] = this.state.foundationPiles[move.src.row].concat(transplantCards);
               break;
-            case Common.PileType.WASTE:
+            case Common.PileTypes.WASTE:
               this.state.waste = this.state.waste.concat(transplantCards);
               break;
           }
@@ -290,7 +290,7 @@ export default class Klondike extends React.Component<Props,State>{
                        cursor: "pointer",
                        float:"left"
                       }}/>
-                      <Pile layout={PlayingCards.Layout.FannedRight} pileType={Common.PileType.WASTE} selected={this.state.src}
+                      <Pile layout={PlayingCards.Layout.FannedRight} pileType={Common.PileTypes.WASTE} selected={this.state.src}
                         doubleClickHandler={this.processDoubleClick} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
                             float:"left",
                             marginLeft:"75px"}} />

@@ -1,11 +1,4 @@
-import * as PlayingCards from './playing-cards';
-
-export const PileType = {
-  EMPTYTABLEAU: 'emptyTableau',
-  TABLEAUPILE: 'tableauCard',
-  FOUNDATION: 'foundation',
-  WASTE: 'waste'
-};
+import * as PlayingCards from './models/playing-cards';
 
 export interface ClickTarget {
   pileType: string,

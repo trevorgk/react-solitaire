@@ -1,7 +1,7 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
-import React = require('react/addons');
-import KlondikeCard from './KlondikeCard';
+import * as React from 'react';
 import * as PlayingCards from '../playing-cards';
+import KlondikeCard from './KlondikeCard';
 import * as Common from '../Common';
 
 interface Props extends React.Props<any> {

@@ -1,9 +1,9 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
-import React = require('react/addons');
+import * as React from 'react';
+import * as PlayingCards from '../playing-cards';
 import Pile from './Pile';
 import KlondikeCard from './KlondikeCard';
 import * as Common from '../Common';
-import * as PlayingCards from '../playing-cards';
 
 interface Props extends React.Props<any> {
   pile: PlayingCards.Card[],
@@ -21,14 +21,14 @@ export default class Foundation extends React.Component<Props,{}> {
   emptyFoundationClicked() {
     if (this.props.clickHandler){
       let card = this.props.pile.length > 0 ? this.props.pile[this.props.pile.length - 1] : null;
-      this.props.clickHandler({pileType: Common.PileType.FOUNDATION, row: this.props.row, card});
+      this.props.clickHandler({pileType: Common.PileTypes.FOUNDATION, row: this.props.row, card});
     }
   }
 
   render() {
     let layout = PlayingCards.Layout.Squared;
     let card = this.props.pile.length > 0 ? this.props.pile[this.props.pile.length - 1] : null;
-    let validDropTarget = this.props.selected != null && KlondikeCard.canMove(this.props.selected, {pileType: Common.PileType.FOUNDATION, row: this.props.row, card});
+    let validDropTarget = this.props.selected != null && KlondikeCard.canMove(this.props.selected, {pileType: Common.PileTypes.FOUNDATION, row: this.props.row, card});
     return (
       <div className="Foundation"onClick={this.props.pile.length == 0 && this.emptyFoundationClicked.bind(this)} style={{
         float: "left"
@@ -43,7 +43,7 @@ export default class Foundation extends React.Component<Props,{}> {
           backgroundImage: "url(" + PlayingCards.Card.getPip(this.props.suit) + ")",
           backgroundPosition: "18px 30px"
         }}>
-          <Pile layout={layout} pileType={Common.PileType.FOUNDATION} selected={this.props.selected} pile={this.props.pile} row={this.props.row} clickHandler={this.props.clickHandler}/>
+          <Pile layout={layout} pileType={Common.PileTypes.FOUNDATION} selected={this.props.selected} pile={this.props.pile} row={this.props.row} clickHandler={this.props.clickHandler}/>
           {/* validDropTarget && KlondikeCard.renderOverlay('orange')*/}
         </div>
       </div>

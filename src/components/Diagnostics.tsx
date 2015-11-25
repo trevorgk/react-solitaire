@@ -1,5 +1,5 @@
 /// <reference path="../../typings/react/react-addons.d.ts" />
-import React = require('react/addons');
+import * as React from 'react';
 import * as PlayingCards from '../playing-cards';
 import * as Common from '../Common';
 
