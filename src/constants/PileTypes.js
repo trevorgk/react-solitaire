@@ -1,6 +1,4 @@
-exports.PileTypes = {
-    EMPTYTABLEAU: 'emptyTableau',
-    TABLEAUPILE: 'tableauCard',
-    FOUNDATION: 'foundation',
-    WASTE: 'waste'
-};
+export const EMPTYTABLEAU = 'emptyTableau';
+export const TABLEAUPILE = 'tableauCard';
+export const FOUNDATION = 'foundation';
+export const WASTE = 'waste';

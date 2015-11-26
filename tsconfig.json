@@ -1,12 +1,10 @@
 {
   "version": "1.6.2",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "jsx": "react",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "outDir": "./build/tsc/"
+    "experimentalDecorators": true
   },
   "exclude": [
     "dist",

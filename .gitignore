@@ -1,7 +1,7 @@
-node_modules
-playing-cards.js
-bundle.js
+.idea/
+node_modules/
+dist/
+*.iml
+webpack-assets.json
+webpack-stats.json
 npm-debug.log
-.idea
-dist
-build

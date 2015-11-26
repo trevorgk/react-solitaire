@@ -8,11 +8,6 @@ export interface ClickTarget {
   pileSize?: number
 }
 
-export const MoveType = {
-  FLIPFROMSTOCK: 'flipFromStock',
-  MOVECARD: 'moveCard'
-};
-
 export interface MoveHistory {
   moveType: string,
   src?: ClickTarget,

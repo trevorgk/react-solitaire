@@ -8,10 +8,10 @@ export class Card {
   public suit: Suit;
   public rank: Rank;
 	public show = true;
-	static backFace = 'img/cards/back-purple.png';
+	static backFace = 'cards/back-purple.png';
 
-  static getPip(suit: Suit) : string {
-    let filename = 'img/pips/' + suit + '.svg';
+  static getPip(suit: string) : string {
+    let filename = 'pips/' + suit + '.svg';
     return filename.toLowerCase();
   }
 
@@ -22,9 +22,9 @@ export class Card {
   }
 
   getImageFile(): string {
-    let filename = 'img/cards/' + Suit[this.suit] + '/' + Rank[this.rank] + '.png';
+    let filename = 'cards/' + Suit[this.suit] + '/' + Rank[this.rank] + '.png';
     return filename.toLowerCase();
-    //return 'img/cards/${this.suit}/${this.rank}';	wtb string interpolation
+    //return 'static/cards/${this.suit}/${this.rank}';	wtb string interpolation
   }
 
 
@@ -55,7 +55,7 @@ export class Joker extends Card {
 	}
 
   getImageFile(): string {
-		return 'img/cards/' + 'joker1.png';
+		return 'cards/' + 'joker1.png';
 	}
 }
 
