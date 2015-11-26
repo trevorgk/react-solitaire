@@ -8,6 +8,8 @@ import {Foundation} from './Foundation';
 import {Pile} from './Pile';
 import {KlondikeCard} from './KlondikeCard';
 import {Tableau} from './Tableau';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 //
 // declare module JSX {
 //     interface IntrinsicElements {
@@ -30,8 +32,9 @@ interface State {
   waste?: PlayingCards.Card[],
   foundationPiles?: PlayingCards.Card[][],
   tableauPiles?: PlayingCards.Card[][],
-}
+};
 
+@connect(state => (state.klondike))
 export default class Klondike extends React.Component<Props,State>{
     constructor(props) {
       super(props);
@@ -39,33 +42,6 @@ export default class Klondike extends React.Component<Props,State>{
       this.processDoubleClick = this.processDoubleClick.bind(this);
       this.move = this.move.bind(this);
       this.logMove = this.logMove.bind(this);
-
-      let deck = new PlayingCards.DeckOfCards(false);
-      deck.shuffle();
-
-      let initialDeckSize = deck.length();
-
-      let tableauPiles = (function(pileCount: number, deck: PlayingCards.DeckOfCards) {
-        let piles = [];
-        for (let i = 0; i < pileCount; i++) {
-            for (let j = pileCount - 1; j >= i; j--) {
-                if (!piles[j]) {
-                    piles[j] = [];
-                }
-                let card = deck.getTopCard();
-                card.show = j == i;
-
-                piles[j].push(card);
-            }
-        }
-        return piles;
-      })(this.props.pileCount, deck);
-
-      let foundationPiles = (function() {
-        return [[],[],[],[]];
-      })();
-      this.state = {deck, tableauPiles, foundationPiles, moves: [], moveCount:0, waste: [], initialDeckSize};
-      console.log(this.state);
     }
 
     resetSelection(){
@@ -305,7 +281,7 @@ export default class Klondike extends React.Component<Props,State>{
                 </div>
               </div>
             </div>
-    )
+    )}
       //   render() {
       //     var i = 0;
       //     return (

@@ -70,7 +70,7 @@ export default class Home extends Component {
             <li><a href="http://webpack.github.io/docs/webpack-dev-middleware.html" target="_blank">Webpack Dev Middleware</a>
             </li>
             <li><a href="https://github.com/glenjamin/webpack-hot-middleware" target="_blank">Webpack Hot Middleware</a></li>
-            <li><a href="https://github.com/rackt/redux" target="_blank">Redux</a>'s futuristic <a
+            <li><a href="https://github.com/rackt/redux" target="_blank">Redux</a>''s futuristic <a
               href="https://facebook.github.io/react/blog/2014/05/06/flux.html" target="_blank">Flux</a> implementation
             </li>
             <li><a href="https://github.com/gaearon/redux-devtools" target="_blank">Redux Dev Tools</a> for next
@@ -109,7 +109,7 @@ export default class Home extends Component {
             <dt>Server-side data loading</dt>
             <dd>
               The <Link to="/widgets">Widgets page</Link> demonstrates how to fetch data asynchronously from
-              some source that is needed to complete the server-side rendering. <code>Widgets.js</code>'s
+              some source that is needed to complete the server-side rendering. <code>Widgets.js</code>''s
               <code>fetchData()</code> function is called before the widgets page is loaded, on either the server
               or the client, allowing all the widget data to be loaded and ready for the page to render.
             </dd>

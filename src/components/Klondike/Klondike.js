@@ -1,3 +1,12 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var React = require("react");
 var PlayingCards = require('../../models/playing-cards');
 var PileTypes = require('../../constants/PileTypes');
@@ -6,35 +15,15 @@ var Foundation_1 = require('./Foundation');
 var Pile_1 = require('./Pile');
 var KlondikeCard_1 = require('./KlondikeCard');
 var Tableau_1 = require('./Tableau');
-class Klondike extends React.Component {
+var react_redux_1 = require('react-redux');
+;
+let Klondike = class extends React.Component {
     constructor(props) {
         super(props);
         this.processClick = this.processClick.bind(this);
         this.processDoubleClick = this.processDoubleClick.bind(this);
         this.move = this.move.bind(this);
         this.logMove = this.logMove.bind(this);
-        let deck = new PlayingCards.DeckOfCards(false);
-        deck.shuffle();
-        let initialDeckSize = deck.length();
-        let tableauPiles = (function (pileCount, deck) {
-            let piles = [];
-            for (let i = 0; i < pileCount; i++) {
-                for (let j = pileCount - 1; j >= i; j--) {
-                    if (!piles[j]) {
-                        piles[j] = [];
-                    }
-                    let card = deck.getTopCard();
-                    card.show = j == i;
-                    piles[j].push(card);
-                }
-            }
-            return piles;
-        })(this.props.pileCount, deck);
-        let foundationPiles = (function () {
-            return [[], [], [], []];
-        })();
-        this.state = { deck: deck, tableauPiles: tableauPiles, foundationPiles: foundationPiles, moves: [], moveCount: 0, waste: [], initialDeckSize: initialDeckSize };
-        console.log(this.state);
     }
     resetSelection() {
         this.setState({ src: null });
@@ -225,5 +214,9 @@ class Klondike extends React.Component {
             float: "left",
             marginLeft: "75px" }}))), React.createElement("div", null, this.state.foundationPiles.map((pile, foundation) => React.createElement(Foundation_1.Foundation, {selected: this.state.src, clickHandler: this.processClick, pile: pile, row: foundation, suit: PlayingCards.Suit[foundation]})))), React.createElement("div", {style: { padding: "20px 10px 0", float: "right" }}, this.state.tableauPiles.map((pile, tableau) => React.createElement(Tableau_1.Tableau, {selected: this.state.src, clickHandler: this.processClick, doubleClickHandler: this.processDoubleClick, pile: pile, row: tableau}))))));
     }
-}
+};
+Klondike = __decorate([
+    react_redux_1.connect(state => (state.klondike)), 
+    __metadata('design:paramtypes', [Object])
+], Klondike);
 exports.Klondike = Klondike;
