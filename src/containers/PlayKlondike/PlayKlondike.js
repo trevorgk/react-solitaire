@@ -40,9 +40,11 @@ export default class PlayKlondike extends Component {
   // };
 
   render() {
+    debugger;
+
     return (
       <div className="container">
-        <Klondike pileCount={7} wasteSize={3} />
+        <Klondike foo="aah"/>
       </div>
     );
   }

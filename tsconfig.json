@@ -1,8 +1,7 @@
 {
-  "version": "1.6.2",
   "compilerOptions": {
     "target": "es6",
-    "jsx": "react",
+    "jsx": "preserve",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },

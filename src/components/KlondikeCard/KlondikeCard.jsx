@@ -1,8 +1,8 @@
-"use strict";
-var React = require("react");
-var PlayingCards = require('../../models/playing-cards');
-var PileTypes = require('../../constants/PileTypes');
-class KlondikeCard extends React.Component {
+import * as React from "react";
+import * as PlayingCards from '../../models/playing-cards';
+import * as PileTypes from '../../constants/PileTypes';
+export default class KlondikeCard extends React.Component {
+    // implements IKlondikeCard {
     constructor(props) {
         super(props);
         this.clickTimeoutId = null;
@@ -30,7 +30,7 @@ class KlondikeCard extends React.Component {
         }
     }
     static renderOverlay(color) {
-        return (React.createElement("div", {style: {
+        return (<div style={{
             position: 'absolute',
             top: 0,
             left: 0,
@@ -39,7 +39,7 @@ class KlondikeCard extends React.Component {
             zIndex: 1,
             opacity: 0.5,
             backgroundColor: color,
-        }}));
+        }}></div>);
     }
     handleClick() {
         let delay = 225;
@@ -59,8 +59,10 @@ class KlondikeCard extends React.Component {
         let style = Object.assign(this.props.style, { position: "relative", width: "80px", height: "112px" });
         let selected = this.props.selected != null && this.props.selected.card.toString() == this.props.card.toString();
         let validDropTarget = !selected && this.props.card.show && this.props.selected != null && KlondikeCard.canMove(this.props.selected, { pileType: this.props.pileType, card: this.props.card, row: this.props.row, pos: this.props.pos, pileSize: this.props.pileSize });
-        return (React.createElement("div", {className: "KlondikeCard", onClick: this.props.card.show && this.handleClick.bind(this), style: style}, React.createElement("img", {style: { width: "100%" }, src: this.props.card.display()}), selected && KlondikeCard.renderOverlay('aquamarine')));
+        return (<div className="KlondikeCard" onClick={this.props.card.show && this.handleClick.bind(this)} style={style}>
+              <img style={{ width: "100%" }} src={this.props.card.display()}/>
+              {selected && KlondikeCard.renderOverlay('aquamarine')}
+              
+          </div>);
     }
 }
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = KlondikeCard;

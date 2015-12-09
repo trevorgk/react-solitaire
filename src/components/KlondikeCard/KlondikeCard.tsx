@@ -10,16 +10,16 @@ import * as Common from '../../Common';
 //     renderOverlay(color) : JSX.Element
 // }
 
-interface Props extends React.Props<any> {
+interface Props {
   card: PlayingCards.Card,
   clickHandler: any,
   doubleClickHandler?: any,
-  selected: Common.ClickTarget
+  selected: Common.ClickTarget,
+  pileType: string,
   pos?: number,
   row?: number,
   pileSize?: number,
-  style?: any,
-  pileType: string
+  style?: any
 }
 
 export default class KlondikeCard extends React.Component<Props, {}> {
@@ -38,7 +38,7 @@ export default class KlondikeCard extends React.Component<Props, {}> {
     return true;
   }
 
-  public static  canMove(src:Common.ClickTarget, dest: Common.ClickTarget) : boolean{
+  public static canMove(src:Common.ClickTarget, dest: Common.ClickTarget) : boolean{
     switch(dest.pileType){
       case PileTypes.TABLEAUPILE:
         return dest.pos == dest.pileSize - 1 && src.card.getColor() != dest.card.getColor() && src.card.rank == dest.card.rank - 1;

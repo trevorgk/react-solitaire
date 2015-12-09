@@ -18,7 +18,7 @@ export default class Tableau extends React.Component {
         //     return <Pile  selected={this.state.selected} notify={notifySelected} pile={pile} layout={Layout.FannedDown}/>
         // });
         let validDropTarget = this.props.selected != null && this.props.pile.length == 0 && KlondikeCard.canMove(this.props.selected, { pileType: PileTypes.EMPTYTABLEAU, row: this.props.row });
-        return (React.createElement("div", {"className": "Tableau", "onClick": this.props.pile.length == 0 && this.emptyPileClickHandler.bind(this), "style": {
+        return (<div className="Tableau" onClick={this.props.pile.length == 0 && this.emptyPileClickHandler.bind(this)} style={{
             position: "relative",
             width: "80px",
             height: "112px",
@@ -27,6 +27,9 @@ export default class Tableau extends React.Component {
             margin: "10px 5px",
             backgroundPosition: "18px 30px",
             float: "left"
-        }}, React.createElement(Pile, {"layout": PlayingCards.Layout.FannedDown, "pileType": PileTypes.TABLEAUPILE, "selected": this.props.selected, "row": this.props.row, "pile": this.props.pile, "clickHandler": this.props.clickHandler, "doubleClickHandler": this.props.doubleClickHandler})));
+        }}>
+              <Pile layout={PlayingCards.Layout.FannedDown} pileType={PileTypes.TABLEAUPILE} selected={this.props.selected} row={this.props.row} pile={this.props.pile} clickHandler={this.props.clickHandler} doubleClickHandler={this.props.doubleClickHandler}/>
+              
+            </div>);
     }
 }

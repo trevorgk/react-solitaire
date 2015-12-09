@@ -5,7 +5,7 @@ import * as PileTypes from '../../constants/PileTypes';
 import * as Common from '../../Common';
 import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
 
-interface Props extends React.Props<any> {
+interface Props {
   layout: PlayingCards.Layout,
   pile: PlayingCards.Card[],
   clickHandler?: any,

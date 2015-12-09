@@ -6,7 +6,7 @@ import * as Common from '../../Common';
 import * as Pile from '../Pile/Pile';
 import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
 
-interface Props extends React.Props<any> {
+interface Props {
   pile: PlayingCards.Card[],
   row: number,
   selected: Common.ClickTarget,

@@ -26,6 +26,8 @@ export default class Pile extends React.Component {
         // let cards = this.props.pile.map(function(card, z){
         //     return <KlondikeCard card={card} style={update({zIndex:z}, {$merge: cardStyle})} />
         // });
-        return (React.createElement("div", {"className": "Pile", "style": pileStyle}, this.props.pile && this.props.pile.map((card, pos) => React.createElement(KlondikeCard, {"card": card, "selected": this.props.selected, "pileType": this.props.pileType, "pileSize": this.props.pile.length, "clickHandler": this.props.clickHandler, "doubleClickHandler": this.props.doubleClickHandler, "pos": pos, "row": this.props.row, "style": Object.assign(cardStyle, { zIndex: pos })}))));
+        return (<div className="Pile" style={pileStyle}>
+              {this.props.pile && this.props.pile.map((card, pos) => <KlondikeCard card={card} selected={this.props.selected} pileType={this.props.pileType} pileSize={this.props.pile.length} clickHandler={this.props.clickHandler} doubleClickHandler={this.props.doubleClickHandler} pos={pos} row={this.props.row} style={Object.assign(cardStyle, { zIndex: pos })}/>)}
+            </div>);
     }
 }
