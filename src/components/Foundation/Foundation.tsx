@@ -1,10 +1,10 @@
-/// <reference path="../../../typings/react/react.d.ts" />
+/// <reference path="../../../typings/tsd.d.ts" />
 import * as React from 'react';
 import * as PlayingCards from '../../models/playing-cards';
 import * as PileTypes from '../../constants/PileTypes';
 import * as Common from '../../Common';
-import {Pile} from './Pile';
-import {KlondikeCard} from './KlondikeCard';
+import * as Pile from '../Pile/Pile';
+import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
 
 interface Props extends React.Props<any> {
   pile: PlayingCards.Card[],

@@ -1,21 +1,25 @@
-/// <reference path="../../../typings/react/react.d.ts" />
+/// <reference path="../../../typings/tsd.d.ts" />
 import * as React from "react";
 import * as PlayingCards from '../../models/playing-cards';
 import * as PileTypes from '../../constants/PileTypes';
 import * as MoveTypes from '../../constants/MoveTypes';
 import * as Common from '../../Common';
-import {Foundation} from './Foundation';
-import {Pile} from './Pile';
-import {KlondikeCard} from './KlondikeCard';
-import {Tableau} from './Tableau';
+import * as Foundation from '../Foundation/Foundation';
+import * as Pile from '../Pile/Pile';
+import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
+import * as Tableau from '../Tableau/Tableau';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import * as widgetActions from 'redux/modules/widgets';
 //
 // declare module JSX {
 //     interface IntrinsicElements {
 //         Pile: any
 //     }
 // }
+
+
+module Klondike {
 
 interface Props extends React.Props<any> {
   pileCount: number,
@@ -34,7 +38,18 @@ interface State {
   tableauPiles?: PlayingCards.Card[][],
 };
 
-@connect(state => (state.klondike))
+@connect(
+  state => ({
+    src: state.klondike.src,
+    moves: state.klondike.moves,
+    moveCount: state.klondike.moveCount,
+    initialDeckSize: state.klondike.initialDeckSize,
+    deck: state.klondike.deck,
+    waste: state.klondike.waste,
+    foundationPiles: state.klondike.foundationPiles,
+    tableauPiles: state.klondike.tableauPiles,
+  }),
+  dispatch => bindActionCreators(widgetActions, dispatch))
 export default class Klondike extends React.Component<Props,State>{
     constructor(props) {
       super(props);
@@ -233,70 +248,62 @@ export default class Klondike extends React.Component<Props,State>{
         }
     }
 
-      render() {
+    //   render() {
+    //       return (
+    //         <div className="Solitaire">
+    //           <div style={{
+    //             width: "670px",
+    //             margin: "0 auto",
+    //             color: "white"
+    //           }}>
+    //             <div style={{
+    //               textAlign: "center"
+    //             }}>
+    //                {this.state.moveCount} {this.state.moveCount == 1 ? "move" : "moves"}
+    //                <div>
+    //                  <input type="button" value="undo move" onClick={this.undoClicked.bind(this)} />
+    //                </div>
+    //             </div>
+    //             <div className="">
+    //               <div className="">
+    //                   <div className="Stock" style={{
+    //                       width: "255px",
+    //                       margin: "10px 15px 0 20px",
+    //                       float: "left"
+    //                   }}>
+    //                     <img src='cards/back-purple.png' onClick={this.stockClicked.bind(this)} style={{
+    //                      width: "80px",
+    //                      height: "112px",
+    //                      cursor: "pointer",
+    //                      float:"left"
+    //                     }}/>
+    //                     <Pile layout={PlayingCards.Layout.FannedRight} pileType={PileTypes.WASTE} selected={this.state.src}
+    //                       doubleClickHandler={this.processDoubleClick} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
+    //                           float:"left",
+    //                           marginLeft:"75px"}} />
+    //                   </div>
+    //               </div>
+    //               <div>
+    //                 {this.state.foundationPiles.map((pile, foundation)  =>
+    //                     <Foundation selected={this.state.src} clickHandler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]} />
+    //                   )}
+    //               </div>
+    //             </div>
+    //             <div style={{padding:"20px 10px 0", float: "right"}}>
+    //               {this.state.tableauPiles.map((pile, tableau)  =>
+    //                   <Tableau selected={this.state.src} clickHandler={this.processClick} doubleClickHandler={this.processDoubleClick} pile={pile} row={tableau}/>
+    //                 )}
+    //             </div>
+    //           </div>
+    //         </div>
+    // )}
+        render() {
+          var i = 0;
           return (
-            <div className="Solitaire">
-              <div style={{
-                width: "670px",
-                margin: "0 auto",
-                color: "white"
-              }}>
-                <div style={{
-                  textAlign: "center"
-                }}>
-                   {this.state.moveCount} {this.state.moveCount == 1 ? "move" : "moves"}
-                   <div>
-                     <input type="button" value="undo move" onClick={this.undoClicked.bind(this)} />
-                   </div>
-                </div>
-                <div className="">
-                  <div className="">
-                      <div className="Stock" style={{
-                          width: "255px",
-                          margin: "10px 15px 0 20px",
-                          float: "left"
-                      }}>
-                        <img src='cards/back-purple.png' onClick={this.stockClicked.bind(this)} style={{
-                         width: "80px",
-                         height: "112px",
-                         cursor: "pointer",
-                         float:"left"
-                        }}/>
-                        <Pile layout={PlayingCards.Layout.FannedRight} pileType={PileTypes.WASTE} selected={this.state.src}
-                          doubleClickHandler={this.processDoubleClick} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
-                              float:"left",
-                              marginLeft:"75px"}} />
-                      </div>
-                  </div>
-                  <div>
-                    {this.state.foundationPiles.map((pile, foundation)  =>
-                        <Foundation selected={this.state.src} clickHandler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]} />
-                      )}
-                  </div>
-                </div>
-                <div style={{padding:"20px 10px 0", float: "right"}}>
-                  {this.state.tableauPiles.map((pile, tableau)  =>
-                      <Tableau selected={this.state.src} clickHandler={this.processClick} doubleClickHandler={this.processDoubleClick} pile={pile} row={tableau}/>
-                    )}
-                </div>
-              </div>
-            </div>
-    )}
-      //   render() {
-      //     var i = 0;
-      //     return (
-      //     <div className="KLO">
-      //       {this.state.deck.cards && this.state.deck.cards.map((card, pos) =>
-      //         <div>
-      //         <div>
-      //           {card.toString()}
-      //           </div>
-      //           <KlondikeCard card={card} selected={this.state.src} pileType={PileTypes.TABLEAUPILE} pileSize={52}
-      //           clickHandler={this.processClick} doubleClickHandler={this.processDoubleClick} pos={pos} row={0}
-      //           style={{zIndex:i++}} />
-      //         </div>
-      //       )}
-      //     </div>
-      //   );
-      // }
+          <div className="KLO">
+
+          </div>
+        );
+      }
+    }
 }

@@ -1,3 +1,4 @@
+"use strict";
 var React = require("react");
 var PlayingCards = require('../../models/playing-cards');
 var PileTypes = require('../../constants/PileTypes');
@@ -61,4 +62,5 @@ class KlondikeCard extends React.Component {
         return (React.createElement("div", {className: "KlondikeCard", onClick: this.props.card.show && this.handleClick.bind(this), style: style}, React.createElement("img", {style: { width: "100%" }, src: this.props.card.display()}), selected && KlondikeCard.renderOverlay('aquamarine')));
     }
 }
-exports.KlondikeCard = KlondikeCard;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = KlondikeCard;

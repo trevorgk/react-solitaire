@@ -1,7 +1,7 @@
-var React = require("react");
-var PlayingCards = require('../../models/playing-cards');
-var KlondikeCard_1 = require('./KlondikeCard');
-class Pile extends React.Component {
+import * as React from "react";
+import * as PlayingCards from '../../models/playing-cards';
+import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
+export default class Pile extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -23,7 +23,9 @@ class Pile extends React.Component {
                 cardStyle = Object.assign(cardStyle, { marginTop: "-95px" });
                 break;
         }
-        return (React.createElement("div", {className: "Pile", style: pileStyle}, this.props.pile && this.props.pile.map((card, pos) => React.createElement(KlondikeCard_1.KlondikeCard, {card: card, selected: this.props.selected, pileType: this.props.pileType, pileSize: this.props.pile.length, clickHandler: this.props.clickHandler, doubleClickHandler: this.props.doubleClickHandler, pos: pos, row: this.props.row, style: Object.assign(cardStyle, { zIndex: pos })}))));
+        // let cards = this.props.pile.map(function(card, z){
+        //     return <KlondikeCard card={card} style={update({zIndex:z}, {$merge: cardStyle})} />
+        // });
+        return (React.createElement("div", {"className": "Pile", "style": pileStyle}, this.props.pile && this.props.pile.map((card, pos) => React.createElement(KlondikeCard, {"card": card, "selected": this.props.selected, "pileType": this.props.pileType, "pileSize": this.props.pile.length, "clickHandler": this.props.clickHandler, "doubleClickHandler": this.props.doubleClickHandler, "pos": pos, "row": this.props.row, "style": Object.assign(cardStyle, { zIndex: pos })}))));
     }
 }
-exports.Pile = Pile;

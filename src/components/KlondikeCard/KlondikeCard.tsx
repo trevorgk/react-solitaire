@@ -1,8 +1,14 @@
-/// <reference path="../../../typings/react/react-dom.d.ts" />
+/// <reference path="../../../typings/tsd.d.ts" />
 import * as React from "react";
 import * as PlayingCards from '../../models/playing-cards';
 import * as PileTypes from '../../constants/PileTypes';
 import * as Common from '../../Common';
+
+// export interface IKlondikeCard {
+//     canSelect(target:Common.ClickTarget) : boolean;
+//     canMove(src:Common.ClickTarget, dest: Common.ClickTarget) : boolean;
+//     renderOverlay(color) : JSX.Element
+// }
 
 interface Props extends React.Props<any> {
   card: PlayingCards.Card,
@@ -16,7 +22,8 @@ interface Props extends React.Props<any> {
   pileType: string
 }
 
-export default class KlondikeCard extends React.Component<Props, {}>  {
+export default class KlondikeCard extends React.Component<Props, {}> {
+// implements IKlondikeCard {
   constructor(props) {
     super(props);
 
@@ -31,7 +38,7 @@ export default class KlondikeCard extends React.Component<Props, {}>  {
     return true;
   }
 
-  public static canMove(src:Common.ClickTarget, dest: Common.ClickTarget) : boolean{
+  public static  canMove(src:Common.ClickTarget, dest: Common.ClickTarget) : boolean{
     switch(dest.pileType){
       case PileTypes.TABLEAUPILE:
         return dest.pos == dest.pileSize - 1 && src.card.getColor() != dest.card.getColor() && src.card.rank == dest.card.rank - 1;
@@ -46,7 +53,7 @@ export default class KlondikeCard extends React.Component<Props, {}>  {
     }
   }
 
-  public static renderOverlay(color){
+  public static renderOverlay(color) : JSX.Element{
     return (
       <div style={{
         position: 'absolute',
@@ -63,7 +70,6 @@ export default class KlondikeCard extends React.Component<Props, {}>  {
 
   private clickTimeoutId = null;
   handleClick() {
-    debugger;
       let delay = 225;
       let payload = {pileType: this.props.pileType, row:this.props.row, card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize};
       if (!this.clickTimeoutId) {

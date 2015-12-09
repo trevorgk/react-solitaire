@@ -1,15 +1,16 @@
+export var Suit;
 (function (Suit) {
     Suit[Suit["Spades"] = 0] = "Spades";
     Suit[Suit["Clubs"] = 1] = "Clubs";
     Suit[Suit["Diamonds"] = 2] = "Diamonds";
     Suit[Suit["Hearts"] = 3] = "Hearts";
-})(exports.Suit || (exports.Suit = {}));
-var Suit = exports.Suit;
+})(Suit || (Suit = {}));
+export var Color;
 (function (Color) {
     Color[Color["Red"] = 0] = "Red";
     Color[Color["Black"] = 1] = "Black";
-})(exports.Color || (exports.Color = {}));
-var Color = exports.Color;
+})(Color || (Color = {}));
+export var Rank;
 (function (Rank) {
     Rank[Rank["Ace"] = 1] = "Ace";
     Rank[Rank["Two"] = 2] = "Two";
@@ -24,15 +25,14 @@ var Color = exports.Color;
     Rank[Rank["Jack"] = 11] = "Jack";
     Rank[Rank["Queen"] = 12] = "Queen";
     Rank[Rank["King"] = 13] = "King";
-})(exports.Rank || (exports.Rank = {}));
-var Rank = exports.Rank;
+})(Rank || (Rank = {}));
+export var Layout;
 (function (Layout) {
     Layout[Layout["Squared"] = 0] = "Squared";
     Layout[Layout["FannedDown"] = 1] = "FannedDown";
     Layout[Layout["FannedRight"] = 2] = "FannedRight";
-})(exports.Layout || (exports.Layout = {}));
-var Layout = exports.Layout;
-class Card {
+})(Layout || (Layout = {})); //todo FannedUp, FannedDown
+export class Card {
     constructor(suit, rank) {
         this.show = true;
         this.suit = suit;
@@ -46,6 +46,7 @@ class Card {
     getImageFile() {
         let filename = 'cards/' + Suit[this.suit] + '/' + Rank[this.rank] + '.png';
         return filename.toLowerCase();
+        //return 'static/cards/${this.suit}/${this.rank}';	wtb string interpolation
     }
     getColor() {
         return this.suit == Suit.Spades || this.suit == Suit.Clubs ? Color.Black : Color.Red;
@@ -61,8 +62,7 @@ class Card {
     }
 }
 Card.backFace = 'cards/back-purple.png';
-exports.Card = Card;
-class Joker extends Card {
+export class Joker extends Card {
     constructor() {
         super(null, null);
         this.joker = true;
@@ -74,9 +74,10 @@ class Joker extends Card {
         return 'cards/' + 'joker1.png';
     }
 }
-exports.Joker = Joker;
-class DeckOfCards {
+export class DeckOfCards {
+    //public length = this.cards.length;
     constructor(includeJokers = true) {
+        //	default order
         this.suits = [Suit.Spades, Suit.Clubs, Suit.Diamonds, Suit.Hearts];
         this.ranks = [Rank.Ace, Rank.Two, Rank.Three, Rank.Four, Rank.Five, Rank.Six, Rank.Seven, Rank.Eight, Rank.Nine, Rank.Ten, Rank.Jack, Rank.Queen, Rank.King];
         this.cards = [];
@@ -86,6 +87,7 @@ class DeckOfCards {
             this.cards.push(new Joker());
         }
     }
+    //http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
     shuffle() {
         for (let i = this.cards.length - 1; i > 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
@@ -144,8 +146,7 @@ class DeckOfCards {
         return hands;
     }
 }
-exports.DeckOfCards = DeckOfCards;
-class Player {
+export class Player {
     constructor(hand, name = 'anon') {
         this.hand = hand;
         this.name = name;
@@ -154,10 +155,10 @@ class Player {
         return "Player '" + this.name + "' : {" + this.hand.join(", ") + "}";
     }
 }
-exports.Player = Player;
 class GameOfCards {
     constructor(players, handSize = 0) {
         this.deck = new DeckOfCards(false);
+        //this.players = new Array<Player>();
         var hands = this.deck.deal(players, handSize);
         this.players = hands.map(function (hand) {
             return new Player(hand);

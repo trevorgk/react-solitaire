@@ -1,8 +1,9 @@
+/// <reference path="../../../typings/tsd.d.ts" />
 import * as React from "react";
 import * as PlayingCards from '../../models/playing-cards';
 import * as PileTypes from '../../constants/PileTypes';
 import * as Common from '../../Common';
-import {KlondikeCard} from './KlondikeCard';
+import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
 
 interface Props extends React.Props<any> {
   layout: PlayingCards.Layout,

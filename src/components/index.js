@@ -12,8 +12,8 @@ export MiniInfoBar from './MiniInfoBar/MiniInfoBar';
 export SurveyForm from './SurveyForm/SurveyForm';
 export WidgetForm from './WidgetForm/WidgetForm';
 
-export {Foundation} from './Klondike/Foundation';
+export {Foundation} from './Foundation/Foundation';
 export {Klondike} from './Klondike/Klondike';
-export {KlondikeCard} from './Klondike/KlondikeCard';
-export {Pile} from './Klondike/Pile';
-export {Tableau} from './Klondike/Tableau';
+export {KlondikeCard} from './KlondikeCard/KlondikeCard';
+export {Pile} from './Pile/Pile';
+export {Tableau} from './Tableau/Tableau';
