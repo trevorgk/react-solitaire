@@ -39,6 +39,11 @@ export class Card {
 
 			return this.getImageFile();
 	}
+
+  setShow(show: boolean){
+    this.show = show;
+  }
+  
   toString(): string {
     return Rank[this.rank] + " of " + Suit[this.suit];
   }
@@ -110,6 +115,13 @@ export class DeckOfCards {
     return this.cards.reverse().splice(0, n);
   }
 
+  getRemainingCards(n: number): Card[] {
+    let i = 0;
+    let cards = this.cards.reverse();
+    this.cards = [];
+    return cards;
+  }
+
   toString(): string {
     return this.cards.join(", ")
   }
@@ -149,6 +161,8 @@ export class DeckOfCards {
 
     return hands;
   }
+
+  dealRemaining
 }
 
 export class Player {

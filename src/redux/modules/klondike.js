@@ -38,3 +38,10 @@ export default function reducer(state = initialState, action = {}) {
 export function isLoaded(globalState) {
   return globalState.klondike && globalState.klondike.loaded;
 }
+
+export function load() {
+  return {
+    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
+    promise: (client) => client.get('/klondike/load/param1/param2') // params not used, just shown as demonstration
+  };
+}

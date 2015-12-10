@@ -6,5 +6,5 @@ export About from './About/About';
 export Login from './Login/Login';
 export LoginSuccess from './LoginSuccess/LoginSuccess';
 export Survey from './Survey/Survey';
-export PlayKlondike from './PlayKlondike/PlayKlondike';
+export Klondike from './Klondike/Klondike';
 export NotFound from './NotFound/NotFound';

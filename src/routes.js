@@ -7,7 +7,7 @@ import {
     Home,
     Widgets,
     About,
-    PlayKlondike,
+    Klondike,
     Login,
     LoginSuccess,
     Survey,
@@ -51,7 +51,7 @@ export default (store) => {
       <Route path="login" component={Login}/>
       <Route path="survey" component={Survey}/>
       <Route path="widgets" component={Widgets}/>
-      <Route path="klondike" component={PlayKlondike}/>
+      <Route path="klondike" component={Klondike}/>
 
       { /* Catch all route */ }
       <Route path="*" component={NotFound} status={404} />
