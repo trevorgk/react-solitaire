@@ -43,7 +43,7 @@ export class Card {
   setShow(show: boolean){
     this.show = show;
   }
-  
+
   toString(): string {
     return Rank[this.rank] + " of " + Suit[this.suit];
   }
@@ -161,8 +161,6 @@ export class DeckOfCards {
 
     return hands;
   }
-
-  dealRemaining
 }
 
 export class Player {

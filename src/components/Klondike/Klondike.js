@@ -1,14 +1,27 @@
 import React, {Component, PropTypes} from 'react';
+import * as klondikeActions from 'redux/modules/klondike';
 import * as PlayingCards from '../../models/playing-cards';
+import * as PileTypes from '../../constants/PileTypes';
 import {
-  PileTypes,
   MoveTypes,
   Foundation,
   Pile,
   KlondikeCard,
   Tableau
 } from 'components';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
+@connect(
+  state => ({
+    moveCount: state.klondike.moveCount,
+    waste: state.klondike.waste,
+    src: state.klondike.src,
+    foundationPiles: state.klondike.foundationPiles,
+    tableauPiles: state.klondike.tableauPiles
+  }),
+  dispatch => bindActionCreators(klondikeActions, dispatch)
+)
 export default class Klondike extends Component {
 
     constructor(props) {
@@ -189,6 +202,7 @@ export default class Klondike extends Component {
         }
     }
     render() {
+      const { moveCount, src, waste, tableauPiles, foundationPiles} = this.props;
         return (<div className="Solitaire">
             <div style={{
             width: "670px",
@@ -198,7 +212,7 @@ export default class Klondike extends Component {
               <div style={{
             textAlign: "center"
         }}>
-                 {this.state.moveCount} {this.state.moveCount == 1 ? "move" : "moves"}
+                 {moveCount} {moveCount == 1 ? "move" : "moves"}
                  <div>
                    <input type="button" value="undo move" onClick={this.undoClicked.bind(this)}/>
                  </div>
@@ -216,17 +230,17 @@ export default class Klondike extends Component {
             cursor: "pointer",
             float: "left"
         }}/>
-                      <Pile layout={PlayingCards.Layout.FannedRight} pileType={PileTypes.WASTE} selected={this.state.src} doubleClickHandler={this.processDoubleClick} clickHandler={this.processClick} pile={this.state.waste} pileStyle={{
+                      <Pile layout={PlayingCards.Layout.FannedRight} pileType={PileTypes.WASTE} selected={src} doubleClickHandler={this.processDoubleClick} clickHandler={this.processClick} pile={waste} pileStyle={{
             float: "left",
             marginLeft: "75px" }}/>
                     </div>
                 </div>
                 <div>
-                  {this.state.foundationPiles.map((pile, foundation) => <Foundation selected={this.state.src} clickHandler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]}/>)}
+                  {foundationPiles.map((pile, foundation) => <Foundation selected={src} clickHandler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]}/>)}
                 </div>
               </div>
               <div style={{ padding: "20px 10px 0", float: "right" }}>
-                {this.state.tableauPiles.map((pile, tableau) => <Tableau selected={this.state.src} clickHandler={this.processClick} doubleClickHandler={this.processDoubleClick} pile={pile} row={tableau}/>)}
+                {tableauPiles.map((pile, tableau) => <Tableau selected={src} clickHandler={this.processClick} doubleClickHandler={this.processDoubleClick} pile={pile} row={tableau}/>)}
               </div>
             </div>
           </div>);

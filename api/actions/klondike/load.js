@@ -1,7 +1,7 @@
-require('../../../src/models/playing-cards');
+import * as PlayingCards from '../../../src/models/playing-cards';
 
 export function getKlondike(req) {
-  let klondike = false;
+  let klondike = req.session.klondike;
   if (!klondike) {
     const pileCount = 7;
     let deck = new PlayingCards.DeckOfCards(false);
@@ -9,20 +9,20 @@ export function getKlondike(req) {
 
     let initialDeckSize = deck.length();
 
+    let tableauPiles = (function(pileCount, deck) {
       let piles = [];
       for (let i = 0; i < pileCount; i++) {
-        for (let j = pileCount; j >= i; j) {
+        for (let j = pileCount - 1; j >= i; j--) {
           if (!piles[j]) {
             piles[j] = [];
           }
           let card = deck.getTopCard();
-          if (card) {
-            card.setShow(j == i);
-            piles[j].push(card);
-          }
+          card.show = j == i;
+          piles[j].push(card);
         }
       }
       return piles;
+    })(pileCount, deck);
 
     let foundationPiles = (function() {
       return [
@@ -33,7 +33,8 @@ export function getKlondike(req) {
       ];
     })();
     klondike = {
-      piles: tableauPiles(),
+      deck: deck.getRemainingCards(),
+      tableauPiles,
       foundationPiles,
       moves: [],
       moveCount: 0,

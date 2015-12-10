@@ -20,7 +20,7 @@ function fetchDataDeferred(getState, dispatch) {
     error: state.klondike.error,
     loading: state.klondike.loading
   }),
-  {...klondikeActions, initializeWithKey })
+  {...klondikeActions})
 export default class Klondike extends Component {
 
   render() {
@@ -34,7 +34,12 @@ export default class Klondike extends Component {
 
     return (
       <div className="container">
-        <Game />
+
+        <button className={styles.refreshBtn + ' btn btn-success'} onClick={load}>
+          <i className={refreshClassName}/> {' '} Reload Widgets
+        </button>
+
+        <Game initialValues={klondike}/>
       </div>
     );
   }
