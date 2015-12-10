@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import * as PlayingCards from '../../models/playing-cards';
+import * as PileTypes from '../../constants/PileTypes';
 import {
-  PileTypes,
   MoveTypes,
   Pile,
   KlondikeCard

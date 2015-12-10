@@ -14,11 +14,11 @@ import {bindActionCreators} from 'redux';
 
 @connect(
   state => ({
-    moveCount: state.klondike.moveCount,
-    waste: state.klondike.waste,
-    src: state.klondike.src,
-    foundationPiles: state.klondike.foundationPiles,
-    tableauPiles: state.klondike.tableauPiles
+      moveCount: state.klondike.data.moveCount,
+      waste: state.klondike.data.waste,
+      src: state.klondike.data.src,
+      foundationPiles: state.klondike.data.foundationPiles,
+      tableauPiles: state.klondike.data.tableauPiles
   }),
   dispatch => bindActionCreators(klondikeActions, dispatch)
 )

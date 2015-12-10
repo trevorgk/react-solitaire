@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as klondikeActions from 'redux/modules/klondike';
 import * as PlayingCards from '../../models/playing-cards';
+import * as PileTypes from '../../constants/PileTypes';
 import {
-  PileTypes,
   Pile,
   KlondikeCard,
 } from 'components';
