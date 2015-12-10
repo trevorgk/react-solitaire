@@ -1,5 +1,5 @@
 /// <reference path="../../../typings/tsd.d.ts" />
-import * as React from 'react';
+import * as React from "react";
 import * as PlayingCards from '../../models/playing-cards';
 import * as PileTypes from '../../constants/PileTypes';
 import * as Common from '../../Common';

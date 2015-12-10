@@ -1,8 +1,8 @@
-import * as React from "react";
-import * as PlayingCards from '../../models/playing-cards';
-import * as PileTypes from '../../constants/PileTypes';
-export default class KlondikeCard extends React.Component {
-    // implements IKlondikeCard {
+"use strict";
+var React = require("react");
+var PlayingCards = require('../../models/playing-cards');
+var PileTypes = require('../../constants/PileTypes');
+class KlondikeCard extends React.Component {
     constructor(props) {
         super(props);
         this.clickTimeoutId = null;
@@ -66,3 +66,5 @@ export default class KlondikeCard extends React.Component {
           </div>);
     }
 }
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = KlondikeCard;

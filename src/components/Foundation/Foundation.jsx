@@ -1,22 +1,23 @@
-import * as React from 'react';
-import * as PlayingCards from '../../models/playing-cards';
-import * as PileTypes from '../../constants/PileTypes';
-import * as Pile from '../Pile/Pile';
-import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
-export default class Foundation extends React.Component {
+"use strict";
+var React = require("react");
+var PlayingCards = require('../../models/playing-cards');
+var PileTypes = require('../../constants/PileTypes');
+var Pile = require('../Pile/Pile');
+var KlondikeCard = require('../KlondikeCard/KlondikeCard');
+class Foundation extends React.Component {
     constructor(props) {
         super(props);
     }
     emptyFoundationClicked() {
         if (this.props.clickHandler) {
             let card = this.props.pile.length > 0 ? this.props.pile[this.props.pile.length - 1] : null;
-            this.props.clickHandler({ pileType: PileTypes.FOUNDATION, row: this.props.row, card });
+            this.props.clickHandler({ pileType: PileTypes.FOUNDATION, row: this.props.row, card: card });
         }
     }
     render() {
         let layout = PlayingCards.Layout.Squared;
         let card = this.props.pile.length > 0 ? this.props.pile[this.props.pile.length - 1] : null;
-        let validDropTarget = this.props.selected != null && KlondikeCard.canMove(this.props.selected, { pileType: PileTypes.FOUNDATION, row: this.props.row, card });
+        let validDropTarget = this.props.selected != null && KlondikeCard.canMove(this.props.selected, { pileType: PileTypes.FOUNDATION, row: this.props.row, card: card });
         return (<div className="Foundation" onClick={this.props.pile.length == 0 && this.emptyFoundationClicked.bind(this)} style={{
             float: "left"
         }}>
@@ -36,3 +37,5 @@ export default class Foundation extends React.Component {
       </div>);
     }
 }
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Foundation;

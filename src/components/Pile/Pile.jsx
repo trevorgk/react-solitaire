@@ -1,7 +1,8 @@
-import * as React from "react";
-import * as PlayingCards from '../../models/playing-cards';
-import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
-export default class Pile extends React.Component {
+"use strict";
+var React = require("react");
+var PlayingCards = require('../../models/playing-cards');
+var KlondikeCard = require('../KlondikeCard/KlondikeCard');
+class Pile extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -23,11 +24,10 @@ export default class Pile extends React.Component {
                 cardStyle = Object.assign(cardStyle, { marginTop: "-95px" });
                 break;
         }
-        // let cards = this.props.pile.map(function(card, z){
-        //     return <KlondikeCard card={card} style={update({zIndex:z}, {$merge: cardStyle})} />
-        // });
         return (<div className="Pile" style={pileStyle}>
               {this.props.pile && this.props.pile.map((card, pos) => <KlondikeCard card={card} selected={this.props.selected} pileType={this.props.pileType} pileSize={this.props.pile.length} clickHandler={this.props.clickHandler} doubleClickHandler={this.props.doubleClickHandler} pos={pos} row={this.props.row} style={Object.assign(cardStyle, { zIndex: pos })}/>)}
             </div>);
     }
 }
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Pile;

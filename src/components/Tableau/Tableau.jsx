@@ -1,9 +1,10 @@
-import * as React from "react";
-import * as PlayingCards from '../../models/playing-cards';
-import * as PileTypes from '../../constants/PileTypes';
-import * as Pile from '../Pile/Pile';
-import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
-export default class Tableau extends React.Component {
+"use strict";
+var React = require("react");
+var PlayingCards = require('../../models/playing-cards');
+var PileTypes = require('../../constants/PileTypes');
+var Pile = require('../Pile/Pile');
+var KlondikeCard = require('../KlondikeCard/KlondikeCard');
+class Tableau extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -14,9 +15,6 @@ export default class Tableau extends React.Component {
     }
     ;
     render() {
-        // let piles = this.props.piles.map(function(pile) {
-        //     return <Pile  selected={this.state.selected} notify={notifySelected} pile={pile} layout={Layout.FannedDown}/>
-        // });
         let validDropTarget = this.props.selected != null && this.props.pile.length == 0 && KlondikeCard.canMove(this.props.selected, { pileType: PileTypes.EMPTYTABLEAU, row: this.props.row });
         return (<div className="Tableau" onClick={this.props.pile.length == 0 && this.emptyPileClickHandler.bind(this)} style={{
             position: "relative",
@@ -33,3 +31,5 @@ export default class Tableau extends React.Component {
             </div>);
     }
 }
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Tableau;

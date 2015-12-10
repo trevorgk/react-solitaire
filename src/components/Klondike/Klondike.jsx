@@ -1,14 +1,13 @@
-"use strict";
-var React = require("react");
-var PlayingCards = require('../../models/playing-cards');
-var PileTypes = require('../../constants/PileTypes');
-var MoveTypes = require('../../constants/MoveTypes');
-var Foundation = require('../Foundation/Foundation');
-var Pile = require('../Pile/Pile');
-var KlondikeCard = require('../KlondikeCard/KlondikeCard');
-var Tableau = require('../Tableau/Tableau');
+import * as React from "react";
+import * as PlayingCards from '../../models/playing-cards';
+import * as PileTypes from '../../constants/PileTypes';
+import * as MoveTypes from '../../constants/MoveTypes';
+import * as Foundation from '../Foundation/Foundation';
+import * as Pile from '../Pile/Pile';
+import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
+import * as Tableau from '../Tableau/Tableau';
 ;
-class Klondike extends React.Component {
+export default class Klondike extends React.Component {
     constructor(props) {
         super(props);
         this.processClick = this.processClick.bind(this);
@@ -51,14 +50,14 @@ class Klondike extends React.Component {
         this.state.foundationPiles[src.row];
         var foundationPile = this.state.foundationPiles[src.card.suit];
         let card = foundationPile.length > 0 ? foundationPile[foundationPile.length - 1] : null;
-        let target = { pileType: PileTypes.FOUNDATION, row: src.card.suit, card: card };
+        let target = { pileType: PileTypes.FOUNDATION, row: src.card.suit, card };
         if (KlondikeCard.canMove(src, target)) {
             this.move(src, target);
         }
     }
     move(src, dest) {
         let transplantCards = [];
-        var move = { moveType: MoveTypes.MOVECARD, src: src, dest: dest };
+        var move = { moveType: MoveTypes.MOVECARD, src, dest };
         switch (src.pileType) {
             case PileTypes.TABLEAUPILE:
                 var tableauPile = this.state.tableauPiles[src.row];
@@ -89,12 +88,13 @@ class Klondike extends React.Component {
                 break;
         }
         this.resetSelection();
+        // this.setState({foundationPiles});
         this.logMove(move);
     }
     logMove(move) {
         let moves = this.state.moves;
         moves.push(move);
-        this.setState({ moves: moves, moveCount: this.state.moveCount + 1 });
+        this.setState({ moves, moveCount: this.state.moveCount + 1 });
     }
     stockClicked(event) {
         let deck = this.state.deck.concat(this.state.waste.reverse());
@@ -106,10 +106,10 @@ class Klondike extends React.Component {
         let waste = [];
         for (let i = 0; i < wasteSize; i++) {
             let card = deck.getTopCard();
-            card.show = true;
+            card.show = true; //i == wasteSize - 1;
             waste.push(card);
         }
-        this.setState({ waste: waste, deck: deck });
+        this.setState({ waste, deck });
         if (this.state.src && this.state.src.pileType == PileTypes.WASTE) {
             this.resetSelection();
         }
@@ -171,13 +171,13 @@ class Klondike extends React.Component {
                 }
                 for (let i = 0; i < move.wasteSize; i++) {
                     let card = deck.getBottomCard();
-                    card.show = true;
+                    card.show = true; //i == wasteSize - 1;
                     waste.unshift(card);
                 }
-                this.setState({ waste: waste, deck: deck });
+                this.setState({ waste, deck });
                 break;
         }
-        this.setState({ moves: moves, moveCount: this.state.moveCount + 1 });
+        this.setState({ moves, moveCount: this.state.moveCount + 1 });
     }
     handleKeyDown(e) {
         var ESCAPE = 27;
@@ -229,5 +229,3 @@ class Klondike extends React.Component {
           </div>);
     }
 }
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Klondike;
