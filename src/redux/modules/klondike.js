@@ -7,11 +7,7 @@ const initialState = {
   count: 0
 };
 
-export function isLoaded(globalState) {
-  return globalState.klondike && globalState.klondike.loaded;
-}
 export default function reducer(state = initialState, action = {}) {
-  switch (action.type) {
     switch (action.type) {
       case LOAD:
         return {
