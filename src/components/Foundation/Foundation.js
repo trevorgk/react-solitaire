@@ -1,8 +1,11 @@
-import * as React from "react";
+import React, {Component, PropTypes} from 'react';
 import * as PlayingCards from '../../models/playing-cards';
-import * as PileTypes from '../../constants/PileTypes';
-import * as Pile from '../Pile/Pile';
-import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
+import {
+  PileTypes,
+  MoveTypes,
+  Pile,
+  KlondikeCard
+} from 'components';
 
 export default class Foundation extends Component {
     constructor(props) {

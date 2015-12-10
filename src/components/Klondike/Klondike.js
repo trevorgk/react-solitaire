@@ -1,13 +1,16 @@
-import * as React from "react";
+import React, {Component, PropTypes} from 'react';
 import * as PlayingCards from '../../models/playing-cards';
-import * as PileTypes from '../../constants/PileTypes';
-import * as MoveTypes from '../../constants/MoveTypes';
-import * as Foundation from '../Foundation/Foundation';
-import * as Pile from '../Pile/Pile';
-import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
-import * as Tableau from '../Tableau/Tableau';
+import {
+  PileTypes,
+  MoveTypes,
+  Foundation,
+  Pile,
+  KlondikeCard,
+  Tableau
+} from 'components';
 
 export default class Klondike extends Component {
+
     constructor(props) {
         super(props);
         this.processClick = this.processClick.bind(this);

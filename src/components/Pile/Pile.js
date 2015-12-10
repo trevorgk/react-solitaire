@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as klondikeActions from 'redux/modules/klondike';
 import * as PlayingCards from '../../models/playing-cards';
-import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
+import {KlondikeCard} from 'components';
 
 export default class Pile extends Component {
     constructor(props) {

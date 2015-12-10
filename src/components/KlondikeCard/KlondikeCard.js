@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as klondikeActions from 'redux/modules/klondike';
 import * as PlayingCards from '../../models/playing-cards';
-import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
 
 export default class KlondikeCard extends Component {
     constructor(props) {

@@ -11,9 +11,8 @@ export InfoBar from './InfoBar/InfoBar';
 export MiniInfoBar from './MiniInfoBar/MiniInfoBar';
 export SurveyForm from './SurveyForm/SurveyForm';
 export WidgetForm from './WidgetForm/WidgetForm';
-
-export Foundation from './Foundation/Foundation';
 export Klondike from './Klondike/Klondike';
+export Foundation from './Foundation/Foundation';
 export KlondikeCard from './KlondikeCard/KlondikeCard';
 export Pile from './Pile/Pile';
 export Tableau from './Tableau/Tableau';

@@ -3,9 +3,11 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as klondikeActions from 'redux/modules/klondike';
 import * as PlayingCards from '../../models/playing-cards';
-import * as PileTypes from '../../constants/PileTypes';
-import * as Pile from '../Pile/Pile';
-import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
+import {
+  PileTypes,
+  Pile,
+  KlondikeCard,
+} from 'components';
 
 export default class Tableau extends Component {
     constructor(props) {
@@ -16,7 +18,7 @@ export default class Tableau extends Component {
             this.props.clickHandler({ pileType: PileTypes.EMPTYTABLEAU, row: this.props.row });
         }
     }
-    
+
     render() {
         let validDropTarget = this.props.selected != null && this.props.pile.length == 0 && KlondikeCard.canMove(this.props.selected, { pileType: PileTypes.EMPTYTABLEAU, row: this.props.row });
         return (<div className="Tableau" onClick={this.props.pile.length == 0 && this.emptyPileClickHandler.bind(this)} style={{
