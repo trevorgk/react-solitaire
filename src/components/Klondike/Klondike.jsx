@@ -6,8 +6,8 @@ import * as Foundation from '../Foundation/Foundation';
 import * as Pile from '../Pile/Pile';
 import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
 import * as Tableau from '../Tableau/Tableau';
-;
-export default class Klondike extends React.Component {
+
+export default class Klondike extends Component {
     constructor(props) {
         super(props);
         this.processClick = this.processClick.bind(this);

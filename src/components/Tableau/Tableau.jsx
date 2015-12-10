@@ -1,10 +1,13 @@
-"use strict";
-var React = require("react");
-var PlayingCards = require('../../models/playing-cards');
-var PileTypes = require('../../constants/PileTypes');
-var Pile = require('../Pile/Pile');
-var KlondikeCard = require('../KlondikeCard/KlondikeCard');
-class Tableau extends React.Component {
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as klondikeActions from 'redux/modules/klondike';
+import * as PlayingCards from '../../models/playing-cards';
+import * as PileTypes from '../../constants/PileTypes';
+import * as Pile from '../Pile/Pile';
+import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
+
+export default class Tableau extends Component {
     constructor(props) {
         super(props);
     }
@@ -13,7 +16,7 @@ class Tableau extends React.Component {
             this.props.clickHandler({ pileType: PileTypes.EMPTYTABLEAU, row: this.props.row });
         }
     }
-    ;
+    
     render() {
         let validDropTarget = this.props.selected != null && this.props.pile.length == 0 && KlondikeCard.canMove(this.props.selected, { pileType: PileTypes.EMPTYTABLEAU, row: this.props.row });
         return (<div className="Tableau" onClick={this.props.pile.length == 0 && this.emptyPileClickHandler.bind(this)} style={{
@@ -27,9 +30,7 @@ class Tableau extends React.Component {
             float: "left"
         }}>
               <Pile layout={PlayingCards.Layout.FannedDown} pileType={PileTypes.TABLEAUPILE} selected={this.props.selected} row={this.props.row} pile={this.props.pile} clickHandler={this.props.clickHandler} doubleClickHandler={this.props.doubleClickHandler}/>
-              
+
             </div>);
     }
 }
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Tableau;

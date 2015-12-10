@@ -1,10 +1,10 @@
-"use strict";
-var React = require("react");
-var PlayingCards = require('../../models/playing-cards');
-var PileTypes = require('../../constants/PileTypes');
-var Pile = require('../Pile/Pile');
-var KlondikeCard = require('../KlondikeCard/KlondikeCard');
-class Foundation extends React.Component {
+import * as React from "react";
+import * as PlayingCards from '../../models/playing-cards';
+import * as PileTypes from '../../constants/PileTypes';
+import * as Pile from '../Pile/Pile';
+import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
+
+export default class Foundation extends Component {
     constructor(props) {
         super(props);
     }
@@ -32,7 +32,7 @@ class Foundation extends React.Component {
             backgroundPosition: "18px 30px"
         }}>
           <Pile layout={layout} {...this.props}/>
-          
+
         </div>
       </div>);
     }

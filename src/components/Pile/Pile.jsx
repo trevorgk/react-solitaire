@@ -1,8 +1,11 @@
-"use strict";
-var React = require("react");
-var PlayingCards = require('../../models/playing-cards');
-var KlondikeCard = require('../KlondikeCard/KlondikeCard');
-class Pile extends React.Component {
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as klondikeActions from 'redux/modules/klondike';
+import * as PlayingCards from '../../models/playing-cards';
+import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
+
+export default class Pile extends Component {
     constructor(props) {
         super(props);
     }
@@ -29,5 +32,3 @@ class Pile extends React.Component {
             </div>);
     }
 }
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Pile;

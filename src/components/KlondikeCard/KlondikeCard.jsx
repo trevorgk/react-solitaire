@@ -1,8 +1,11 @@
-"use strict";
-var React = require("react");
-var PlayingCards = require('../../models/playing-cards');
-var PileTypes = require('../../constants/PileTypes');
-class KlondikeCard extends React.Component {
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as klondikeActions from 'redux/modules/klondike';
+import * as PlayingCards from '../../models/playing-cards';
+import * as KlondikeCard from '../KlondikeCard/KlondikeCard';
+
+export default class KlondikeCard extends Component {
     constructor(props) {
         super(props);
         this.clickTimeoutId = null;
@@ -62,9 +65,7 @@ class KlondikeCard extends React.Component {
         return (<div className="KlondikeCard" onClick={this.props.card.show && this.handleClick.bind(this)} style={style}>
               <img style={{ width: "100%" }} src={this.props.card.display()}/>
               {selected && KlondikeCard.renderOverlay('aquamarine')}
-              
+
           </div>);
     }
 }
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = KlondikeCard;
