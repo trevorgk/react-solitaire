@@ -26,19 +26,17 @@ export default class Klondike extends Component {
   render() {
     // debugger;
     const {klondike, error, editing, loading, load} = this.props;
+    const styles = require('./Klondike.scss');
     let refreshClassName = 'fa fa-refresh';
     if (loading) {
       refreshClassName += ' fa-spin';
     }
-    const styles = require('./Klondike.scss');
 
     return (
       <div className="container">
-
         <button className={styles.refreshBtn + ' btn btn-success'} onClick={load}>
           <i className={refreshClassName}/> {' '} Reload Widgets
         </button>
-
         <Game initialValues={klondike}/>
       </div>
     );
