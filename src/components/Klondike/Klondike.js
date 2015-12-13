@@ -11,6 +11,15 @@ import {connect} from 'react-redux';
 }),
   dispatch => bindActionCreators(klondikeActions, dispatch))
 export default class Klondike extends Component {
+  static propTypes = {
+    moveCount: PropTypes.number.isRequired,
+    src: React.PropTypes.object,
+    waste: React.PropTypes.array,
+    tableauPiles: React.PropTypes.array.isRequired,
+    foundationPiles: React.PropTypes.array.isRequired,
+    undo: PropTypes.func.isRequired,
+    stock: PropTypes.func.isRequired
+  }
 
   render () {
     const {
