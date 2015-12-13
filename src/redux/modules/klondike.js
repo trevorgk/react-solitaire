@@ -25,9 +25,8 @@ export function undo() {
 const initialState = {
   moveCount: 0,
   waste: [],
-  src: state.klondike.data.src,
-  foundationPiles: state.klondike.data.foundationPiles,
-  tableauPiles: state.klondike.data.tableauPiles
+  foundationPiles: [],
+  tableauPiles: []
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -83,7 +82,7 @@ export default function reducer(state = initialState, action = {}) {
         processMove(src, target);
       }
       return {};
-    case STOCK_CLICKED:
+    case STOCK:
       let deck = this.state.deck.concat(this.state.waste.reverse());
       let move = {
         moveType: MoveTypes.FLIPFROMSTOCK,
@@ -113,45 +112,49 @@ export default function reducer(state = initialState, action = {}) {
         alert('Nothing to undo...');
         return;
       }
-      let move = moveHistory.pop();
-      console.log('undo clicked', move);
+      let latestMove = moveHistory.pop();
+      console.log('undo clicked', latestMove);
       let tableauPiles = this.state.tableauPiles;
-      switch (move.moveType) {
+      switch (latestMove.moveType) {
         case MoveTypes.MOVECARD:
           let transplantCards = [];
-          switch (move.dest.pileType) {
+          switch (latestMove.dest.pileType) {
             case PileTypes.EMPTYTABLEAU:
-              transplantCards = [this.state.tableauPiles[move.dest.row].pop()];
+              transplantCards = [this.state.tableauPiles[latestMove.dest.row].pop()];
               break;
             case PileTypes.TABLEAUPILE:
-              let tableauPile = this.state.tableauPiles[move.dest.row];
-              transplantCards = tableauPile.splice(move.dest.pos + 1, tableauPile.length - move.dest.pos);
+              let tableauPile = this.state.tableauPiles[latestMove.dest.row];
+              transplantCards = tableauPile.splice(latestMove.dest.pos + 1, tableauPile.length - latestMove.dest.pos);
               break;
             case PileTypes.WASTE:
               throw "Invalid undo source WASTE";
             case PileTypes.FOUNDATION:
-              transplantCards = [this.state.foundationPiles[move.dest.row].pop()];
+              transplantCards = [this.state.foundationPiles[latestMove.dest.row].pop()];
               break;
           }
           if (transplantCards.length == 0) {
             throw "Cards required for undo";
           }
-          switch (move.src.pileType) {
+          switch (latestMove.src.pileType) {
             case PileTypes.TABLEAUPILE:
-              let tableauPile = this.state.tableauPiles[move.src.row];
-              if (move.reveal) {
+              let tableauPile = this.state.tableauPiles[latestMove.src.row];
+              if (latestMove.reveal) {
                 tableauPile[tableauPile.length - 1].show = false;
               }
               tableauPile = tableauPile.concat(transplantCards);
-              this.state.tableauPiles[move.src.row] = tableauPile;
+              this.state.tableauPiles[latestMove.src.row] = tableauPile;
               break;
             case PileTypes.FOUNDATION:
-              this.state.foundationPiles[move.src.row] = this.state.foundationPiles[move.src.row].concat(transplantCards);
+              this.state.foundationPiles[latestMove.src.row] = this.state.foundationPiles[latestMove.src.row].concat(transplantCards);
               break;
             case PileTypes.WASTE:
               this.state.waste = this.state.waste.concat(transplantCards);
               break;
           }
+
+          this.setState({
+            moveHistory, moveCount: this.state.moveCount + 1
+          });
           break;
         case MoveTypes.FLIPFROMSTOCK:
           let deck = this.state.deck;
@@ -161,7 +164,7 @@ export default function reducer(state = initialState, action = {}) {
             card.show = false;
             deck.addTopCard(card);
           }
-          for (let i = 0; i < move.wasteSize; i++) {
+          for (let i = 0; i < latestMove.wasteSize; i++) {
             let card = deck.getBottomCard();
             card.show = true; //i == wasteSize - 1;
             waste.unshift(card);
@@ -171,9 +174,7 @@ export default function reducer(state = initialState, action = {}) {
           });
           break;
       }
-      this.setState({
-        moveHistory, moveCount: this.state.moveCount + 1
-      });
+      return {};
     default:
       return state;
   }
