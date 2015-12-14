@@ -23,10 +23,7 @@ export function undo() {
 }
 
 const initialState = {
-  moveCount: 0,
-  waste: [],
-  foundationPiles: [],
-  tableauPiles: []
+    loaded: false
 };
 
 export default function reducer(state = initialState, action = {}) {
