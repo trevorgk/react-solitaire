@@ -26,6 +26,7 @@ export default class Klondike extends Component {
   render() {
     // debugger;
     const {klondike, error, editing, loading, load} = this.props;
+    console.log('klondike', klondike);
     const styles = require('./Klondike.scss');
     let refreshClassName = 'fa fa-refresh';
     if (loading) {
