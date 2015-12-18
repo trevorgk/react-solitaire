@@ -65,7 +65,7 @@ export default class Klondike extends Component {
             </div>
             <div>
               {
-                //foundationPiles.map((pile, foundation) => <Foundation selected={src} clickHandler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]}/>)
+                  //foundationPiles.map((pile, foundation) => <Foundation selected={src} clickHandler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]}/>)
               }
             </div>
           </div>
@@ -73,7 +73,7 @@ export default class Klondike extends Component {
           padding: "20px 10px 0", float: "right"
           }}>
             {
-              //tableauPiles.map((pile, tableau) => <Tableau selected={src} clickHandler={this.processClick} doubleClickHandler={this.processDoubleClick} pile={pile} row={tableau}/>)
+                //tableauPiles.map((pile, tableau) => <Tableau selected={src} clickHandler={this.processClick} doubleClickHandler={this.processDoubleClick} pile={pile} row={tableau}/>)
             }
           </div>
         </div>
