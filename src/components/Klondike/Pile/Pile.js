@@ -10,9 +10,19 @@ export default class Pile extends Component {
         super(props);
     }
     render() {
+      const {
+        pile,
+        selected,
+        pileType,
+        clickHandler,
+        doubleClickHandler,
+        row,
+        layout
+      } = this.props;
+        console.log('Pile::render()', this.props);
         let pileStyle = this.props.pileStyle || {};
         let cardStyle = this.props.cardStyle || {};
-        switch (this.props.layout) {
+        switch (layout) {
             case PlayingCards.Layout.Squared:
                 pileStyle = Object.assign(pileStyle, { position: "relative", width: "80px", height: "112px" });
                 cardStyle = Object.assign(cardStyle, { position: "absolute" });
@@ -28,7 +38,7 @@ export default class Pile extends Component {
                 break;
         }
         return (<div className="Pile" style={pileStyle}>
-              {this.props.pile && this.props.pile.map((card, pos) => <KlondikeCard card={card} selected={this.props.selected} pileType={this.props.pileType} pileSize={this.props.pile.length} clickHandler={this.props.clickHandler} doubleClickHandler={this.props.doubleClickHandler} pos={pos} row={this.props.row} style={Object.assign(cardStyle, { zIndex: pos })}/>)}
+              {pile && pile.map((card, pos) => <KlondikeCard card={card} selected={selected} pileType={pileType} pileSize={pile.length} clickHandler={clickHandler} doubleClickHandler={doubleClickHandler} pos={pos} row={row} style={Object.assign(cardStyle, { zIndex: pos })}/>)}
             </div>);
     }
 }

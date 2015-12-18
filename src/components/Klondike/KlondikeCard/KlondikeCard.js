@@ -26,28 +26,47 @@ export default class KlondikeCard extends Component {
     }
 
     handleClick() {
-        const doubleClickDelay = 225;
-        let payload = { pileType: this.props.pileType, row: this.props.row, card: this.props.card, pos: this.props.pos, pileSize: this.props.pileSize };
-        if (!this.clickTimeoutId) {
-            this.clickTimeoutId = setTimeout(() => {
-                this.props.clickHandler(payload);
-                this.clickTimeoutId = null;
-            }, doubleClickDelay);
-        }
-        else {
-            this.clickTimeoutId = clearTimeout(this.clickTimeoutId);
-            this.props.doubleClickHandler(payload);
-        }
+      const {
+        card,
+        pileType,
+        row,
+        pos,
+        pileSize,
+        clickHandler,
+        doubleClickHandler,
+      } = this.props;
+      const doubleClickDelay = 225;
+      let payload = { pileType: pileType, row: row, card: card, pos: pos, pileSize: pileSize };
+      if (!this.clickTimeoutId) {
+          this.clickTimeoutId = setTimeout(() => {
+              clickHandler(payload);
+              this.clickTimeoutId = null;
+          }, doubleClickDelay);
+      }
+      else {
+          this.clickTimeoutId = clearTimeout(this.clickTimeoutId);
+          doubleClickHandler(payload);
+      }
     }
 
     render() {
-        let style = Object.assign(this.props.style, { position: "relative", width: "80px", height: "112px" });
-        let selected = this.props.selected != null && this.props.selected.card.toString() == this.props.card.toString();
-        let validDropTarget = !selected && this.props.card.show && this.props.selected != null && KlondikeCard.canMove(this.props.selected, { pileType: this.props.pileType, card: this.props.card, row: this.props.row, pos: this.props.pos, pileSize: this.props.pileSize });
-        return (<div className="KlondikeCard" onClick={this.props.card.show && this.handleClick.bind(this)} style={style}>
-              <img style={{ width: "100%" }} src={this.props.card.display()}/>
-              {selected && KlondikeCard.renderOverlay('aquamarine')}
-
-          </div>);
+      const {
+        card,
+        pileType,
+        row,
+        pos,
+        pileSize,
+        clickHandler,
+        doubleClickHandler,
+      } = this.props;
+      console.log('KlondikeCard::render()', this.props);
+      let style = Object.assign(this.props.style, { position: "relative", width: "80px", height: "112px" });
+      let selected = selected != null && selected.card.toString() == card.toString();
+      //  todo let validDropTarget = !selected && card.show && selected != null && KlondikeCard.canMove(selected, { pileType: pileType, card: card, row: row, pos: pos, pileSize: pileSize });
+      return (
+        <div className="KlondikeCard" onClick={card.show && this.handleClick.bind(this)} style={style}>
+          <img style={{ width: "100%" }} src={card.display()}/>
+          {selected && KlondikeCard.renderOverlay('aquamarine')}
+        </div>);
     }
 }

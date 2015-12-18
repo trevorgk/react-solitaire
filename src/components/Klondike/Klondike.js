@@ -23,15 +23,17 @@ export default class Klondike extends Component {
 
   render () {
     const {
-      moveCount,
-      src,
-      waste,
-      tableauPiles,
-      foundationPiles,
       undo,
-      stock
+      stock,
+      klondike: {
+        moveCount,
+        src,
+        waste,
+        tableauPiles,
+        foundationPiles,
+      }
     } = this.props;
-    console.log('klondikeActions', klondikeActions);
+    console.log('Klondike::render()', this.props);
     return (
       <div className="Solitaire">
         <div style={{
@@ -58,7 +60,7 @@ export default class Klondike extends Component {
                   style={{
                 width: "80px", height: "112px", cursor: "pointer", float: "left"
                 }}/>
-                <Pile layout={PlayingCards.Layout.FannedRight} pileType={PileTypes.WASTE} selected={src} doubleClickHandler={this.processDoubleClick} clickHandler={this.processClick} pile={waste} pileStyle={{
+              <Pile layout={PlayingCards.Layout.FannedRight} pileType={PileTypes.WASTE} selected={src} doubleClickHandler={this.processDoubleClick} clickHandler={this.processClick} pile={waste} pileStyle={{
                 float: "left", marginLeft: "75px"
                 }}/>
               </div>
