@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as klondikeActions from 'redux/modules/klondike';
-import * as PlayingCards from '../../../models/playing-cards';
+import * as PlayingCards from '../../../models/PlayingCards';
 import * as PileTypes from '../../../constants/PileTypes';
 import {
   Pile,

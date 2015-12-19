@@ -2,9 +2,19 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as klondikeActions from 'redux/modules/klondike';
-import * as PlayingCards from '../../../models/playing-cards';
+import * as PlayingCards from '../../../models/PlayingCards';
 
 export default class KlondikeCard extends Component {
+  static propTypes = {
+    card: PropTypes.instanceOf(PlayingCards.Card),
+    pileType: PropTypes.number.isRequired,
+    src: React.PropTypes.object,
+    row: React.PropTypes.array,
+    pos: PropTypes.number.isRequired,
+    pileSize: PropTypes.number.isRequired,
+    clickHandler: PropTypes.func.isRequired,
+    doubleClickHandler: PropTypes.func.isRequired
+  }
 
     constructor(props) {
         super(props);
@@ -65,7 +75,7 @@ export default class KlondikeCard extends Component {
       //  todo let validDropTarget = !selected && card.show && selected != null && KlondikeCard.canMove(selected, { pileType: pileType, card: card, row: row, pos: pos, pileSize: pileSize });
       return (
         <div className="KlondikeCard" onClick={card.show && this.handleClick.bind(this)} style={style}>
-          <img style={{ width: "100%" }} src={card.display()}/>
+          <img style={{ width: "100%" }} src='cards/back-purple.png'/>
           {selected && KlondikeCard.renderOverlay('aquamarine')}
         </div>);
     }

@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import * as klondikeActions from 'redux/modules/klondike';
-import * as PlayingCards from '../../models/playing-cards';
+import * as PlayingCards from '../../models/PlayingCards';
 import * as PileTypes from '../../constants/PileTypes';
 import {MoveTypes, Foundation, Pile, KlondikeCard, Tableau} from 'components';
 import {connect} from 'react-redux';
@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 }),
   dispatch => bindActionCreators(klondikeActions, dispatch))
 export default class Klondike extends Component {
+
   static propTypes = {
     moveCount: PropTypes.number.isRequired,
     src: React.PropTypes.object,

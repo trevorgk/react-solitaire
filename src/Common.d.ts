@@ -1,4 +1,4 @@
-import * as PlayingCards from './models/playing-cards';
+import * as PlayingCards from './models/PlayingCards';
 export interface ClickTarget {
     pileType: string;
     card?: PlayingCards.Card;

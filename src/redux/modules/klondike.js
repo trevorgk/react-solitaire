@@ -96,15 +96,14 @@ export default function reducer(state = initialState, action = {}) {
         card.show = true; //i == wasteSize - 1;
         waste.push(card);
       }
+      if (state.data.src && state.data.src.pileType == PileTypes.WASTE) {
+        state = resetSelection(state);
+      }
+      //this.logMove(move);
       return {
         ...state,
         data: { ...state.data, waste, deck}
       };
-      if (state.data.src && state.data.src.pileType == PileTypes.WASTE) {
-        resetSelection();
-      }
-      this.logMove(move);
-      return {};
     case UNDO:
       let moveHistory = this.state.data.moveHistory;
       if (moveHistory.length == 0) {
@@ -207,7 +206,10 @@ function markSelected(target) {
 function resetSelection(state) {
   return {
     ...state,
-    src: null
+    data: {
+      ...data,
+      src: null
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-import * as PlayingCards from '../../../src/models/playing-cards';
+import * as PlayingCards from '../../../src/models/PlayingCards';
 
 export function getKlondike(req) {
   let klondike = req.session.klondike;

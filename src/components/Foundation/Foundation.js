@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import * as PlayingCards from '../../models/playing-cards';
+import * as PlayingCards from '../../models/PlayingCards';
 import * as PileTypes from '../../constants/PileTypes';
 import {MoveTypes, Pile, KlondikeCard} from 'components';
 
