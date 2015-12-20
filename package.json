@@ -12,19 +12,21 @@
   "author": "Trevor Kilvington",
   "license": "ISC",
   "devDependencies": {
-    "babel-core": "^5.4.7",
-    "babel-eslint": "^3.1.9",
-    "babel-loader": "^5.1.2",
-    "eslint-plugin-react": "^2.3.0",
-    "react-hot-loader": "^1.2.7",
-    "webpack": "^1.9.6",
-    "webpack-dev-server": "^1.8.2",
-    "jshint": "latest"
+    "babel-core": "^6.2.1",
+    "babel-eslint": "^4.1.6",
+    "babel-loader": "^6.2.0",
+    "eslint-plugin-react": "^3.10.0",
+    "jshint": "^2.8.0",
+    "react-hot-loader": "^1.3.0",
+    "redux-devtools": "^2.1.5",
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
-    "react": "^0.13.0",
+    "react": "^0.14.3",
     "react-addons": "^0.9.0",
-    "react-dnd": "^1.1.4",
-    "ts-loader": "^0.5.0"
+    "react-redux": "^4.0.0",
+    "redux": "^3.0.4",
+    "ts-loader": "^0.7.2"
   }
 }
