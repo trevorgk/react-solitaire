@@ -36,10 +36,10 @@ export default class KlondikeCard extends Component {
     }
 
     displayCard(card){
-      let objCard = new PlayingCards.Card(card.suit, card.rank);
-      if (!objCard.show) {
-          return Card.backFace;
+      if (!card.show) {
+          return PlayingCards.Card.backFace;
       }
+      let objCard = new PlayingCards.Card(card.suit, card.rank);
       return objCard.getImageFile();
     }
 

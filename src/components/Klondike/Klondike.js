@@ -75,7 +75,9 @@ export default class Klondike extends Component {
           <div style={{
           padding: "20px 10px 0", float: "right"
           }}>
+            <Tableau piles={tableauPiles} />
             {
+
                 //tableauPiles.map((pile, tableau) => <Tableau selected={src} clickHandler={this.processClick} doubleClickHandler={this.processDoubleClick} pile={pile} row={tableau}/>)
             }
           </div>
