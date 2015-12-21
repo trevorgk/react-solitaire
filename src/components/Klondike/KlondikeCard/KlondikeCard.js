@@ -35,6 +35,15 @@ export default class KlondikeCard extends Component {
         }}></div>);
     }
 
+    displayCard(card){
+      let objCard = new PlayingCards.Card(card.suit, card.rank);
+      if (!objCard.show) {
+          return Card.backFace;
+      }
+      return objCard.getImageFile();
+    }
+
+
     handleClick() {
       const {
         card,
@@ -75,7 +84,7 @@ export default class KlondikeCard extends Component {
       //  todo let validDropTarget = !selected && card.show && selected != null && KlondikeCard.canMove(selected, { pileType: pileType, card: card, row: row, pos: pos, pileSize: pileSize });
       return (
         <div className="KlondikeCard" onClick={card.show && this.handleClick.bind(this)} style={style}>
-          <img style={{ width: "100%" }} src='cards/back-purple.png'/>
+          <img style={{ width: "100%" }} src={this.displayCard(card)}/>
           {selected && KlondikeCard.renderOverlay('aquamarine')}
         </div>);
     }
