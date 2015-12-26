@@ -9,12 +9,12 @@ const CARD_DOUBLE_CLICKED = 'redux-example/klondike/CARD_DOUBLE_CLICKED';
 const STOCK = 'redux-example/klondike/STOCK';
 const UNDO = 'redux-example/klondike/UNDO';
 
-export function cardClicked(clickTarget){
-  return { type: CARD_CLICKED, clickTarget };
+export function cardClicked(target){
+  return { type: CARD_CLICKED, target };
 }
 
-export function cardDoubleClicked(clickTarget){
-  return { type: CARD_DOUBLE_CLICKED, clickTarget };
+export function cardDoubleClicked(target){
+  return { type: CARD_DOUBLE_CLICKED, target };
 }
 
 export function stock() {
@@ -54,15 +54,15 @@ export default function reducer(state = initialState, action = {}) {
       };
     case CARD_CLICKED:
       console.log('processClick', target);
-      if (this.state.data.src == null && target.card != null) {
+      if (state.data.selectedCard == null && target.card != null) {
         if (KlondikeCard.canSelect(target)) {
           markSelected(target);
         }
-      } else if (this.state.data.src.card == target.card) {
+      } else if (state.data.src.card == target.card) {
         resetSelection();
       } else {
-        if (KlondikeCard.canMove(this.state.data.src, target)) {
-          processMove(this.state.data.src, target);
+        if (KlondikeCard.canMove(state.data.src, target)) {
+          processMove(state.data.src, target);
         } else {
           markSelected(target);
         }

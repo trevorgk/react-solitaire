@@ -31,7 +31,7 @@ export default class Klondike extends Component {
         src,
         waste,
         tableauPiles,
-        foundationPiles,
+        foundationPiles
       }
     } = this.props;
     console.log('Klondike::render()', this.props);
@@ -67,6 +67,7 @@ export default class Klondike extends Component {
               </div>
             </div>
             <div>
+              <Foundation piles={foundationPiles} />
               {
                   //foundationPiles.map((pile, foundation) => <Foundation selected={src} clickHandler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]}/>)
               }

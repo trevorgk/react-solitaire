@@ -1,7 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as klondikeActions from 'redux/modules/klondike';
 import * as PlayingCards from '../../../models/PlayingCards';
 import * as PileTypes from '../../../constants/PileTypes';
 import {
@@ -11,6 +8,7 @@ import {
 
 const Tableau = (props) => {
   const {piles, selected, clickHandler, doubleClickHandler} = props;
+  console.log('Tableau::render()', props);
   return <div>{
     piles.map((pile, row) => {
     // let validDropTarget = this.props.selected != null && this.props.pile.length == 0 && KlondikeCard.canMove(this.props.selected, { pileType: PileTypes.EMPTYTABLEAU, row: this.props.row });

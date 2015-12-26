@@ -4,6 +4,12 @@ import {bindActionCreators} from 'redux';
 import * as klondikeActions from 'redux/modules/klondike';
 import * as PlayingCards from '../../../models/PlayingCards';
 
+@connect(
+  state => ({
+    selected: state.widgets.selectedCard
+  }),
+  dispatch => bindActionCreators(klondikeActions, dispatch)
+)
 export default class KlondikeCard extends Component {
   static propTypes = {
     card: PropTypes.instanceOf(PlayingCards.Card),
@@ -43,7 +49,6 @@ export default class KlondikeCard extends Component {
       return objCard.getImageFile();
     }
 
-
     handleClick() {
       const {
         card,
@@ -51,20 +56,30 @@ export default class KlondikeCard extends Component {
         row,
         pos,
         pileSize,
-        clickHandler,
-        doubleClickHandler,
+        cardClicked,
+        cardDoubleClicked,
       } = this.props;
+
+      const clickTarget = {
+        card,
+        pileType,
+        row,
+        pos,
+        pileSize,
+      };
       const doubleClickDelay = 225;
       let payload = { pileType: pileType, row: row, card: card, pos: pos, pileSize: pileSize };
       if (!this.clickTimeoutId) {
           this.clickTimeoutId = setTimeout(() => {
-              clickHandler(payload);
+              cardClicked(clickTarget);
+              //clickHandler(payload);
               this.clickTimeoutId = null;
           }, doubleClickDelay);
       }
       else {
           this.clickTimeoutId = clearTimeout(this.clickTimeoutId);
-          doubleClickHandler(payload);
+          cardDoubleClicked(clickTarget);
+          //doubleClickHandler(payload);
       }
     }
 
