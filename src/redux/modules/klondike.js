@@ -53,21 +53,21 @@ export default function reducer(state = initialState, action = {}) {
           error: action.error
       };
     case CARD_CLICKED:
-      console.log('processClick', target);
-      if (state.data.selectedCard == null && target.card != null) {
-        if (KlondikeCard.canSelect(target)) {
-          markSelected(target);
+      console.log('processClick', action.target);
+      if (state.data.active == null && action.target.card != null) {
+        if (canSelect(action.target)) {
+          return markSelected(state, action.target);
         }
-      } else if (state.data.src.card == target.card) {
-        resetSelection();
+      } else if (state.data.active.card == action.target.card) {
+        return resetSelection(state);
       } else {
-        if (KlondikeCard.canMove(state.data.src, target)) {
-          processMove(state.data.src, target);
+        if (canMove(state.data.active, action.target)) {
+          return processMove(state.data.active, action.target);
         } else {
-          markSelected(target);
+          return markSelected(state, action.target);
         }
       }
-      return {};
+      return state;
     case CARD_DOUBLE_CLICKED:
       console.log('processDoubleClick', src);
       this.state.data.foundationPiles[src.row];
@@ -81,7 +81,7 @@ export default function reducer(state = initialState, action = {}) {
       if (KlondikeCard.canMove(src, target)) {
         processMove(src, target);
       }
-      return {};
+      return state;
     case STOCK:
       let deck = state.data.deck.concat(state.data.waste.reverse());
       let move = {
@@ -96,7 +96,7 @@ export default function reducer(state = initialState, action = {}) {
         card.show = true; //i == wasteSize - 1;
         waste.push(card);
       }
-      if (state.data.src && state.data.src.pileType == PileTypes.WASTE) {
+      if (state.data.active && state.data.active.pileType == PileTypes.WASTE) {
         state = resetSelection(state);
       }
       //this.logMove(move);
@@ -133,17 +133,17 @@ export default function reducer(state = initialState, action = {}) {
           if (transplantCards.length == 0) {
             throw "Cards required for undo";
           }
-          switch (latestMove.src.pileType) {
+          switch (latestMove.active.pileType) {
             case PileTypes.TABLEAUPILE:
-              let tableauPile = this.state.data.tableauPiles[latestMove.src.row];
+              let tableauPile = this.state.data.tableauPiles[latestMove.active.row];
               if (latestMove.reveal) {
                 tableauPile[tableauPile.length - 1].show = false;
               }
               tableauPile = tableauPile.concat(transplantCards);
-              this.state.data.tableauPiles[latestMove.src.row] = tableauPile;
+              this.state.data.tableauPiles[latestMove.active.row] = tableauPile;
               break;
             case PileTypes.FOUNDATION:
-              this.state.data.foundationPiles[latestMove.src.row] = this.state.data.foundationPiles[latestMove.src.row].concat(transplantCards);
+              this.state.data.foundationPiles[latestMove.active.row] = this.state.data.foundationPiles[latestMove.active.row].concat(transplantCards);
               break;
             case PileTypes.WASTE:
               this.state.data.waste = this.state.data.waste.concat(transplantCards);
@@ -172,7 +172,7 @@ export default function reducer(state = initialState, action = {}) {
           });
           break;
       }
-      return {};
+      return state;
     default:
       return state;
   }
@@ -197,18 +197,22 @@ function canSelect(target) {
   return true;
 }
 
-function markSelected(target) {
-  this.setState({
-    src: target
-  });
+function markSelected(state, target) {
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      active: target
+    }
+  }
 }
 
 function resetSelection(state) {
   return {
     ...state,
     data: {
-      ...data,
-      src: null
+      ...state.data,
+      active: null
     }
   }
 }
@@ -247,7 +251,7 @@ function processMove(src, dest) {
       transplantCards = [card];
       break;
     case PileTypes.FOUNDATION:
-      transplantCards = [this.state.data.foundationPiles[this.state.data.src.row].pop()];
+      transplantCards = [this.state.data.foundationPiles[this.state.data.active.row].pop()];
       break;
   }
   if (transplantCards.length == 0) {

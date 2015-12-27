@@ -6,7 +6,7 @@ import * as PlayingCards from '../../../models/PlayingCards';
 
 @connect(
   state => ({
-    selected: state.widgets.selectedCard
+    klondike: state.klondike.data
   }),
   dispatch => bindActionCreators(klondikeActions, dispatch)
 )
@@ -14,7 +14,7 @@ export default class KlondikeCard extends Component {
   static propTypes = {
     card: PropTypes.instanceOf(PlayingCards.Card),
     pileType: PropTypes.number.isRequired,
-    src: React.PropTypes.object,
+    active: React.PropTypes.object,
     row: React.PropTypes.array,
     pos: PropTypes.number.isRequired,
     pileSize: PropTypes.number.isRequired,
@@ -28,8 +28,8 @@ export default class KlondikeCard extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    static renderOverlay(color) {
-        return (<div style={{
+    renderOverlay(color) {
+        return <div style={{
             position: 'absolute',
             top: 0,
             left: 0,
@@ -38,7 +38,7 @@ export default class KlondikeCard extends Component {
             zIndex: 1,
             opacity: 0.5,
             backgroundColor: color,
-        }}></div>);
+        }}></div>;
     }
 
     displayCard(card){
@@ -92,15 +92,17 @@ export default class KlondikeCard extends Component {
         pileSize,
         clickHandler,
         doubleClickHandler,
+        klondike: {
+          active
+        }
       } = this.props;
       console.log('KlondikeCard::render()', this.props);
       let style = Object.assign(this.props.style, { position: "relative", width: "80px", height: "112px" });
-      let selected = selected != null && selected.card.toString() == card.toString();
-      //  todo let validDropTarget = !selected && card.show && selected != null && KlondikeCard.canMove(selected, { pileType: pileType, card: card, row: row, pos: pos, pileSize: pileSize });
+      //  todo let validDropTarget = !active && card.show && active != null && KlondikeCard.canMove(active, { pileType: pileType, card: card, row: row, pos: pos, pileSize: pileSize });
       return (
         <div className="KlondikeCard" onClick={card.show && this.handleClick.bind(this)} style={style}>
           <img style={{ width: "100%" }} src={this.displayCard(card)}/>
-          {selected && KlondikeCard.renderOverlay('aquamarine')}
+          {this.isActive(active, card) && this.renderOverlay('aquamarine')}
         </div>);
     }
 }

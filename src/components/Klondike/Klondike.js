@@ -14,7 +14,7 @@ export default class Klondike extends Component {
 
   static propTypes = {
     moveCount: PropTypes.number.isRequired,
-    src: React.PropTypes.object,
+    active: React.PropTypes.object,
     waste: React.PropTypes.array,
     tableauPiles: React.PropTypes.array.isRequired,
     foundationPiles: React.PropTypes.array.isRequired,
@@ -28,7 +28,7 @@ export default class Klondike extends Component {
       stock,
       klondike: {
         moveCount,
-        src,
+        active,
         waste,
         tableauPiles,
         foundationPiles
@@ -61,26 +61,19 @@ export default class Klondike extends Component {
                   style={{
                 width: "80px", height: "112px", cursor: "pointer", float: "left"
                 }}/>
-              <Pile layout={PlayingCards.Layout.FannedRight} pileType={PileTypes.WASTE} selected={src} doubleClickHandler={this.processDoubleClick} clickHandler={this.processClick} pile={waste} pileStyle={{
+              <Pile layout={PlayingCards.Layout.FannedRight} pileType={PileTypes.WASTE} selected={active} doubleClickHandler={this.processDoubleClick} clickHandler={this.processClick} pile={waste} pileStyle={{
                 float: "left", marginLeft: "75px"
                 }}/>
               </div>
             </div>
             <div>
               <Foundation piles={foundationPiles} />
-              {
-                  //foundationPiles.map((pile, foundation) => <Foundation selected={src} clickHandler={this.processClick} pile={pile} row={foundation} suit={PlayingCards.Suit[foundation]}/>)
-              }
             </div>
           </div>
           <div style={{
           padding: "20px 10px 0", float: "right"
           }}>
             <Tableau piles={tableauPiles} />
-            {
-
-                //tableauPiles.map((pile, tableau) => <Tableau selected={src} clickHandler={this.processClick} doubleClickHandler={this.processDoubleClick} pile={pile} row={tableau}/>)
-            }
           </div>
         </div>
       </div>
