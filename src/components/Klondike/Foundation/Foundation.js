@@ -15,7 +15,7 @@ const Foundation = (props) => {
     doubleClickHandler
   } = props;
 
-  console.log('Foundation::render()', props);
+  //console.log('Foundation::render()', props);
 
   return <div className="Foundation">
       {

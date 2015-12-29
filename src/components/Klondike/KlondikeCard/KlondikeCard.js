@@ -49,6 +49,16 @@ export default class KlondikeCard extends Component {
       return objCard.getImageFile();
     }
 
+
+    isActive(active, card){
+      if (!active) return false;  //  no other card has been activated via click
+      if (!card.show) {
+          alert('i\'m heeeere');
+      }
+
+      return card.suit == active.card.suit && card.rank == active.card.rank;
+    }
+
     handleClick() {
       const {
         card,
@@ -96,7 +106,7 @@ export default class KlondikeCard extends Component {
           active
         }
       } = this.props;
-      console.log('KlondikeCard::render()', this.props);
+      //console.log('KlondikeCard::render()', active);
       let style = Object.assign(this.props.style, { position: "relative", width: "80px", height: "112px" });
       //  todo let validDropTarget = !active && card.show && active != null && KlondikeCard.canMove(active, { pileType: pileType, card: card, row: row, pos: pos, pileSize: pileSize });
       return (

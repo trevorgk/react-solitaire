@@ -8,7 +8,7 @@ import {
 
 const Tableau = (props) => {
   const {piles, selected, clickHandler, doubleClickHandler} = props;
-  console.log('Tableau::render()', props);
+  //console.log('Tableau::render()', props);
   return <div>{
     piles.map((pile, row) => {
     // let validDropTarget = this.props.selected != null && this.props.pile.length == 0 && KlondikeCard.canMove(this.props.selected, { pileType: PileTypes.EMPTYTABLEAU, row: this.props.row });

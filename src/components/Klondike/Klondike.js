@@ -34,7 +34,7 @@ export default class Klondike extends Component {
         foundationPiles
       }
     } = this.props;
-    console.log('Klondike::render()', this.props);
+    //console.log('Klondike::render()', this.props);
     return (
       <div className="Solitaire">
         <div style={{

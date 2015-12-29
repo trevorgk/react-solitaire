@@ -19,7 +19,7 @@ export default class Pile extends Component {
         row,
         layout
       } = this.props;
-        console.log('Pile::render()', this.props);
+        //console.log('Pile::render()', this.props);
         let pileStyle = this.props.pileStyle || {};
         let cardStyle = this.props.cardStyle || {};
         switch (layout) {
