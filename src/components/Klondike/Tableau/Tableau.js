@@ -7,7 +7,7 @@ import {
 } from 'components';
 
 const Tableau = (props) => {
-  const {piles, selected, clickHandler, doubleClickHandler} = props;
+  const {piles, clickHandler, doubleClickHandler} = props;
   //console.log('Tableau::render()', props);
   return <div>{
     piles.map((pile, row) => {
@@ -22,7 +22,7 @@ const Tableau = (props) => {
         backgroundPosition: "18px 30px",
         float: "left"
     }}>
-          <Pile layout={PlayingCards.Layout.FannedDown} pileType={PileTypes.TABLEAUPILE} selected={selected} row={row} pile={pile} clickHandler={clickHandler} doubleClickHandler={doubleClickHandler}/>
+          <Pile layout={PlayingCards.Layout.FannedDown} pileType={PileTypes.TABLEAUPILE} row={row} pile={pile} />
         </div>
       })
     }</div>

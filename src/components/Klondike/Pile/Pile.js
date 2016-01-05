@@ -12,7 +12,6 @@ export default class Pile extends Component {
     render() {
       const {
         pile,
-        selected,
         pileType,
         clickHandler,
         doubleClickHandler,
@@ -38,7 +37,7 @@ export default class Pile extends Component {
                 break;
         }
         return (<div className="Pile" style={pileStyle}>
-              {pile && pile.map((card, pos) => <KlondikeCard card={card} selected={selected} pileType={pileType} pileSize={pile.length} clickHandler={clickHandler} doubleClickHandler={doubleClickHandler} pos={pos} row={row} style={Object.assign(cardStyle, { zIndex: pos })}/>)}
+              {pile && pile.map((card, pos) => <KlondikeCard card={card} pos={pos} row={row} pileType={pileType} style={Object.assign(cardStyle, { zIndex: pos })}/>)}
             </div>);
     }
 }

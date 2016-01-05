@@ -14,12 +14,8 @@ export default class KlondikeCard extends Component {
   static propTypes = {
     card: PropTypes.instanceOf(PlayingCards.Card),
     pileType: PropTypes.number.isRequired,
-    active: React.PropTypes.object,
     row: React.PropTypes.array,
-    pos: PropTypes.number.isRequired,
-    pileSize: PropTypes.number.isRequired,
-    clickHandler: PropTypes.func.isRequired,
-    doubleClickHandler: PropTypes.func.isRequired
+    pos: PropTypes.number.isRequired
   }
 
     constructor(props) {
@@ -53,7 +49,7 @@ export default class KlondikeCard extends Component {
     isActive(active, card){
       if (!active) return false;  //  no other card has been activated via click
       if (!card.show) {
-          alert('i\'m heeeere');
+          return false;
       }
 
       return card.suit == active.card.suit && card.rank == active.card.rank;
@@ -65,20 +61,18 @@ export default class KlondikeCard extends Component {
         pileType,
         row,
         pos,
-        pileSize,
         cardClicked,
-        cardDoubleClicked,
+        cardDoubleClicked
       } = this.props;
 
       const clickTarget = {
         card,
         pileType,
         row,
-        pos,
-        pileSize,
+        pos
       };
       const doubleClickDelay = 225;
-      let payload = { pileType: pileType, row: row, card: card, pos: pos, pileSize: pileSize };
+      let payload = { pileType: pileType, row: row, card: card, pos: pos };
       if (!this.clickTimeoutId) {
           this.clickTimeoutId = setTimeout(() => {
               cardClicked(clickTarget);
@@ -99,9 +93,6 @@ export default class KlondikeCard extends Component {
         pileType,
         row,
         pos,
-        pileSize,
-        clickHandler,
-        doubleClickHandler,
         klondike: {
           active
         }

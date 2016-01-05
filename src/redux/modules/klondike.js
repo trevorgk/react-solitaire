@@ -1,6 +1,6 @@
 import * as MoveTypes from '../../constants/MoveTypes';
 import * as PileTypes from '../../constants/PileTypes';
-
+import * as PlayingCards from '../../models/PlayingCards';
 const LOAD = 'redux-example/klondike/LOAD';
 const LOAD_SUCCESS = 'redux-example/klondike/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/klondike/LOAD_FAIL';
@@ -55,31 +55,32 @@ export default function reducer(state = initialState, action = {}) {
     case CARD_CLICKED:
       console.log('processClick', action.target);
       if (state.data.active == null && action.target.card != null) {
-        if (canSelect(action.target)) {
+        if (canSelect(state, action.target)) {
           return markSelected(state, action.target);
         }
       } else if (state.data.active.card == action.target.card) {
         return resetSelection(state);
       } else {
-        if (canMove(state.data.active, action.target)) {
-          return processMove(state.data.active, action.target);
+        if (canMove(state, state.data.active, action.target)) {
+          return processMove(state, state.data.active, action.target);
         } else {
           return markSelected(state, action.target);
         }
       }
       return state;
     case CARD_DOUBLE_CLICKED:
-      console.log('processDoubleClick', src);
-      this.state.data.foundationPiles[src.row];
-      var foundationPile = this.state.data.foundationPiles[src.card.suit];
+      console.log('processDoubleClick', action.target);
+      //this.state.data.foundationPiles[src.row];
+      let src = action.target;
+      let foundationPile = state.data.foundationPiles[src.card.suit];
       let card = foundationPile.length > 0 ? foundationPile[foundationPile.length - 1] : null;
-      let target = {
+      let dest = {
         pileType: PileTypes.FOUNDATION,
         row: src.card.suit,
         card
       };
-      if (KlondikeCard.canMove(src, target)) {
-        processMove(src, target);
+      if (canMove(state, src, dest)) {
+        return processMove(state, src, dest);
       }
       return state;
     case STOCK:
@@ -99,7 +100,7 @@ export default function reducer(state = initialState, action = {}) {
       if (state.data.active && state.data.active.pileType == PileTypes.WASTE) {
         state = resetSelection(state);
       }
-      //this.logMove(move);
+      state = logMove(state, move);
       return {
         ...state,
         data: { ...state.data, waste, deck}
@@ -189,10 +190,10 @@ export function load() {
   };
 }
 
-function canSelect(target) {
+function canSelect(state, target) {
   switch (target.pileType) {
     case PileTypes.WASTE:
-      return target.pos == target.pileSize - 1;
+      return target.pos == state.data.waste.length - 1;
   }
   return true;
 }
@@ -217,78 +218,95 @@ function resetSelection(state) {
   }
 }
 
-function canMove(src, dest) {
+
+function cardColour(card){
+  return card.suit == PlayingCards.Suit.Spades || card.suit == PlayingCards.Suit.Clubs ? PlayingCards.Color.Black : PlayingCards.Color.Red;
+}
+
+function canMove(state, src, dest) {
   switch (dest.pileType) {
     case PileTypes.TABLEAUPILE:
-      return dest.pos == dest.pileSize - 1 && src.card.getColor() != dest.card.getColor() && src.card.rank == dest.card.rank - 1;
+      let tableau = state.data.tableauPiles[dest.row]
+      return dest.pos == tableau.length - 1 && cardColour(src.card) != cardColour(dest.card) && src.card.rank == dest.card.rank - 1;
     case PileTypes.EMPTYTABLEAU:
       return src.card.rank == PlayingCards.Rank.King;
     case PileTypes.FOUNDATION:
-      if (src.pileType == PileTypes.TABLEAUPILE && src.pos != src.pileSize - 1)
+      if (src.pileType == PileTypes.TABLEAUPILE && src.pos != state.data.tableauPiles[src.row].length - 1){
+        //  user can only move the top tableau card to a foundation pile
         return false;
-      return src.card.suit == dest.row && ((src.card.rank == PlayingCards.Rank.Ace) || (dest.card && src.card.rank == dest.card.rank + 1));
+      }
+      let tableauPile = state.data.tableauPiles[src.row];
+      return src.card.suit == dest.row && (src.card.rank == PlayingCards.Rank.Ace || (dest.card && src.card.rank == dest.card.rank + 1));
     default:
       return false;
   }
+
 }
 
-function processMove(src, dest) {
+function processMove(state, src, dest) {
+
+  let foundationPiles = state.data.foundationPiles;
+  let tableauPiles = state.data.tableauPiles;
+  let waste = state.data.waste;
   let transplantCards = [];
-  var move = {
+  let move = {
     moveType: MoveTypes.MOVECARD,
     src,
     dest
   };
   switch (src.pileType) {
     case PileTypes.TABLEAUPILE:
-      var tableauPile = this.state.data.tableauPiles[src.row];
-      transplantCards = tableauPile.splice(src.pos, tableauPile.length - src.pos);
-      move.reveal = revealTopCard(tableauPile);
+      var tableauPile = tableauPiles[src.row];
+      transplantCards = [...tableauPile.slice(src.pos)];
+      tableauPile =  [...tableauPile.slice(0, src.pos)];
+      tableauPiles[src.row] = revealTopCard(tableauPile);
       break;
     case PileTypes.WASTE:
-      var card = this.state.data.waste.pop();
-      move.reveal = revealTopCard(this.state.data.waste);
-      transplantCards = [card];
+      transplantCards = [waste[waste.length - 1]];
+      waste =  [...waste.slice(0, waste.length - 1)];
       break;
     case PileTypes.FOUNDATION:
-      transplantCards = [this.state.data.foundationPiles[this.state.data.active.row].pop()];
+      let foundationPile = foundationPiles[src.row];
+      transplantCards = [foundationPile[foundationPile.length - 1]];
+      foundationPiles[src.row]= [...foundationPile.slice(0, foundationPile.length - 1)];
       break;
   }
   if (transplantCards.length == 0) {
     throw "Cards required for move";
   }
-  let foundationPiles = this.state.data.foundationPiles;
-  let tableauPiles = this.state.data.tableauPiles;
   switch (dest.pileType) {
     case PileTypes.TABLEAUPILE:
     case PileTypes.EMPTYTABLEAU:
-      tableauPiles[dest.row] = tableauPiles[dest.row].concat(transplantCards);
+      tableauPiles[dest.row] = [...tableauPiles[dest.row], ...transplantCards]
       break;
     case PileTypes.FOUNDATION:
-      foundationPiles[dest.row] = foundationPiles[dest.row].concat(transplantCards);
+      foundationPiles[dest.row] =  [...foundationPiles[dest.row], ...transplantCards];
       break;
   }
-  resetSelection();
+  state = resetSelection(state);
   // this.setState({foundationPiles});
-  logMove(move);
+  return logMove(state, move);
 }
 
-function logMove(move) {
-  let moves = this.state.data.moves;
-  moves.push(move);
-  this.setState({
-    moves, moveCount: this.state.data.moveCount + 1
-  });
+function logMove(state, move) {
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      moves: [...state.data.moves, move],
+      moveCount: state.data.moveCount + 1
+    }
+  }
 }
 
 function revealTopCard(pile) {
   if (pile.length == 0)
-    return false;
+    return pile;
+
   let topCard = pile[pile.length - 1];
-  if (!topCard.show) {
-    return topCard.show = true;
-  }
-  return false;
+  topCard.show = true;
+
+  return [...pile.slice(0, pile.length - 1), topCard]
 }
 
 //  todo keyboard commands
