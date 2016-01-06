@@ -1,6 +1,6 @@
-import * as MoveTypes from '../../constants/MoveTypes';
-import * as PileTypes from '../../constants/PileTypes';
-import * as PlayingCards from '../../models/PlayingCards';
+import * as MoveTypes from 'constants/MoveTypes';
+import * as PileTypes from 'constants/PileTypes';
+import * as PlayingCards from 'models/PlayingCards';
 const LOAD = 'redux-example/klondike/LOAD';
 const LOAD_SUCCESS = 'redux-example/klondike/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/klondike/LOAD_FAIL';
@@ -84,19 +84,16 @@ export default function reducer(state = initialState, action = {}) {
       }
       return state;
     case STOCK:
-      let deck = state.data.deck.concat(state.data.waste.reverse());
+      let deck = [...[...state.data.waste].reverse(), ...state.data.deck];
       let move = {
         moveType: MoveTypes.FLIPFROMSTOCK,
         wasteSize: state.data.waste.length
       };
       const maxWasteSize = 3;//  todo this.props.wasteSize;
       let wasteSize = state.data.deck.length < maxWasteSize ? state.deck.data.length : maxWasteSize;
-      let waste = [];
-      for (let i = 0; i < wasteSize; i++) {
-        let card = deck.pop();
-        card.show = true; //i == wasteSize - 1;
-        waste.push(card);
-      }
+      let startPos = deck.length - wasteSize;
+      let waste = [...deck.slice(startPos, deck.length)]
+      deck = [...deck.slice(0, startPos)]
       if (state.data.active && state.data.active.pileType == PileTypes.WASTE) {
         state = resetSelection(state);
       }
@@ -108,10 +105,10 @@ export default function reducer(state = initialState, action = {}) {
     case UNDO:
       let moveHistory = this.state.data.moveHistory;
       if (moveHistory.length == 0) {
-        alert('Nothing to undo...');
-        return;
+        console.log('Nothing to undo...');
+        return state;
       }
-      let latestMove = moveHistory.pop();
+      let latestMove = moveHistory[moveHistory.length];
       console.log('undo clicked', latestMove);
       let tableauPiles = this.state.data.tableauPiles;
       switch (latestMove.moveType) {
@@ -119,7 +116,8 @@ export default function reducer(state = initialState, action = {}) {
           let transplantCards = [];
           switch (latestMove.dest.pileType) {
             case PileTypes.EMPTYTABLEAU:
-              transplantCards = [this.state.data.tableauPiles[latestMove.dest.row].pop()];
+              let tableau = tableauPiles[latestMove.dest.row];
+              transplantCards = [tableau[tableau.length]];
               break;
             case PileTypes.TABLEAUPILE:
               let tableauPile = this.state.data.tableauPiles[latestMove.dest.row];

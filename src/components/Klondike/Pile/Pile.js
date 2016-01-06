@@ -2,12 +2,12 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as klondikeActions from 'redux/modules/klondike';
-import * as PlayingCards from '../../../models/PlayingCards';
+import * as PlayingCards from 'models/PlayingCards';
 import {KlondikeCard} from 'components';
 
 export default class Pile extends Component {
     constructor(props) {
-        super(props);
+      super(props);
     }
     render() {
       const {

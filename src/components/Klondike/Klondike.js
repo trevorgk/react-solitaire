@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import * as klondikeActions from 'redux/modules/klondike';
-import * as PlayingCards from '../../models/PlayingCards';
-import * as PileTypes from '../../constants/PileTypes';
+import * as PlayingCards from 'models/PlayingCards';
+import * as PileTypes from 'constants/PileTypes';
 import {MoveTypes, Foundation, Pile, KlondikeCard, Tableau} from 'components';
 import {connect} from 'react-redux';
 
@@ -26,6 +26,7 @@ export default class Klondike extends Component {
     const {
       undo,
       stock,
+      cardClicked,
       klondike: {
         moveCount,
         active,
@@ -67,7 +68,7 @@ export default class Klondike extends Component {
               </div>
             </div>
             <div>
-              <Foundation piles={foundationPiles} />
+              <Foundation piles={foundationPiles} cardClicked={cardClicked} />
             </div>
           </div>
           <div style={{
