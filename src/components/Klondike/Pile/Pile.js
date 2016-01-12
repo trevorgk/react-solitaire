@@ -37,7 +37,7 @@ export default class Pile extends Component {
                 break;
         }
         return (<div className="Pile" style={pileStyle}>
-              {pile && pile.map((card, pos) => <KlondikeCard card={card} pos={pos} row={row} pileType={pileType} style={Object.assign(cardStyle, { zIndex: pos })}/>)}
+              {pile && pile.map((card, pos) => <KlondikeCard key={pos + "." + row} card={card} pos={pos} row={row} pileType={pileType} style={Object.assign(cardStyle, { zIndex: pos })}/>)}
             </div>);
     }
 }

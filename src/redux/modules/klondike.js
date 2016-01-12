@@ -148,10 +148,10 @@ export default function reducer(state = initialState, action = {}) {
               this.state.data.waste = this.state.data.waste.concat(transplantCards);
               break;
           }
-
-          this.setState({
-            moveHistory, moveCount: this.state.data.moveCount + 1
-          });
+          //
+          // this.setState({
+          //   moveHistory, moveCount: this.state.data.moveCount + 1
+          // });
           break;
         case MoveTypes.FLIPFROMSTOCK:
           let deck = this.state.data.deck;
@@ -166,9 +166,9 @@ export default function reducer(state = initialState, action = {}) {
             card.show = true; //i == wasteSize - 1;
             waste.unshift(card);
           }
-          this.setState({
-            waste, deck
-          });
+          // this.setState({
+          //   waste, deck
+          // });
           break;
       }
       return state;
