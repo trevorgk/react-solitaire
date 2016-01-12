@@ -261,12 +261,12 @@ function processMove(state, src, dest) {
       break;
     case PileTypes.WASTE:
       transplantCards = [waste[waste.length - 1]];
-      waste =  [...waste.slice(0, waste.length - 1)];
+      waste = [...waste.slice(0, waste.length - 1)];
       break;
     case PileTypes.FOUNDATION:
       let foundationPile = foundationPiles[src.row];
       transplantCards = [foundationPile[foundationPile.length - 1]];
-      foundationPiles[src.row]= [...foundationPile.slice(0, foundationPile.length - 1)];
+      foundationPiles[src.row] = [...foundationPile.slice(0, foundationPile.length - 1)];
       break;
   }
   if (transplantCards.length == 0) {
@@ -281,7 +281,18 @@ function processMove(state, src, dest) {
       foundationPiles[dest.row] =  [...foundationPiles[dest.row], ...transplantCards];
       break;
   }
-  state = resetSelection(state);
+  return {
+    ...state,
+    data: {
+      ...state.data,
+      foundationPiles,
+      tableauPiles,
+      waste,
+      active: null,
+      moves: [...state.data.moves, move],
+      moveCount: state.data.moveCount + 1
+    }
+  }
   // this.setState({foundationPiles});
   return logMove(state, move);
 }
