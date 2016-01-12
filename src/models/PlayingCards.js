@@ -1,36 +1,36 @@
 "use strict";
 (function (Suit) {
-    Suit[Suit["Spades"] = 0] = "Spades";
-    Suit[Suit["Clubs"] = 1] = "Clubs";
-    Suit[Suit["Diamonds"] = 2] = "Diamonds";
-    Suit[Suit["Hearts"] = 3] = "Hearts";
+    Suit[Suit["Spades"] = "Spades"] = "Spades";
+    Suit[Suit["Clubs"] = "Clubs"] = "Clubs";
+    Suit[Suit["Diamonds"] = "Diamonds"] = "Diamonds";
+    Suit[Suit["Hearts"] = "Hearts"] = "Hearts";
 })(exports.Suit || (exports.Suit = {}));
 var Suit = exports.Suit;
 (function (Color) {
-    Color[Color["Red"] = 0] = "Red";
-    Color[Color["Black"] = 1] = "Black";
+    Color[Color["Red"] = "Red"] = "Red";
+    Color[Color["Black"] = "Black"] = "Black";
 })(exports.Color || (exports.Color = {}));
 var Color = exports.Color;
 (function (Rank) {
-    Rank[Rank["Ace"] = 1] = "Ace";
-    Rank[Rank["Two"] = 2] = "Two";
-    Rank[Rank["Three"] = 3] = "Three";
-    Rank[Rank["Four"] = 4] = "Four";
-    Rank[Rank["Five"] = 5] = "Five";
-    Rank[Rank["Six"] = 6] = "Six";
-    Rank[Rank["Seven"] = 7] = "Seven";
-    Rank[Rank["Eight"] = 8] = "Eight";
-    Rank[Rank["Nine"] = 9] = "Nine";
-    Rank[Rank["Ten"] = 10] = "Ten";
-    Rank[Rank["Jack"] = 11] = "Jack";
-    Rank[Rank["Queen"] = 12] = "Queen";
-    Rank[Rank["King"] = 13] = "King";
+    Rank[Rank["Ace"] = "Ace"] = "Ace";
+    Rank[Rank["Two"] = "Two"] = "Two";
+    Rank[Rank["Three"] = "Three"] = "Three";
+    Rank[Rank["Four"] = "Four"] = "Four";
+    Rank[Rank["Five"] = "Five"] = "Five";
+    Rank[Rank["Six"] = "Six"] = "Six";
+    Rank[Rank["Seven"] = "Seven"] = "Seven";
+    Rank[Rank["Eight"] = "Eight"] = "Eight";
+    Rank[Rank["Nine"] = "Nine"] = "Nine";
+    Rank[Rank["Ten"] = "Ten"] = "Ten";
+    Rank[Rank["Jack"] = "Jack"] = "Jack";
+    Rank[Rank["Queen"] = "Queen"] = "Queen";
+    Rank[Rank["King"] = "King"] = "King";
 })(exports.Rank || (exports.Rank = {}));
 var Rank = exports.Rank;
 (function (Layout) {
-    Layout[Layout["Squared"] = 0] = "Squared";
-    Layout[Layout["FannedDown"] = 1] = "FannedDown";
-    Layout[Layout["FannedRight"] = 2] = "FannedRight";
+    Layout[Layout["Squared"] = "Squared"] = "Squared";
+    Layout[Layout["FannedDown"] = "FannedDown"] = "FannedDown";
+    Layout[Layout["FannedRight"] = "FannedRight"] = "FannedRight";
 })(exports.Layout || (exports.Layout = {}));
 var Layout = exports.Layout;
 class Card {
