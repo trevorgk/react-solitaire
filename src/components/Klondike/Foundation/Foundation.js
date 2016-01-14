@@ -12,7 +12,7 @@ const Foundation = (props) => {
     piles,
     cardClicked
   } = props;
-  const pileType = PileTypes.TABLEAUPILE;
+  const pileType = PileTypes.FOUNDATION;
   //console.log('Foundation::render()', props);
 
   return <div className="Foundation">

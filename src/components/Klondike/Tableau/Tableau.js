@@ -9,14 +9,16 @@ import {
 const Tableau = (props) => {
   const {
     piles,
-    clickHandler,
-    doubleClickHandler
+    cardClicked
   } = props;
   const pileType = PileTypes.TABLEAUPILE;
+  const handleClick = function(row) {
+    cardClicked({ pileType: PileTypes.EMPTYTABLEAU, row });
+  }
   return <div>{
     piles.map((pile, row) => {
     // let validDropTarget = this.props.selected != null && this.props.pile.length == 0 && KlondikeCard.canMove(this.props.selected, { pileType: PileTypes.EMPTYTABLEAU, row: this.props.row });
-    return <div className="Tableau" key={pileType + "-" + row} onClick={pile.length == 0 && (e) && clickHandler != null && ((e) => {clickHandler({ pileType: PileTypes.EMPTYTABLEAU, row: row })})}
+    return <div className="Tableau" key={pileType + "-" + row} data-row={row} onClick={pile.length == 0 && handleClick.bind(null, row)}
       style={{
         position: "relative",
         width: "80px",

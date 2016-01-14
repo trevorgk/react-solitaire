@@ -54,17 +54,20 @@ export default function reducer(state = initialState, action = {}) {
       };
     case CARD_CLICKED:
       console.log('processClick', action.target);
-      if (state.data.active == null && action.target.card != null) {
+      if (state.data.active == null) {
         if (canSelect(state, action.target)) {
           return markSelected(state, action.target);
         }
+        return state;
       } else if (state.data.active.card == action.target.card) {
         return resetSelection(state);
       } else {
         if (canMove(state, state.data.active, action.target)) {
           return processMove(state, state.data.active, action.target);
         } else {
-          return markSelected(state, action.target);
+          if (canSelect(state, action.target)){
+            return markSelected(state, action.target);
+          }
         }
       }
       return state;
@@ -189,6 +192,9 @@ export function load() {
 }
 
 function canSelect(state, target) {
+  if (target.card == null) {
+    return false;
+  }
   switch (target.pileType) {
     case PileTypes.WASTE:
       return target.pos == state.data.waste.length - 1;
@@ -278,7 +284,7 @@ function processMove(state, src, dest) {
       tableauPiles[dest.row] = [...tableauPiles[dest.row], ...transplantCards]
       break;
     case PileTypes.FOUNDATION:
-      foundationPiles[dest.row] =  [...foundationPiles[dest.row], ...transplantCards];
+      foundationPiles[dest.row] = [...foundationPiles[dest.row], ...transplantCards];
       break;
   }
   return {

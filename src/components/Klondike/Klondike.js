@@ -62,8 +62,9 @@ export default class Klondike extends Component {
                   style={{
                 width: "80px", height: "112px", cursor: "pointer", float: "left"
                 }}/>
-              <Pile layout={PlayingCards.Layout.FannedRight} pileType={PileTypes.WASTE} selected={active} doubleClickHandler={this.processDoubleClick} clickHandler={this.processClick} pile={waste} pileStyle={{
-                float: "left", marginLeft: "75px"
+              <Pile layout={PlayingCards.Layout.FannedRight} pileType={PileTypes.WASTE} pile={waste} pileStyle={{
+                float: "left",
+                marginLeft: "75px"
                 }}/>
               </div>
             </div>
@@ -74,7 +75,7 @@ export default class Klondike extends Component {
           <div style={{
           padding: "20px 10px 0", float: "right"
           }}>
-            <Tableau piles={tableauPiles} />
+            <Tableau piles={tableauPiles} cardClicked={cardClicked}/>
           </div>
         </div>
       </div>
