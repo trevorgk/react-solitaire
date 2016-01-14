@@ -73,7 +73,7 @@ export default function reducer(state = initialState, action = {}) {
       return state;
     case CARD_DOUBLE_CLICKED:
       console.log('processDoubleClick', action.target);
-      //this.state.data.foundationPiles[src.row];
+      //state.data.foundationPiles[src.row];
       let src = action.target;
       let foundationPile = state.data.foundationPiles[src.card.suit];
       let card = foundationPile.length > 0 ? foundationPile[foundationPile.length - 1] : null;
@@ -106,75 +106,90 @@ export default function reducer(state = initialState, action = {}) {
         data: { ...state.data, waste, deck}
       };
     case UNDO:
-      let moveHistory = this.state.data.moveHistory;
-      if (moveHistory.length == 0) {
+      let moves = state.data.moves;
+      if (moves.length == 0) {
         console.log('Nothing to undo...');
         return state;
       }
-      let latestMove = moveHistory[moveHistory.length];
+      let latestMove = moves[moves.length - 1];
       console.log('undo clicked', latestMove);
-      let tableauPiles = this.state.data.tableauPiles;
+
+      let tableauPiles = state.data.tableauPiles;
+      let foundationPiles = state.data.foundationPiles;
+
+        let undoDeck = state.data.deck;
+        let undoWaste = state.data.waste;
       switch (latestMove.moveType) {
         case MoveTypes.MOVECARD:
           let transplantCards = [];
           switch (latestMove.dest.pileType) {
             case PileTypes.EMPTYTABLEAU:
               let tableau = tableauPiles[latestMove.dest.row];
-              transplantCards = [tableau[tableau.length]];
+              transplantCards = tableau;
               break;
             case PileTypes.TABLEAUPILE:
-              let tableauPile = this.state.data.tableauPiles[latestMove.dest.row];
-              transplantCards = tableauPile.splice(latestMove.dest.pos + 1, tableauPile.length - latestMove.dest.pos);
+              let tableauPile = tableauPiles[latestMove.dest.row];
+              transplantCards = [...tableauPile.slice(latestMove.dest.pos + 1)];
+              // tableauPile[tableauPile.length - 1].show = false;
+              tableauPiles[latestMove.dest.row] = [...tableauPile.slice(0, latestMove.dest.pos + 1)]
               break;
             case PileTypes.WASTE:
               throw "Invalid undo source WASTE";
             case PileTypes.FOUNDATION:
-              transplantCards = [this.state.data.foundationPiles[latestMove.dest.row].pop()];
+              let foundationPile = foundationPiles[latestMove.dest.row];
+              transplantCards = [...foundationPile[foundationPile.length - 1]];
+              foundationPiles[latestMove.dest.row] = [...foundationPile.slice(0, foundationPile.length - 1)]
               break;
           }
+
           if (transplantCards.length == 0) {
             throw "Cards required for undo";
           }
-          switch (latestMove.active.pileType) {
+
+          switch (latestMove.src.pileType) {
             case PileTypes.TABLEAUPILE:
-              let tableauPile = this.state.data.tableauPiles[latestMove.active.row];
+              let tableauPile = tableauPiles[latestMove.src.row];
               if (latestMove.reveal) {
-                tableauPile[tableauPile.length - 1].show = false;
+                  tableauPile[tableauPile.length - 1].show = false;
               }
-              tableauPile = tableauPile.concat(transplantCards);
-              this.state.data.tableauPiles[latestMove.active.row] = tableauPile;
+              tableauPile = [...tableauPile, ...transplantCards];
+              tableauPiles[latestMove.src.row] = tableauPile;
               break;
             case PileTypes.FOUNDATION:
-              this.state.data.foundationPiles[latestMove.active.row] = this.state.data.foundationPiles[latestMove.active.row].concat(transplantCards);
+              let foundationPile = foundationPiles[latestMove.src.row];
+              foundationPile = [...foundationPile, ...transplantCards];
+              foundationPiles[latestMove.src.row] = foundationPile;
               break;
             case PileTypes.WASTE:
-              this.state.data.waste = this.state.data.waste.concat(transplantCards);
+              undoWaste = [...undoWaste, ...transplantCards];
               break;
           }
-          //
-          // this.setState({
-          //   moveHistory, moveCount: this.state.data.moveCount + 1
-          // });
-          break;
-        case MoveTypes.FLIPFROMSTOCK:
-          let deck = this.state.data.deck;
-          let waste = this.state.data.waste;
-          while (waste.length > 0) {
-            let card = waste.pop();
-            card.show = false;
-            deck.addTopCard(card);
-          }
-          for (let i = 0; i < latestMove.wasteSize; i++) {
-            let card = deck.getBottomCard();
-            card.show = true; //i == wasteSize - 1;
-            waste.unshift(card);
-          }
-          // this.setState({
-          //   waste, deck
-          // });
-          break;
+        //
+        // case MoveTypes.FLIPFROMSTOCK:
+        //   while (undoWaste.length > 0) {
+        //     let transplant = [undoWaste.pop()];
+        //     card.show = false;
+        //     deck.addTopCard(card);
+        //   }
+        //   for (let i = 0; i < latestMove.wasteSize; i++) {
+        //     let card = deck.getBottomCard();
+        //     card.show = true; //i == wasteSize - 1;
+        //     undoWaste.unshift(card);
+        //   }
+        //   break;
       }
-      return state;
+
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          moves: [...moves.slice(0, moves.length - 2)],
+          waste:undoWaste,
+          foundationPiles,
+          tableauPiles,
+          moveCount: state.data.moveCount - 1
+        }
+      }
     default:
       return state;
   }
@@ -248,7 +263,6 @@ function canMove(state, src, dest) {
 }
 
 function processMove(state, src, dest) {
-
   let foundationPiles = state.data.foundationPiles;
   let tableauPiles = state.data.tableauPiles;
   let waste = state.data.waste;
@@ -256,14 +270,23 @@ function processMove(state, src, dest) {
   let move = {
     moveType: MoveTypes.MOVECARD,
     src,
-    dest
+    dest,
+    reveal: false
   };
   switch (src.pileType) {
     case PileTypes.TABLEAUPILE:
-      var tableauPile = tableauPiles[src.row];
+      let tableauPile = tableauPiles[src.row];
       transplantCards = [...tableauPile.slice(src.pos)];
       tableauPile =  [...tableauPile.slice(0, src.pos)];
-      tableauPiles[src.row] = revealTopCard(tableauPile);
+      if (tableauPile.length > 0) {
+        let topCard = tableauPile[tableauPile.length - 1];
+        if (!topCard.show) {
+          let topCard = tableauPile[tableauPile.length - 1];
+          topCard.show = move.reveal = true;
+        }
+        tableauPile = [...tableauPile.slice(0, tableauPile.length - 1), topCard];
+      }
+      tableauPiles[src.row] = tableauPile;
       break;
     case PileTypes.WASTE:
       transplantCards = [waste[waste.length - 1]];
@@ -281,7 +304,7 @@ function processMove(state, src, dest) {
   switch (dest.pileType) {
     case PileTypes.TABLEAUPILE:
     case PileTypes.EMPTYTABLEAU:
-      tableauPiles[dest.row] = [...tableauPiles[dest.row], ...transplantCards]
+      tableauPiles[dest.row] = [...tableauPiles[dest.row], ...transplantCards];
       break;
     case PileTypes.FOUNDATION:
       foundationPiles[dest.row] = [...foundationPiles[dest.row], ...transplantCards];
