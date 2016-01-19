@@ -9,24 +9,34 @@ const CARD_DOUBLE_CLICKED = 'redux-example/klondike/CARD_DOUBLE_CLICKED';
 const STOCK = 'redux-example/klondike/STOCK';
 const UNDO = 'redux-example/klondike/UNDO';
 
-export function cardClicked(target){
-  return { type: CARD_CLICKED, target };
+export function cardClicked(target) {
+  return {
+    type: CARD_CLICKED,
+    target
+  };
 }
 
-export function cardDoubleClicked(target){
-  return { type: CARD_DOUBLE_CLICKED, target };
+export function cardDoubleClicked(target) {
+  return {
+    type: CARD_DOUBLE_CLICKED,
+    target
+  };
 }
 
 export function stock() {
-  return { type: STOCK };
+  return {
+    type: STOCK
+  };
 }
 
 export function undo() {
-  return { type: UNDO };
+  return {
+    type: UNDO
+  };
 }
 
 const initialState = {
-    loaded: false
+  loaded: false
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -53,139 +63,163 @@ export default function reducer(state = initialState, action = {}) {
           error: action.error
       };
     case CARD_CLICKED:
-      console.log('processClick', action.target);
-      if (state.data.active == null) {
-        if (canSelect(state, action.target)) {
-          return markSelected(state, action.target);
-        }
-        return state;
-      } else if (state.data.active.card == action.target.card) {
-        return resetSelection(state);
-      } else {
-        if (canMove(state, state.data.active, action.target)) {
-          return processMove(state, state.data.active, action.target);
+      {
+        let active = state.data.active;
+        let clickTarget = action.target;
+        if (active == null) {
+          if (canSelect(state, clickTarget)) {
+            return markSelected(state, clickTarget);
+          }
+          return state;
+        } else if (active.card === clickTarget.card) {
+          return resetSelection(state);
         } else {
-          if (canSelect(state, action.target)){
-            return markSelected(state, action.target);
+          if (canMove(state, active, clickTarget)) {
+            return processMove(state, active, clickTarget);
+          } else {
+            if (canSelect(state, clickTarget)) {
+              return markSelected(state, clickTarget);
+            }
           }
         }
-      }
-      return state;
-    case CARD_DOUBLE_CLICKED:
-      console.log('processDoubleClick', action.target);
-      //state.data.foundationPiles[src.row];
-      let src = action.target;
-      let foundationPile = state.data.foundationPiles[src.card.suit];
-      let card = foundationPile.length > 0 ? foundationPile[foundationPile.length - 1] : null;
-      let dest = {
-        pileType: PileTypes.FOUNDATION,
-        row: src.card.suit,
-        card
-      };
-      if (canMove(state, src, dest)) {
-        return processMove(state, src, dest);
-      }
-      return state;
-    case STOCK:
-      let deck = [...[...state.data.waste].reverse(), ...state.data.deck];
-      let move = {
-        moveType: MoveTypes.FLIPFROMSTOCK,
-        wasteSize: state.data.waste.length
-      };
-      const maxWasteSize = 3;//  todo this.props.wasteSize;
-      let wasteSize = state.data.deck.length < maxWasteSize ? state.deck.data.length : maxWasteSize;
-      let startPos = deck.length - wasteSize;
-      let waste = [];
-      deck.slice(startPos, deck.length).map(card => waste = [{...card, show: true}, ...waste]);
-      deck = [...deck.slice(0, startPos)]
-      if (state.data.active && state.data.active.pileType == PileTypes.WASTE) {
-        state = resetSelection(state);
-      }
-      state = logMove(state, move);
-      return {
-        ...state,
-        data: { ...state.data, waste, deck}
-      };
-    case UNDO:
-      let moves = state.data.moves;
-      if (moves.length == 0) {
-        console.log('Nothing to undo...');
         return state;
       }
-      let latestMove = moves[moves.length - 1];
-      console.log('undo clicked', latestMove);
-
-      let tableauPiles = state.data.tableauPiles;
-      let foundationPiles = state.data.foundationPiles;
-
-        let undoDeck = state.data.deck;
-        let undoWaste = state.data.waste;
-      switch (latestMove.moveType) {
-        case MoveTypes.MOVECARD:
-          let transplantCards = [];
-          switch (latestMove.dest.pileType) {
-            case PileTypes.EMPTYTABLEAU:
-              let tableau = tableauPiles[latestMove.dest.row];
-              transplantCards = tableau;
-              break;
-            case PileTypes.TABLEAUPILE:
-              let tableauPile = tableauPiles[latestMove.dest.row];
-              transplantCards = [...tableauPile.slice(latestMove.dest.pos + 1)];
-              // tableauPile[tableauPile.length - 1].show = false;
-              tableauPiles[latestMove.dest.row] = [...tableauPile.slice(0, latestMove.dest.pos + 1)]
-              break;
-            case PileTypes.WASTE:
-              throw "Invalid undo source WASTE";
-            case PileTypes.FOUNDATION:
-              let foundationPile = foundationPiles[latestMove.dest.row];
-              transplantCards = [...foundationPile[foundationPile.length - 1]];
-              foundationPiles[latestMove.dest.row] = [...foundationPile.slice(0, foundationPile.length - 1)]
-              break;
-          }
-
-          if (transplantCards.length == 0) {
-            throw "Cards required for undo";
-          }
-
-          switch (latestMove.src.pileType) {
-            case PileTypes.TABLEAUPILE:
-              let tableauPile = tableauPiles[latestMove.src.row];
-              if (latestMove.reveal) {
-                  tableauPile[tableauPile.length - 1].show = false;
-              }
-              tableauPile = [...tableauPile, ...transplantCards];
-              tableauPiles[latestMove.src.row] = tableauPile;
-              break;
-            case PileTypes.FOUNDATION:
-              let foundationPile = foundationPiles[latestMove.src.row];
-              foundationPile = [...foundationPile, ...transplantCards];
-              foundationPiles[latestMove.src.row] = foundationPile;
-              break;
-            case PileTypes.WASTE:
-              undoWaste = [...undoWaste, ...transplantCards];
-              break;
-          }
-
-        case MoveTypes.FLIPFROMSTOCK:
-          let reverseWaste = [];
-          undoWaste.map(card => reverseWaste = [{...card, show: false}, ...reverseWaste]);
-          undoDeck = [...undoDeck, ...reverseWaste];
-
-          undoWaste = [];
-          undoDeck.slice(0, latestMove.wasteSize).map(card => undoWaste = [{...card, show: true}, ...undoWaste]);
-          break;
+    case CARD_DOUBLE_CLICKED:
+      {
+        console.log('processDoubleClick', action.target);
+        //state.data.foundationPiles[src.row];
+        let clickTarget = action.target;
+        let foundationPile = state.data.foundationPiles[clickTarget.card.suit];
+        let card = foundationPile.length > 0 ? foundationPile[foundationPile.length - 1] : null;
+        let dest = {
+          pileType: PileTypes.FOUNDATION,
+          row: clickTarget.card.suit,
+          card
+        };
+        if (canMove(state, clickTarget, dest)) {
+          return processMove(state, clickTarget, dest);
+        }
+        return state;
       }
+    case STOCK:
+      {
+        let deck = [...[...state.data.waste].reverse(), ...state.data.deck];
+        let move = {
+          moveType: MoveTypes.FLIPFROMSTOCK,
+          wasteSize: state.data.waste.length
+        };
+        const maxWasteSize = 3; //  todo this.props.wasteSize;
+        let wasteSize = state.data.deck.length < maxWasteSize ? state.data.deck.length : maxWasteSize;
+        let startPos = deck.length - wasteSize;
+        let waste = [];
+        deck.slice(startPos, deck.length).map(card => waste = [{...card, show: true
+        }, ...waste]);
+        deck = [...deck.slice(0, startPos)]
+        if (state.data.active && state.data.active.pileType == PileTypes.WASTE) {
+          state = resetSelection(state);
+        }
+        state = logMove(state, move);
+        return {
+          ...state,
+          data: {...state.data, waste, deck
+          }
+        };
+      }
+    case UNDO:
+      {
+        let moves = state.data.moves;
+        if (moves.length == 0) {
+          console.log('Nothing to undo...');
+          return state;
+        }
 
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          deck: undoDeck,
-          moves: [...moves.slice(0, moves.length - 1)],
-          waste:undoWaste,
-          foundationPiles,
-          tableauPiles,
-          moveCount: state.data.moveCount + 1
+        let latestMove = moves[moves.length - 1];
+        let tableauPiles = state.data.tableauPiles;
+        let foundationPiles = state.data.foundationPiles;
+
+        let deck = state.data.deck;
+        let waste = state.data.waste;
+        switch (latestMove.moveType) {
+          case MoveTypes.MOVECARD:
+            let transplantCards = [];
+            switch (latestMove.dest.pileType) {
+              case PileTypes.EMPTYTABLEAU:
+                let tableau = tableauPiles[latestMove.dest.row];
+                transplantCards = tableau;
+                break;
+              case PileTypes.TABLEAUPILE:
+                let tableauPile = tableauPiles[latestMove.dest.row];
+                transplantCards = [...tableauPile.slice(latestMove.dest.pos + 1)];
+                // tableauPile[tableauPile.length - 1].show = false;
+                tableauPiles[latestMove.dest.row] = [...tableauPile.slice(0, latestMove.dest.pos + 1)]
+                break;
+              case PileTypes.WASTE:
+                throw "Invalid undo source WASTE";
+              case PileTypes.FOUNDATION:
+                let foundationPile = foundationPiles[latestMove.dest.row];
+                transplantCards = [...foundationPile[foundationPile.length - 1]];
+                foundationPiles[latestMove.dest.row] = [...foundationPile.slice(0, foundationPile.length - 1)]
+                break;
+            }
+
+            if (transplantCards.length == 0) {
+              throw "Cards required for undo";
+            }
+
+            switch (latestMove.src.pileType) {
+              case PileTypes.TABLEAUPILE:
+                let tableauPile = tableauPiles[latestMove.src.row];
+                if (latestMove.reveal) {
+                  tableauPile[tableauPile.length - 1].show = false;
+                }
+                tableauPile = [...tableauPile, ...transplantCards];
+                tableauPiles[latestMove.src.row] = tableauPile;
+                break;
+              case PileTypes.FOUNDATION:
+                let foundationPile = foundationPiles[latestMove.src.row];
+                foundationPile = [...foundationPile, ...transplantCards];
+                foundationPiles[latestMove.src.row] = foundationPile;
+                break;
+              case PileTypes.WASTE:
+                waste = [...waste, ...transplantCards];
+                break;
+            }
+            break;
+          case MoveTypes.FLIPFROMSTOCK:
+            let reverseWaste = [];
+            waste.map(card => {
+              reverseWaste = [{
+                ...card,
+                show: false
+              }, ...reverseWaste]
+            });
+
+            waste = [];
+            deck.slice(0, latestMove.wasteSize)
+              .map(card => {
+                waste = [{
+                  ...card,
+                  show: true
+                }, ...waste]
+              });
+
+            deck = [...deck.slice(latestMove.wasteSize),
+              ...reverseWaste
+            ];
+            break;
+        }
+
+        return {
+          ...state,
+          data: {
+            ...state.data,
+              deck,
+              moves: [...moves.slice(0, moves.length - 1)],
+              waste: waste,
+              foundationPiles,
+              tableauPiles,
+              moveCount: state.data.moveCount + 1
+          }
         }
       }
     default:
@@ -220,7 +254,7 @@ function markSelected(state, target) {
     ...state,
     data: {
       ...state.data,
-      active: target
+        active: target
     }
   }
 }
@@ -230,13 +264,13 @@ function resetSelection(state) {
     ...state,
     data: {
       ...state.data,
-      active: null
+        active: null
     }
   }
 }
 
 
-function cardColour(card){
+function cardColour(card) {
   return card.suit == PlayingCards.Suit.Spades || card.suit == PlayingCards.Suit.Clubs ? PlayingCards.Color.Black : PlayingCards.Color.Red;
 }
 
@@ -248,7 +282,7 @@ function canMove(state, src, dest) {
     case PileTypes.EMPTYTABLEAU:
       return src.card.rank == PlayingCards.Rank.King;
     case PileTypes.FOUNDATION:
-      if (src.pileType == PileTypes.TABLEAUPILE && src.pos != state.data.tableauPiles[src.row].length - 1){
+      if (src.pileType == PileTypes.TABLEAUPILE && src.pos != state.data.tableauPiles[src.row].length - 1) {
         //  user can only move the top tableau card to a foundation pile
         return false;
       }
@@ -275,7 +309,7 @@ function processMove(state, src, dest) {
     case PileTypes.TABLEAUPILE:
       let tableauPile = tableauPiles[src.row];
       transplantCards = [...tableauPile.slice(src.pos)];
-      tableauPile =  [...tableauPile.slice(0, src.pos)];
+      tableauPile = [...tableauPile.slice(0, src.pos)];
       if (tableauPile.length > 0) {
         let topCard = tableauPile[tableauPile.length - 1];
         if (!topCard.show) {
@@ -312,12 +346,12 @@ function processMove(state, src, dest) {
     ...state,
     data: {
       ...state.data,
-      foundationPiles,
-      tableauPiles,
-      waste,
-      active: null,
-      moves: [...state.data.moves, move],
-      moveCount: state.data.moveCount + 1
+        foundationPiles,
+        tableauPiles,
+        waste,
+        active: null,
+        moves: [...state.data.moves, move],
+        moveCount: state.data.moveCount + 1
     }
   }
   // this.setState({foundationPiles});
@@ -329,8 +363,8 @@ function logMove(state, move) {
     ...state,
     data: {
       ...state.data,
-      moves: [...state.data.moves, move],
-      moveCount: state.data.moveCount + 1
+        moves: [...state.data.moves, move],
+        moveCount: state.data.moveCount + 1
     }
   }
 }
