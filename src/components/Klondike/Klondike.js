@@ -32,24 +32,24 @@ export default class Klondike extends Component {
         active,
         waste,
         tableauPiles,
-        foundationPiles
+        foundationPiles,
+        moves
       }
     } = this.props;
     //console.log('Klondike::render()', this.props);
     return (
       <div className="Solitaire">
         <div style={{
-        width: "670px", margin: "0 auto", color: "white"
+        width: "670px", margin: "0 auto"
         }}>
           <div style={{
           textAlign: "center"
           }}>
-            {moveCount}
-            {moveCount == 1
+            {moveCount}&nbsp;{moveCount == 1
               ? "move"
               : "moves"}
             <div>
-              <input type="button" value="undo move" onClick={() => undo()}/>
+                <input type="button" value="undo latest" onClick={undo} disabled={!moves.length}/>
             </div>
           </div>
           <div className="">
