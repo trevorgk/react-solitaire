@@ -1,11 +1,4 @@
-import * as PlayingCards from './playing-cards';
-
-export const PileType = {
-  EMPTYTABLEAU: 'emptyTableau',
-  TABLEAUPILE: 'tableauCard',
-  FOUNDATION: 'foundation',
-  WASTE: 'waste'
-};
+import * as PlayingCards from './models/PlayingCards';
 
 export interface ClickTarget {
   pileType: string,
@@ -14,11 +7,6 @@ export interface ClickTarget {
   pos?: number
   pileSize?: number
 }
-
-export const MoveType = {
-  FLIPFROMSTOCK: 'flipFromStock',
-  MOVECARD: 'moveCard'
-};
 
 export interface MoveHistory {
   moveType: string,

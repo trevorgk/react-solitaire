@@ -1,20 +1,13 @@
 {
   "compilerOptions": {
-    "sourceMap": true,
-    "target": "es5",
-    "jsx": "react",
-    "module": "commonjs",
-    "outDir": "./build/tsc/"
+    "target": "es6",
+    "jsx": "preserve",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
-  "files": [
-    "./src/playing-cards.ts",
-    "./src/Common.ts",
-    "./src/App.tsx",
-    "./src/components/Pile.tsx",
-    "./src/components/KlondikeCard.tsx",
-    "./src/components/Klondike.tsx",
-    "./src/components/Tableau.tsx",
-    "./src/components/Diagnostics.tsx",
-    "./typings/react/react-addons.d.ts"
+  "exclude": [
+    "dist",
+    "node_modules",
+    "archived"
   ]
 }
