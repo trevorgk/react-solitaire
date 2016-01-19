@@ -35,7 +35,7 @@ var Rank = exports.Rank;
 var Layout = exports.Layout;
 class Card {
     constructor(suit, rank) {
-        this.show = true;
+        this.show = false;
         this.suit = suit;
         this.rank = rank;
         this.joker = false;
