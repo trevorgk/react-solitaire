@@ -95,7 +95,8 @@ export default function reducer(state = initialState, action = {}) {
       const maxWasteSize = 3;//  todo this.props.wasteSize;
       let wasteSize = state.data.deck.length < maxWasteSize ? state.deck.data.length : maxWasteSize;
       let startPos = deck.length - wasteSize;
-      let waste = [...deck.slice(startPos, deck.length)]
+      let waste = [];
+      deck.slice(startPos, deck.length).map(card => waste = [{...card, show: true}, ...waste]);
       deck = [...deck.slice(0, startPos)]
       if (state.data.active && state.data.active.pileType == PileTypes.WASTE) {
         state = resetSelection(state);
@@ -164,30 +165,27 @@ export default function reducer(state = initialState, action = {}) {
               undoWaste = [...undoWaste, ...transplantCards];
               break;
           }
-        //
-        // case MoveTypes.FLIPFROMSTOCK:
-        //   while (undoWaste.length > 0) {
-        //     let transplant = [undoWaste.pop()];
-        //     card.show = false;
-        //     deck.addTopCard(card);
-        //   }
-        //   for (let i = 0; i < latestMove.wasteSize; i++) {
-        //     let card = deck.getBottomCard();
-        //     card.show = true; //i == wasteSize - 1;
-        //     undoWaste.unshift(card);
-        //   }
-        //   break;
+
+        case MoveTypes.FLIPFROMSTOCK:
+          let reverseWaste = [];
+          undoWaste.map(card => reverseWaste = [{...card, show: false}, ...reverseWaste]);
+          undoDeck = [...undoDeck, ...reverseWaste];
+
+          undoWaste = [];
+          undoDeck.slice(0, latestMove.wasteSize).map(card => undoWaste = [{...card, show: true}, ...undoWaste]);
+          break;
       }
 
       return {
         ...state,
         data: {
           ...state.data,
-          moves: [...moves.slice(0, moves.length - 2)],
+          deck: undoDeck,
+          moves: [...moves.slice(0, moves.length - 1)],
           waste:undoWaste,
           foundationPiles,
           tableauPiles,
-          moveCount: state.data.moveCount - 1
+          moveCount: state.data.moveCount + 1
         }
       }
     default:
