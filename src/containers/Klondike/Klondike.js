@@ -40,7 +40,9 @@ export default class Klondike extends Component {
           <i className={refreshClassName}/> {' '} Reload Klondike
         </button>
         {klondike && klondike.deck &&
-        <Game initialValues={klondike}/>}
+          <div style={{height:"500px"}}>
+            <Game initialValues={klondike}/>
+          </div>}
 
       </div>
     );
