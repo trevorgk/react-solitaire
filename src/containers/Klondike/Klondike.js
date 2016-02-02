@@ -35,10 +35,13 @@ export default class Klondike extends Component {
 
     return (
       <div className="container">
+        <p></p>
         <button className={styles.refreshBtn + ' btn btn-success'} onClick={load}>
-          <i className={refreshClassName}/> {' '} Reload Widgets
+          <i className={refreshClassName}/> {' '} Reload Klondike
         </button>
-        <Game initialValues={klondike}/>
+        {klondike && klondike.deck &&
+        <Game initialValues={klondike}/>}
+
       </div>
     );
   }
