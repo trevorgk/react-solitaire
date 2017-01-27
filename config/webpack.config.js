@@ -1,7 +1,7 @@
 var path = require('path');
 console.log(__dirname);
 module.exports = {
-  entry: './src/client.js',
+  entry: './src/client.ts',
   output: {
     filename: 'bundle.js',
     path: path.join(__dirname, '../dist/'),
@@ -12,9 +12,19 @@ module.exports = {
   module: {
       rules: [
         {
+            enforce: 'pre',
+            test: /\.tsx?$/,
+            loader: 'tslint-loader',
+            include: [
+              path.resolve(__dirname, "../src/ts"),
+            ],
+        },
+        {
             test: /\.tsx?$/,
             loader: 'awesome-typescript-loader',
-            exclude: /(node_modules)/
+            include: [
+              path.resolve(__dirname, "../src/ts"),
+            ],
         }
     ]
   },

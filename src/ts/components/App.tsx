@@ -10,4 +10,4 @@ export class App extends React.Component {
 }
 
 
-ReactDOM.render(<App name="John" />, document.getElementById('klondike-mount-node'));
+ReactDOM.render(<App />, document.getElementById('klondike-mount-node'));
