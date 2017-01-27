@@ -1,0 +1,26 @@
+{
+  "name": "react-solitaire",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/trevorgk/react-solitaire.git",
+  "author": "Trevor Kilvington <trevorgk@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "webpack": ".\\node_modules\\.bin\\webpack --config ./config/webpack.config.js"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.4",
+    "awesome-typescript-loader": "^3.0.0-beta.18",
+    "tslint": "^4.4.2",
+    "tslint-loader": "^3.3.0",
+    "typescript": "^2.1.5",
+    "webpack": "beta"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "mobx": "^3.0.2",
+    "mobx-react": "^4.1.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}
