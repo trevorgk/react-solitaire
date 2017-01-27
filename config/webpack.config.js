@@ -1,5 +1,5 @@
 var path = require('path');
-console.log(__dirname);
+
 module.exports = {
   entry: './src/client.ts',
   output: {
@@ -9,6 +9,7 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
+  watch: true,
   module: {
       rules: [
         {
@@ -27,15 +28,5 @@ module.exports = {
             ],
         }
     ]
-  },
-  // plugins: [
-  //   new LoaderOptionsPlugin({
-  //       options: {
-  //           tslint: {
-  //               tsConfigFile: 'tsconfig.json'
-  //           }
-  //       }
-  //   })
-  // ]
-
+  }
 };
