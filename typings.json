@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "debug": "registry:npm/debug#2.0.0+20160723033700",
+    "react": "registry:dt/react#15.0.0+20170125182642"
+  }
+}

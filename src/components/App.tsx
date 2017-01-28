@@ -7,7 +7,7 @@ interface State {
   store: KlondikeStore
 }
 
-export class App extends React.Component<Any, State> {
+export class App extends React.Component<any, State> {
   constructor(props) {
     super(props);
     const store = new KlondikeStore();

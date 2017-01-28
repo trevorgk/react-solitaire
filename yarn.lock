@@ -2,9 +2,17 @@
 # yarn lockfile v1
 
 
+"@types/lodash@^4.14.51":
+  version "4.14.51"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.51.tgz#8454ce32d367824e4e30d910a5c1a84c14e5626f"
+
 "@types/node@^7.0.4":
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.4.tgz#9aabc135979ded383325749f508894c662948c8b"
+
+"@types/react@^15.0.4":
+  version "15.0.4"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.4.tgz#97aedbba00448a137331aa8450232124aeb8d426"
 
 abbrev@1:
   version "1.0.9"

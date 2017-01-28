@@ -1,12 +1,12 @@
 import {PackConfig, Suit, JokerCard, PlayingCard} from './';
-import {extend} from 'lodash';
+import {extend, findIndex} from 'lodash';
 
 export class PackOfCards {
     public cards: PlayingCard[] = [];
     config: PackConfig;
     
-    constructor(config:PackConfig = {}) {
-        const defaultConfig:PackConfig = {
+    constructor(config: PackConfig = {}) {
+        const defaultConfig: PackConfig = {
             numberOfDecks: 1,
             numberOfJokers: 0,
             suitOrder: ['Spades', 'Clubs', 'Diamonds', 'Hearts'],
@@ -14,7 +14,7 @@ export class PackOfCards {
         }
         this.config = extend({}, defaultConfig, config);
 
-        for(let suit of this.config.suitOrder) {
+        for (let suit of this.config.suitOrder) {
             for (let rank of this.config.rankOrder) {
                 for (let i = 0; i < this.config.numberOfDecks; i++) {
                     this.cards.push(new PlayingCard(rank, suit));
@@ -82,7 +82,7 @@ export class PackOfCards {
     }
 
     static swapCards = (cards: PlayingCard[], indexLeft: number, indexRight: number) => {
-        let swap = cards[indexLeft];
+        const swap = cards[indexLeft];
         cards[indexLeft] = cards[indexRight];
         cards[indexRight] = swap;
         return cards;    
@@ -95,14 +95,14 @@ export class PackOfCards {
         if (cardA.toString() === 'Joker') return -1;
         if (cardB.toString() === 'Joker') return 1;
 
-        let rankA = this.config.rankOrder.findIndex(val => val === cardA.rank);
-        let rankB = this.config.rankOrder.findIndex(val => val === cardB.rank);
+        const rankA = findIndex(this.config.rankOrder, val => val === cardA.rank);
+        const rankB = findIndex(this.config.rankOrder, val => val === cardB.rank);
 
         if (rankA > rankB) return -1;
         if (rankA < rankB) return 1;
 
-        let suitA = this.config.suitOrder.findIndex(val => val === cardA.suit);
-        let suitB = this.config.suitOrder.findIndex(val => val === cardB.suit); 
+        const suitA = findIndex(this.config.suitOrder, val => val === cardA.suit);
+        const suitB = findIndex(this.config.suitOrder, val => val === cardA.suit);
         
         if (suitA > suitB) return -1;
         if (suitA < suitB) return 1;
