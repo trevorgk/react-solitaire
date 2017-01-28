@@ -1,1 +1,1 @@
-require('./ts/components/App.tsx');
+require('./components/App');

@@ -4,10 +4,9 @@ import * as ReactDOM from 'react-dom';
 export class App extends React.Component {
   render() {
     return (
-      <div>Hello Klondike</div>
+      <div>Hello meercat</div>
     )
   }
 }
 
-
-ReactDOM.render(<App />, document.getElementById('klondike-mount-node'));
+ReactDOM.render(<App />, document.getElementById('root'));

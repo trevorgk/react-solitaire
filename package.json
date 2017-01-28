@@ -1,12 +1,12 @@
 {
-  "name": "react-solitaire",
+  "name": "react-klondike",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/trevorgk/react-solitaire.git",
   "author": "Trevor Kilvington <trevorgk@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "webpack": ".\\node_modules\\.bin\\webpack --config ./config/webpack.config.js"
+    "dev": ".\\node_modules\\.bin\\webpack --config ./webpack.config.js"
   },
   "devDependencies": {
     "@types/node": "^7.0.4",

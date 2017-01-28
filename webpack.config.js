@@ -1,10 +1,10 @@
-var path = require('path');
+const {resolve} = require('path');
 
 module.exports = {
   entry: './src/client.ts',
   output: {
     filename: 'bundle.js',
-    path: path.join(__dirname, '../dist/'),
+    path: resolve(__dirname, './dist/'),
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx']
@@ -17,14 +17,14 @@ module.exports = {
             test: /\.tsx?$/,
             loader: 'tslint-loader',
             include: [
-              path.resolve(__dirname, "../src/ts"),
+              resolve(__dirname, "./src"),
             ],
         },
         {
             test: /\.tsx?$/,
             loader: 'awesome-typescript-loader',
             include: [
-              path.resolve(__dirname, "../src/ts"),
+              resolve(__dirname, "./src"),
             ],
         }
     ]

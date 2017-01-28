@@ -1,0 +1,1 @@
+export type Suit = "Spades" | "Clubs" | "Diamonds" | "Hearts";
