@@ -1,27 +1,28 @@
 import {PackConfig, Suit, JokerCard, PlayingCard} from './';
+import {extend} from 'lodash';
 
 export class PackOfCards {
-    public cards:PlayingCard[] = [];
-    config:PackConfig;
+    public cards: PlayingCard[] = [];
+    config: PackConfig;
     
-    constructor(config:PackConfig) {
+    constructor(config:PackConfig = {}) {
         const defaultConfig:PackConfig = {
-            numberOfDecks:1,
-            numberOfJokers:0,
-            suitOrder:["Spades", "Clubs", "Diamonds", "Hearts"],
-            rankOrder:["Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"]
+            numberOfDecks: 1,
+            numberOfJokers: 0,
+            suitOrder: ['Spades', 'Clubs', 'Diamonds', 'Hearts'],
+            rankOrder: ['Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace']
         }
-        this.config = Object.assign({}, defaultConfig, config);
+        this.config = extend({}, defaultConfig, config);
 
-        for(var suit of this.config.suitOrder){
-            for (var rank of this.config.rankOrder) {
-                for (let i = 0; i < this.config.numberOfDecks; i++){
+        for(let suit of this.config.suitOrder) {
+            for (let rank of this.config.rankOrder) {
+                for (let i = 0; i < this.config.numberOfDecks; i++) {
                     this.cards.push(new PlayingCard(rank, suit));
                 }
             }
         }
         
-        for (let i = 0; i < this.config.numberOfJokers; i++){
+        for (let i = 0; i < this.config.numberOfJokers; i++) {
             this.cards.push(new JokerCard())
         }
 
@@ -38,19 +39,19 @@ export class PackOfCards {
     }
 
     
-    deal(players:number, handSize = 0) {
+    deal(players: number, handSize = 0) {
         const maxPlayers = 4;
         if (players < 1 || players > 4) {
-            throw new Error("Number of players must be between one and four.");
+            throw new Error('Number of players must be between one and four.');
         }
         if (handSize && players * handSize > this.cards.length) {
-            throw new Error("Not enough cards in pack for each player");
+            throw new Error('Not enough cards in pack for each player');
         }
         if (!handSize)
             handSize = Math.floor(this.cards.length / players);
-        let hands:PlayingCard[][] = [];
+        let hands: PlayingCard[][] = [];
         for (let i = 0; i < players; i++) {
-            hands[i] = new Array<Card>();
+            hands[i] = new Array<PlayingCard>();
         }
         for (let i = 0; i < handSize; i++) {
             for (let j = 0; j < players; j++) {
@@ -61,12 +62,12 @@ export class PackOfCards {
     }
 
     //  consider using _.deepClone for moveCard and swapCard if mutability becomes a concern later
-    static moveCard = (cards: Card[], indexFrom: number, indexTo: number) => {
+    static moveCard = (cards: PlayingCard[], indexFrom: number, indexTo: number) => {
         if (indexFrom < 0 || indexTo < 0) {
-            throw Error("index less than zero")
+            throw Error('index less than zero')
         } 
         if (indexFrom >= cards.length || indexTo >= cards.length) {
-            throw Error("index greater than array length")
+            throw Error('index greater than array length')
         } 
         if (indexFrom === indexTo) return cards;
 
@@ -80,7 +81,7 @@ export class PackOfCards {
         return cards;
     }
 
-    static swapCards = (cards: Card[], indexLeft: number, indexRight: number) => {
+    static swapCards = (cards: PlayingCard[], indexLeft: number, indexRight: number) => {
         let swap = cards[indexLeft];
         cards[indexLeft] = cards[indexRight];
         cards[indexRight] = swap;
@@ -89,8 +90,8 @@ export class PackOfCards {
 
     //  Based on .NET StrComp.
     //  Returns -1, 0, or 1, based on the result of comparison.
-    public compareCards = (cardA: Card, cardB: Card) => {
-        if (cardA.toString() === 'Joker' && cardB.toString() === "Joker") return 0;
+    public compareCards = (cardA: PlayingCard, cardB: PlayingCard) => {
+        if (cardA.toString() === 'Joker' && cardB.toString() === 'Joker') return 0;
         if (cardA.toString() === 'Joker') return -1;
         if (cardB.toString() === 'Joker') return 1;
 
