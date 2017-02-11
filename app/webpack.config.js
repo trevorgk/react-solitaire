@@ -38,6 +38,7 @@ module.exports = {
         }
     ]
   },
+  devtool: 'sourcemap',
   devServer: {
     contentBase: join(__dirname, "../dist"),
     compress: true,
