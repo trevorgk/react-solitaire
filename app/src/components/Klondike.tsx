@@ -7,7 +7,7 @@ import {KlondikeStore} from '../stores'
 export class Klondike extends React.Component<{store: KlondikeStore}, any> {
   render() {
     return (
-      <div>Klondike</div>
+      <div>Klondike reload</div>
     )
   }
 }

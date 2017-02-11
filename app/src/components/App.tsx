@@ -21,4 +21,4 @@ export class App extends React.Component<any, State> {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('klondike-app'));
