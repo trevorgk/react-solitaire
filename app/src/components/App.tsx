@@ -10,8 +10,9 @@ interface State {
 export class App extends React.Component<any, State> {
   constructor(props) {
     super(props);
-    const store = new KlondikeStore();
+    const store = KlondikeStore.init();
     this.state = {store}; 
+    window['store'] = store;
   }
   render() {
     const {store} = this.state;
