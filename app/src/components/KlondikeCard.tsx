@@ -9,7 +9,7 @@ interface Props {
   style: Object;
 }
 
-export const KlondikeCard = (props: Props) => {
+export const KlondikeCard: React.StatelessComponent<Props> = (props: Props) => {
   const {
     card,
     pileType
@@ -28,3 +28,5 @@ export const KlondikeCard = (props: Props) => {
     </div>
   )
 }
+
+KlondikeCard.displayName = 'KlondikeCardComponent';

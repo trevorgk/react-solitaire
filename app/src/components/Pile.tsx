@@ -10,10 +10,10 @@ interface Props {
   pile: Array<PlayingCard>;
   layout: PileLayout;
   pileType: PileType;
-  pileStyle: Object;
+  pileStyle?: Object;
 }
 
-export const Pile = observer((props: Props) => {
+export const Pile: React.ClassicComponentClass<Props> = observer((props: Props) => {
   const {
     pile,
     layout,
@@ -44,3 +44,5 @@ export const Pile = observer((props: Props) => {
     </div>
   )
 })
+
+Pile.displayName = 'PileComponent';
