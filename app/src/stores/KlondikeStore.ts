@@ -32,7 +32,25 @@ export class KlondikeStore {
   }  
 
   setupGame() {
-    this.stock = this.pack.cards;
+    let cards = this.pack.cards;
+    this.foundations = [[], [], [], []];
+
+    this.tableau = [];
+    
+    for (let i = 0; i < klondikeConfiguration.tableauCount; i++) {
+      this.tableau.push([]);
+    }
+    
+    for (let i = 0; i < klondikeConfiguration.tableauCount; i++) {
+      let firstCard = true;
+      for (let j = i; j < klondikeConfiguration.tableauCount; j++) {
+        let card = cards.pop();
+        card.show = firstCard;
+        this.tableau[j].push(card);
+
+        firstCard = false;
+      }
+    }
   }
 
   undo() {
