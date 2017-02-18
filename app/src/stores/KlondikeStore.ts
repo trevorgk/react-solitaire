@@ -11,7 +11,7 @@ export class KlondikeStore {
   @observable waste: PlayingCard[];
   @observable foundations: PlayingCard[][];
   @observable tableau: PlayingCard[][];
-  @observable numMoves: number;
+  @observable numMoves: number; //  cannot use moves.length, as numMoves also includes undos
   @observable moves = [];
 
   /**
@@ -51,6 +51,10 @@ export class KlondikeStore {
         firstCard = false;
       }
     }
+
+    this.stock = cards;
+    this.numMoves = 0;
+    this.moves = [];
   }
 
   undo() {
