@@ -1,1 +1,1 @@
-export type PileType = "TableauPile" | "Foundation" | "Waste"
+export type PileType = "Tableau" | "Foundation" | "Waste"

@@ -7,7 +7,8 @@ import { observer } from 'mobx-react';
 import { KlondikeCard } from '.';
 import { DropTarget } from 'react-dnd';
 
-interface Props {
+export interface Props {
+  store: KlondikeStore
   pile: Array<PlayingCard>;
   layout: PileLayout;
   pileType: PileType;
@@ -17,8 +18,14 @@ interface Props {
 }
 
 const pileTarget = {
-  drop: (props) => {
-    console.log('drop', props);
+  drop(props: Props, monitor, component) {
+    const {store, pileType, pile} = props;
+    console.log('drop', component);
+    return {pileType, pile};
+  },
+  canDrop(props: Props) {
+    const {store, pileType, pile} = props;
+    return pileType !== 'Waste';
   }
 };
 
@@ -33,6 +40,7 @@ const modifier = flowRight(DropTarget('Card', pileTarget, collect), observer);
 
 export const Pile: React.ClassicComponentClass<Props> = modifier((props: Props) => {
   const {
+    store,
     pile,
     layout,
     pileType,
@@ -43,18 +51,18 @@ export const Pile: React.ClassicComponentClass<Props> = modifier((props: Props) 
   let pileStyle = props.pileStyle || {};
   let cardStyle = {};
   switch (layout) {
-    case 'Squared':
-      pileStyle = assign(pileStyle, { position: 'relative', width: '80px', height: '112px' });
-      cardStyle = assign(cardStyle, { position: 'absolute' });
-      break;
     case 'FannedRight':
       pileStyle = assign(pileStyle, { margin: '0 5px' });
       cardStyle = assign(cardStyle, { float: 'left', marginLeft: '-65px' });
       break;
     case 'FannedDown':
-    default:
       pileStyle = assign(pileStyle, { float: 'left', paddingTop: '95px' });
       cardStyle = assign(cardStyle, { marginTop: '-95px' });
+      break;
+    case 'Squared':
+    default:
+      pileStyle = assign(pileStyle, { position: 'relative', width: '80px', height: '112px' });
+      cardStyle = assign(cardStyle, { position: 'absolute' });
       break;
   }
 
@@ -62,9 +70,16 @@ export const Pile: React.ClassicComponentClass<Props> = modifier((props: Props) 
     position: 'relative'
   });
 
+  const renderPile = !!pile && pile.length;
+
   return connectDropTarget(
     <div className="pile" style={pileStyle}>
-      {pile && pile.map((card, pos) => <KlondikeCard key={pos} card={card} pileType={pileType} style={assign(cardStyle, { zIndex: pos })} />)}
+      {renderPile ? 
+        pile.map((card, pos) => <KlondikeCard store={store} key={pos} card={card} pileType={pileType} style={assign(cardStyle, { zIndex: pos })} />)
+        : <div style={{
+              position: 'relative', width: '80px', height: '112px', backgroundPosition: '18px 30px', float: 'left'
+            }}></div>
+      }
       {isOver &&
         <div style={{
           position: 'absolute',

@@ -1,5 +1,6 @@
 import {PackOfCards, PlayingCard} from '../models/playingCards';
 import {observable} from 'mobx';
+import {PileProps} from '../components'
 
 const klondikeConfiguration = {
   tableauCount: 7
@@ -63,5 +64,14 @@ export class KlondikeStore {
 
   stockClicked() {
     this.waste = [this.stock.pop(), this.stock.pop(), this.stock.pop()];
+  }
+
+  canMoveCard() {
+    return true;
+  }
+
+  moveCard(src: PlayingCard, pile) {
+    pile.push(src);
+
   }
 }

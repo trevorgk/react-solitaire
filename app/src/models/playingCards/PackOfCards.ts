@@ -51,7 +51,7 @@ export class PackOfCards {
             handSize = Math.floor(this.cards.length / players);
         let hands: PlayingCard[][] = [];
         for (let i = 0; i < players; i++) {
-            hands[i] = new PileOfCards();
+            hands[i] = new Array<PlayingCard>();
         }
         for (let i = 0; i < handSize; i++) {
             for (let j = 0; j < players; j++) {

@@ -28,7 +28,7 @@ export const Tableau: React.StatelessComponent<Props> = ({store}) => {
               backgroundPosition: '18px 30px',
               float: 'left'
             }}>
-            <Pile layout={'FannedDown'} pileType={'TableauPile'} pile={pile} />
+            <Pile store={store} layout={'FannedDown'} pileType={'Tableau'} pile={pile} />
           </div>
         ))
       }

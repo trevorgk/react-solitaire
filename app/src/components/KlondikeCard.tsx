@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { KlondikeStore } from '../stores/KlondikeStore';
 import {PileType, ItemType} from '../models/klondike';
 import {PlayingCard} from '../models/playingCards';
 import {assign} from 'lodash';
 import {DragSource} from 'react-dnd';
 
 interface Props {
+  store: KlondikeStore;
   card: PlayingCard;
   pileType: PileType;
   style: Object;
@@ -13,9 +15,31 @@ interface Props {
 }
 
 const cardSource = {
-  beginDrag: function (props) {
+  beginDrag(props) {
     console.log('begin drag');
     return {};
+  },
+  endDrag(props: Props, monitor, component) {
+    if (!monitor.didDrop()) {
+      // You can check whether the drop was successful
+      // or if the drag ended but nobody handled the drop
+      return;
+    }
+
+    // When dropped on a compatible target, do something.
+    // Read the original dragged item from getItem():
+    const item = monitor.getItem();
+
+    // You may also read the drop result from the drop target
+    // that handled the drop, if it returned an object from
+    // its drop() method.
+    const dropResult = monitor.getDropResult();
+
+    console.log('dropped', dropResult);
+
+    const { store, card } = props;
+    const { pile } = dropResult;
+    store.moveCard(card, pile)
   }
 };
 
