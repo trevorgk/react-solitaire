@@ -1,10 +1,10 @@
-import {PackConfig, Suit, JokerCard, PlayingCard} from './';
-import {extend, findIndex} from 'lodash';
+import { PackConfig, Suit, JokerCard, PlayingCard } from './';
+import { extend, findIndex } from 'lodash';
 
 export class PackOfCards {
     public cards: PlayingCard[] = [];
     config: PackConfig;
-    
+
     constructor(config: PackConfig = {}) {
         const defaultConfig: PackConfig = {
             numberOfDecks: 1,
@@ -21,7 +21,7 @@ export class PackOfCards {
                 }
             }
         }
-        
+
         for (let i = 0; i < this.config.numberOfJokers; i++) {
             this.cards.push(new JokerCard())
         }
@@ -38,7 +38,7 @@ export class PackOfCards {
         }
     }
 
-    
+
     deal(players: number, handSize = 0) {
         const maxPlayers = 4;
         if (players < 1 || players > 4) {
@@ -51,7 +51,7 @@ export class PackOfCards {
             handSize = Math.floor(this.cards.length / players);
         let hands: PlayingCard[][] = [];
         for (let i = 0; i < players; i++) {
-            hands[i] = new Array<PlayingCard>();
+            hands[i] = new PileOfCards();
         }
         for (let i = 0; i < handSize; i++) {
             for (let j = 0; j < players; j++) {
@@ -65,16 +65,16 @@ export class PackOfCards {
     static moveCard = (cards: PlayingCard[], indexFrom: number, indexTo: number) => {
         if (indexFrom < 0 || indexTo < 0) {
             throw Error('index less than zero')
-        } 
+        }
         if (indexFrom >= cards.length || indexTo >= cards.length) {
             throw Error('index greater than array length')
-        } 
+        }
         if (indexFrom === indexTo) return cards;
 
         const card = cards[indexFrom];
         cards.splice(indexFrom, 1);
         if (indexTo > indexFrom) {
-            indexTo = indexTo - 1;  
+            indexTo = indexTo - 1;
         }
         cards.splice(indexTo, 0, card);
 
@@ -85,7 +85,7 @@ export class PackOfCards {
         const swap = cards[indexLeft];
         cards[indexLeft] = cards[indexRight];
         cards[indexRight] = swap;
-        return cards;    
+        return cards;
     }
 
     //  Based on .NET StrComp.
@@ -103,7 +103,7 @@ export class PackOfCards {
 
         const suitA = findIndex(this.config.suitOrder, val => val === cardA.suit);
         const suitB = findIndex(this.config.suitOrder, val => val === cardA.suit);
-        
+
         if (suitA > suitB) return -1;
         if (suitA < suitB) return 1;
 

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {KlondikeStore} from '../stores/KlondikeStore';
-import {PileLayout, PileType, ItemType} from '../models/klondike';
-import {PlayingCard} from '../models/playingCards';
-import {assign, flowRight} from 'lodash';
-import {observer} from 'mobx-react';
-import {KlondikeCard} from '.';
-import {DropTarget} from 'react-dnd';
+import { KlondikeStore } from '../stores/KlondikeStore';
+import { PileLayout, PileType, ItemType } from '../models/klondike';
+import { PlayingCard } from '../models/playingCards';
+import { assign, flowRight } from 'lodash';
+import { observer } from 'mobx-react';
+import { KlondikeCard } from '.';
+import { DropTarget } from 'react-dnd';
 
 interface Props {
   pile: Array<PlayingCard>;
