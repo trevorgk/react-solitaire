@@ -36,6 +36,8 @@ function collect(connect, monitor) {
   };
 }
 
+const pileLayoutCssClass = (layout: PileLayout) => `pile-layout__${layout.toLowerCase()}`
+
 const modifier = flowRight(DropTarget('Card', pileTarget, collect), observer);
 
 export const Pile: React.ClassicComponentClass<Props> = modifier((props: Props) => {
@@ -50,47 +52,18 @@ export const Pile: React.ClassicComponentClass<Props> = modifier((props: Props) 
 
   let pileStyle = props.pileStyle || {};
   let cardStyle = {};
-  switch (layout) {
-    case 'FannedRight':
-      pileStyle = assign(pileStyle, { margin: '0 5px' });
-      cardStyle = assign(cardStyle, { float: 'left', marginLeft: '-65px' });
-      break;
-    case 'FannedDown':
-      pileStyle = assign(pileStyle, { float: 'left', paddingTop: '95px' });
-      cardStyle = assign(cardStyle, { marginTop: '-95px' });
-      break;
-    case 'Squared':
-    default:
-      pileStyle = assign(pileStyle, { position: 'relative', width: '80px', height: '112px' });
-      cardStyle = assign(cardStyle, { position: 'absolute' });
-      break;
-  }
-
-  pileStyle = assign(pileStyle, {
-    position: 'relative'
-  });
 
   const renderPile = !!pile && pile.length;
 
   return connectDropTarget(
-    <div className="pile" style={pileStyle}>
+    <div className={`pile-component ${pileLayoutCssClass(layout)}`}>
       {renderPile ? 
-        pile.map((card, pos) => <KlondikeCard store={store} key={pos} card={card} pileType={pileType} style={assign(cardStyle, { zIndex: pos })} />)
-        : <div style={{
-              position: 'relative', width: '80px', height: '112px', backgroundPosition: '18px 30px', float: 'left'
-            }}></div>
+        pile.map((card, pos) => 
+          <KlondikeCard store={store} key={pos} card={card} pileType={pileType} pilePosition={pos} />)
+        : <div className="pile__empty"></div>
       }
       {isOver &&
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          height: '100%',
-          width: '100%',
-          zIndex: 100,
-          opacity: 0.5,
-          backgroundColor: 'yellow',
-        }} />
+        <div className="pile__drag-overlay mw-100 mh-100" ></div>
       }
     </div>
   )

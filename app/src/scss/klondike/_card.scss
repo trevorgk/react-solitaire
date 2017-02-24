@@ -1,0 +1,9 @@
+.klondike-card-component {
+  position: relative;
+  width: 80px;
+  height: 112px;
+
+  &.is-dragging{
+    opacity: .5;
+  }
+}

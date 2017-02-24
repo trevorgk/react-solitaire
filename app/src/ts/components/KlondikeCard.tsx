@@ -9,9 +9,9 @@ interface Props {
   store: KlondikeStore;
   card: PlayingCard;
   pileType: PileType;
-  style: Object;
   connectDragSource?: any;
   isDragging?: boolean;
+  pilePosition: number;
 }
 
 const cardSource = {
@@ -51,26 +51,24 @@ function collect(connect, monitor) {
   }
 }
 
+const pileTypeCssClassName = (pileType: PileType) => `pileType__${pileType.toLowerCase()}`
+
 export const KlondikeCard: React.ComponentClass<Props> = DragSource('Card', cardSource, collect) ((props: Props) => {
   const {
     card,
     pileType,
     connectDragSource,
     isDragging,
-    style
+    pilePosition
   } = props;
 
-  const newStyle = assign({}, style, {position: 'relative', width: 80, height: 112, opacity: isDragging ? 0.5 : 1});
-
   return connectDragSource(
-    <div className="klondike-card" onClick={e => {
+    <div className={`klondike-card-component ${isDragging ? 'is-dragging' : ''} ${pileTypeCssClassName(pileType)}`} onClick={e => {
       card.show && console.log('card shown')
-    }} style={newStyle}>
+    }}>
       <img draggable={true} onDragStart={e => {
         console.log(e);
-      }} style={{
-      width: '100%'
-      }} src={card.display()}/>
+      }} className="mw-100" src={card.display()}/>
       
     </div>
   )

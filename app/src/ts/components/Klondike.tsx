@@ -19,19 +19,13 @@ export const Klondike = modifier((props: Props) => {
   const {numMoves, moves, undo, stockClicked, waste} = store;
   
   return (
-    <div className="klondike">
+    <div className="klondike-component">
       <Header store={store} />
       <div className="">
         <Stock store={store} />
-        <div>
-          <Foundation store={store} />
-        </div>
+        <Foundation store={store} />
       </div>
-      <div style={{
-        padding: '20px 10px 0', float: 'right'
-      }}>
-        <Tableau store={store} />
-      </div>
+      <Tableau store={store} />
     </div>
   )
 })

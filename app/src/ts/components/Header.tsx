@@ -21,9 +21,7 @@ export const Header: React.StatelessComponent<Props> = ({store}) => {
   } = store;
 
   return (
-    <div style={{
-      textAlign: 'center'
-    }}>
+    <div className="header-component">
       {displayMoveCount(numMoves)}
       <div>
         <input type="button" value="undo latest" onClick={undo} disabled={!moves.length} />
