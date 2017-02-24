@@ -20,21 +20,17 @@ export const Klondike = modifier((props: Props) => {
   
   return (
     <div className="klondike">
+      <Header store={store} />
+      <div className="">
+        <Stock store={store} />
+        <div>
+          <Foundation store={store} />
+        </div>
+      </div>
       <div style={{
-        width: '670px', margin: '0 auto'
+        padding: '20px 10px 0', float: 'right'
       }}>
-        <Header store={store} />
-        <div className="">
-          <Stock store={store} />
-          <div>
-            <Foundation store={store}/>
-          </div>  
-        </div>
-        <div style={{
-          padding: '20px 10px 0', float: 'right'
-        }}>
-          <Tableau store={store} />
-        </div>
+        <Tableau store={store} />
       </div>
     </div>
   )
