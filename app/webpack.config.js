@@ -13,29 +13,29 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
   module: {
-      rules: [
-        {
-          test: /\.html$/,
-          loader: 'html-loader',
-          exclude: [
-            resolve(__dirname, "./src/index.html"),
-          ],
-        },
-        {
-            enforce: 'pre',
-            test: /\.tsx?$/,
-            loader: 'tslint-loader',
-            include: [
-              resolve(__dirname, "./src"),
-            ],
-        },
-        {
-            test: /\.tsx?$/,
-            loader: 'awesome-typescript-loader',
-            include: [
-              resolve(__dirname, "./src"),
-            ],
-        }
+    rules: [
+      {
+        test: /\.html$/,
+        loader: 'html-loader',
+        exclude: [
+          resolve(__dirname, "./src/index.html"),
+        ],
+      },
+      {
+        enforce: 'pre',
+        test: /\.tsx?$/,
+        loader: 'tslint-loader',
+        include: [
+          resolve(__dirname, "./src"),
+        ],
+      },
+      {
+        test: /\.tsx?$/,
+        loader: 'awesome-typescript-loader',
+        include: [
+          resolve(__dirname, "./src"),
+        ],
+      }
     ]
   },
   devtool: 'sourcemap',
@@ -45,22 +45,22 @@ module.exports = {
     port: 8080
   },
   plugins: [
-        // new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
 
-        new HtmlWebpackPlugin({
-            template: 'src/index.html',
-            // title: METADATA.title,
-            chunksSortMode: 'dependency',
-            // metadata: METADATA,
-            // inject: 'head'
-        }),
-        new CopyWebpackPlugin([
-            { from: 'assets', to: 'assets' }
-        ]),
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+      // title: METADATA.title,
+      chunksSortMode: 'dependency',
+      // metadata: METADATA,
+      // inject: 'head'
+    }),
+    new CopyWebpackPlugin([
+      { from: 'assets', to: 'assets' }
+    ]),
 
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     names: ['vendors'] // Specify the common bundle's name.
-        // }),
-        // new BundleAnalyzerPlugin()
-    ]
+    // new webpack.optimize.CommonsChunkPlugin({
+    //     names: ['vendors'] // Specify the common bundle's name.
+    // }),
+    // new BundleAnalyzerPlugin()
+  ]
 };
