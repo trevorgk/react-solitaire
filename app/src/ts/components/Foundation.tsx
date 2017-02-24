@@ -17,7 +17,7 @@ export const Foundation: React.StatelessComponent<Props> = ({store}) => {
       {
         piles.map((pile, row) => {
           // let validDropTarget = this.props.selected != null && this.props.pile.length == 0 && KlondikeCard.canMove(this.props.selected, { pileType: PileTypes.EMPTYTABLEAU, row: this.props.row });
-          return <div 
+          return <div key={row}
             style={{
               border: '1px solid #CCC', borderRadius: '5px', margin: '10px 5px', backgroundPosition: '18px 30px', float: 'left'
             }}>
