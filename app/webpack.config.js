@@ -35,7 +35,14 @@ module.exports = {
         include: [
           resolve(__dirname, "./src"),
         ],
-      }
+      },
+      {
+        test: /\.scss$/,
+        loaders: ["style-loader", "css-loader", 'sass-loader'],
+        include: [
+          resolve(__dirname, "./src/scss"),
+        ],
+      },
     ]
   },
   devtool: 'sourcemap',

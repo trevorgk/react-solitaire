@@ -1,1 +1,2 @@
-require('./components/App');
+require('./ts/components/App');
+require('./scss/main.scss');
