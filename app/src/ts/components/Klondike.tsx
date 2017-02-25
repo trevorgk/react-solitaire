@@ -3,7 +3,7 @@ import { KlondikeStore } from '../stores/KlondikeStore';
 import { PileLayout, PileType } from '../models/klondike';
 import { PlayingCard } from '../models/playingCards';
 import { observer } from 'mobx-react';
-import { assign, flowRight } from 'lodash';
+import { assign, flowRight } from 'lodash/fp';
 import { Pile, Header, Stock, Foundation, Tableau } from '.';
 import { DragDropContext } from 'react-dnd';
 const HTML5Backend = require('react-dnd-html5-backend');

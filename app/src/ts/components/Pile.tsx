@@ -2,7 +2,7 @@ import * as React from 'react';
 import { KlondikeStore } from '../stores/KlondikeStore';
 import { PileLayout, PileType, ItemType } from '../models/klondike';
 import { PlayingCard } from '../models/playingCards';
-import { assign, flowRight } from 'lodash';
+import { assign, flowRight } from 'lodash/fp';
 import { observer } from 'mobx-react';
 import { KlondikeCard } from '.';
 import { DropTarget } from 'react-dnd';

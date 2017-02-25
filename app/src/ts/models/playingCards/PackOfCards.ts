@@ -1,9 +1,12 @@
 import { PackConfig, Suit, JokerCard, PlayingCard } from './';
-import { extend, findIndex } from 'lodash';
+import { extend } from 'lodash/fp';
+import { findIndex } from 'lodash/array';
 
 export class PackOfCards {
     public cards: PlayingCard[] = [];
     config: PackConfig;
+    size: number;
+    suits: Array<Suit>
 
     constructor(config: PackConfig = {}) {
         const defaultConfig: PackConfig = {
@@ -26,8 +29,11 @@ export class PackOfCards {
             this.cards.push(new JokerCard())
         }
 
+        this.size = this.cards.length;
+        this.suits = this.config.suitOrder;
         this.shuffle();
     }
+
 
     shuffle() {
         for (let i = this.cards.length - 1; i > 0; i--) {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { KlondikeStore } from '../stores/KlondikeStore';
 import {PileType, ItemType} from '../models/klondike';
 import {PlayingCard} from '../models/playingCards';
-import {assign} from 'lodash';
+import {assign} from 'lodash/fp/object';
 import {DragSource} from 'react-dnd';
 
 interface Props {
