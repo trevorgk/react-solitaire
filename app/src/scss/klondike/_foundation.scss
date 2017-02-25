@@ -1,7 +1,24 @@
+@mixin pip-background-image($suit) {
+  background-image: url('#{$pips-svg-location}#{$suit}.svg');
+}
+
 .foundation__pile {
   border: 1px solid $btn-secondary-border; 
   border-radius: 5px; 
   margin: $margin-between-cards; 
   background-position: $default-background-position; 
-  float: left
+  float: left;
+  background-repeat: no-repeat;
+  &.spades {
+    @include pip-background-image('spades');
+  }
+  &.clubs {
+    @include pip-background-image('clubs');
+  }
+  &.diamonds {
+    @include pip-background-image('diamonds');
+  }
+  &.hearts {
+    @include pip-background-image('hearts');
+  }
 }
