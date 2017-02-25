@@ -1,4 +1,5 @@
-import {PackOfCards, PlayingCard} from '../models/playingCards';
+import {PackOfCards, PlayingCard, Suit} from '../models/playingCards';
+import {Foundation} from '../models/klondike';
 import {observable} from 'mobx';
 import {PileProps} from '../components'
 
@@ -10,7 +11,7 @@ export class KlondikeStore {
   @observable pack: PackOfCards;
   @observable stock: PlayingCard[];
   @observable waste: PlayingCard[];
-  @observable foundations: PlayingCard[][];
+  @observable foundations: Foundation;
   @observable tableau: PlayingCard[][];
   @observable numMoves: number; //  cannot use moves.length, as numMoves also includes undos
   @observable moves = [];
@@ -18,7 +19,7 @@ export class KlondikeStore {
   /**
    *
    */
-  constructor() {
+  private constructor() {
     this.stockClicked = this.stockClicked.bind(this);
     this.undo = this.undo.bind(this);
     this.setupGame = this.setupGame.bind(this);
@@ -34,7 +35,6 @@ export class KlondikeStore {
 
   setupGame() {
     let cards = this.pack.cards;
-    this.foundations = [[], [], [], []];
 
     this.tableau = [];
     
@@ -51,6 +51,13 @@ export class KlondikeStore {
 
         firstCard = false;
       }
+    }
+    
+    this.foundations = {
+      'Spades': new Array<PlayingCard>(),
+      'Clubs': new Array<PlayingCard>(),
+      'Diamonds': new Array<PlayingCard>(),
+      'Hearts': new Array<PlayingCard>(),
     }
 
     this.stock = cards;
