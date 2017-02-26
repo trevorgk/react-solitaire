@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { KlondikeStore } from '../stores/KlondikeStore';
 import {PileType, ItemType} from '../models/klondike';
-import {PlayingCard} from '../models/playingCards';
+import {PlayingCard, Suit} from '../models/playingCards';
 import {assign} from 'lodash/fp/object';
 import {DragSource} from 'react-dnd';
 
@@ -12,6 +12,8 @@ interface Props {
   connectDragSource?: any;
   isDragging?: boolean;
   pilePosition: number;
+  foundationSuit?: Suit;
+  tableauColumn: number;
 }
 
 const cardSource = {
@@ -37,9 +39,10 @@ const cardSource = {
 
     console.log('dropped', dropResult);
 
-    const { store, card } = props;
-    const { pile } = dropResult;
-    store.moveCard(card, pile)
+    const { store, card, pileType: srcPileType, pilePosition } = props;
+    const { pileType, pile: destPile, foundationSuit: destFoundationSuit, tableauColumn: destTableauColumn } = dropResult;
+    if (store.canMoveCard(card, destPile, pileType, destFoundationSuit, destTableauColumn))
+      store.moveCard(pile, pileType, destFoundationSuit, destTableauColumn, pilePosition)
   }
 };
 
@@ -51,7 +54,8 @@ function collect(connect, monitor) {
   }
 }
 
-const pileTypeCssClassName = (pileType: PileType) => `pileType__${pileType.toLowerCase()}`
+const pileTypeCssClassName = (pileType: PileType) => `pileType__${pileType.toLowerCase()}`;
+const isDraggingCssClassName = (isDragging: boolean) => `${isDragging ? 'is-dragging' : ''}`;
 
 export const KlondikeCard: React.ComponentClass<Props> = DragSource('Card', cardSource, collect) ((props: Props) => {
   const {
@@ -63,7 +67,7 @@ export const KlondikeCard: React.ComponentClass<Props> = DragSource('Card', card
   } = props;
 
   return connectDragSource(
-    <div className={`klondike-card-component ${isDragging ? 'is-dragging' : ''} ${pileTypeCssClassName(pileType)}`} onClick={e => {
+    <div className={`klondike-card-component ${isDraggingCssClassName(isDragging)} ${pileTypeCssClassName(pileType)}`} onClick={e => {
       card.show && console.log('card shown')
     }}>
       <img draggable={true} onDragStart={e => {

@@ -18,7 +18,7 @@ export const Tableau: React.StatelessComponent<Props> = ({store}) => {
       {
         piles.map((pile, row) => (
           <div className="tableau__column" key={`tableau.${row}`} data-row={row}>
-            <Pile store={store} layout={'FannedDown'} pileType={'Tableau'} pile={pile} />
+            <Pile store={store} layout={'FannedDown'} pileType={'Tableau'} pile={pile} tableauColumn={row}/>
           </div>
         ))
       }

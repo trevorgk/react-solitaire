@@ -18,7 +18,7 @@ export const Foundation: React.StatelessComponent<Props> = ({store}) => {
       {
         keysIn(foundations).map(suit => (
           <div key={suit} className={`foundation__pile ${suit.toLowerCase()}`}>
-            <Pile layout={'Squared'} pileType={'Foundation'} pile={foundations[suit]} store={store} />
+            <Pile layout={'Squared'} pileType={'Foundation'} pile={foundations[suit]} store={store} foundationSuit={suit}/>
           </div>
         ))
       }

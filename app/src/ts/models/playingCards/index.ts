@@ -3,4 +3,4 @@ export {PackConfig} from './PackConfig';
 export {PackOfCards} from './PackOfCards';
 export {PlayingCard} from './PlayingCard';
 export {Rank, NumericRank} from './Rank';
-export {Suit} from './Suit';
+export {Suit, Color, suitToColor} from './Suit';

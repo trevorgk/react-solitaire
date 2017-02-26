@@ -23,6 +23,7 @@ export class KlondikeStore {
     this.stockClicked = this.stockClicked.bind(this);
     this.undo = this.undo.bind(this);
     this.setupGame = this.setupGame.bind(this);
+    this.moveCard = this.moveCard.bind(this);
   }
 
   public static init() {
@@ -79,12 +80,11 @@ export class KlondikeStore {
 
       switch (targetPileType) {
         case 'Tableau':
-          if (!tableauColumn) throw new Error('Tableau column number wasn\'t supplied');
+          if (tableauColumn === undefined) throw new Error('Tableau column number wasn\'t supplied');
           const targetColumn = this.tableau[tableauColumn];
           if (targetColumn.length === 0) return true;
           const topCard = targetColumn[targetColumn.length - 1];
-          return topCard.numericRank === card.numericRank - 1 && 
-            this.areAlternatingSuits(topCard, card);
+          return topCard.numericRank === card.numericRank + 1 && topCard.color !== card.color;
         case 'Foundation':
           if (!foundationSuit) throw new Error('Foundation suit not supplied');
           if (card.suit !== foundationSuit) return false;
@@ -98,19 +98,15 @@ export class KlondikeStore {
     return false;
   }
 
-  moveCard(src: PlayingCard, pile: Array<PlayingCard>) {
-    pile.push(src);
-  }
-
-  areAlternatingSuits(first: PlayingCard, second: PlayingCard) {
-    switch (first.suit) {
-      case 'Spades':
-      case 'Clubs':
-        return second.suit === 'Hearts' || second.suit === 'Diamonds';
-      case 'Diamonds':
-      case 'Hearts':
-        return second.suit === 'Spades' || second.suit === 'Clubs';
-      
-    }
+  moveCard(card: PlayingCard, targetPile: Array<PlayingCard>, srcPileType: PileType, foundationSuit: Suit, tableauColumn: number, pilePosition: number) {
+    let srcCard = null
+    switch (srcPileType) {
+        case 'Foundation':
+          srcCard = this.foundations[foundationSuit][pilePosition];
+        case 'Tableau':
+          srcCard = this.tableau[tableauColumn][pilePosition];
+      }
+      if (srcCard === null) throw new Error('could not find source card');
+      targetPile.push(srcCard);
   }
 }

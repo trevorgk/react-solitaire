@@ -1,30 +1,33 @@
 import * as React from 'react';
 import { KlondikeStore } from '../stores/KlondikeStore';
 import { PileLayout, PileType, ItemType } from '../models/klondike';
-import { PlayingCard } from '../models/playingCards';
+import { PlayingCard, Suit } from '../models/playingCards';
 import { assign, flowRight } from 'lodash/fp';
 import { observer } from 'mobx-react';
 import { KlondikeCard } from '.';
 import { DropTarget } from 'react-dnd';
 
 export interface Props {
-  store: KlondikeStore
+  store: KlondikeStore;
   pile: Array<PlayingCard>;
   layout: PileLayout;
   pileType: PileType;
   pileStyle?: Object;
   isOver?: boolean;
   connectDropTarget?: any;
+  foundationSuit?: Suit;
+  tableauColumn?: number;
 }
 
 const pileTarget = {
   drop(props: Props, monitor, component) {
-    const {store, pileType, pile} = props;
-    console.log('drop', component);
-    return {pileType, pile};
+    const {store, pileType, pile, foundationSuit, tableauColumn} = props;
+    // console.log('drop', component);
+    return {pileType, pile, foundationSuit, tableauColumn};
   },
-  canDrop(props: Props) {
+  canDrop(props: Props, monitor) {
     const {store, pileType, pile} = props;
+    // console.log('canDrop', monitor.getItem().toString());
     return pileType !== 'Waste';
   }
 };
@@ -47,7 +50,9 @@ export const Pile: React.ClassicComponentClass<Props> = modifier((props: Props) 
     layout,
     pileType,
     isOver,
-    connectDropTarget
+    connectDropTarget,
+    foundationSuit,
+    tableauColumn
   } = props;
 
   let pileStyle = props.pileStyle || {};
@@ -59,7 +64,7 @@ export const Pile: React.ClassicComponentClass<Props> = modifier((props: Props) 
     <div className={`pile-component ${pileLayoutCssClass(layout)}`}>
       {renderPile ? 
         pile.map((card, pos) => 
-          <KlondikeCard store={store} key={pos} card={card} pileType={pileType} pilePosition={pos} />)
+          <KlondikeCard store={store} key={pos} card={card} pileType={pileType} pilePosition={pos} foundationSuit={foundationSuit} tableauColumn={tableauColumn} />)
         : <div className="pile__empty"></div>
       }
       {isOver &&

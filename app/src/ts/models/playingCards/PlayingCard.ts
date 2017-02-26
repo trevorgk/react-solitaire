@@ -1,10 +1,12 @@
-import {Rank, NumericRank, Suit} from './';
+import {Rank, NumericRank, Suit, Color, suitToColor} from './';
 
 export class PlayingCard {
     show = true;
     readonly numericRank: number;
+    readonly color: Color
     constructor(public rank: Rank, public suit: Suit) {
         this.numericRank = NumericRank(rank);
+        this.color = suitToColor(suit);
     }
     public flip = () => {
         this.show = !this.show;
