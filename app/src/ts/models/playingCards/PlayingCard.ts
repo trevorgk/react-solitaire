@@ -1,10 +1,14 @@
-import {Rank, Suit} from './';
+import {Rank, NumericRank, Suit} from './';
 
 export class PlayingCard {
     show = true;
-    constructor(public rank: Rank, public suit: Suit) {}
+    readonly numericRank: number;
+    constructor(public rank: Rank, public suit: Suit) {
+        this.numericRank = NumericRank(rank);
+    }
     public flip = () => {
         this.show = !this.show;
+
     }
     static backFace = '/assets/img/cards/back-purple.png';
     public display = () => this.show ? this.getImageFile() : PlayingCard.backFace;

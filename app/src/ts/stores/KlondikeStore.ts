@@ -1,5 +1,5 @@
 import {PackOfCards, PlayingCard, Suit} from '../models/playingCards';
-import {Foundation} from '../models/klondike';
+import {Foundation, PileType} from '../models/klondike';
 import {observable} from 'mobx';
 import {PileProps} from '../components'
 
@@ -73,12 +73,44 @@ export class KlondikeStore {
     this.waste = [this.stock.pop(), this.stock.pop(), this.stock.pop()];
   }
 
-  canMoveCard() {
-    return true;
+  canMoveCard(card: PlayingCard, pile: Array<PlayingCard>, targetPileType: PileType,
+    foundationSuit?: Suit, tableauColumn?: number) {
+      if (!card.show) return false;
+
+      switch (targetPileType) {
+        case 'Tableau':
+          if (!tableauColumn) throw new Error('Tableau column number wasn\'t supplied');
+          const targetColumn = this.tableau[tableauColumn];
+          if (targetColumn.length === 0) return true;
+          const topCard = targetColumn[targetColumn.length - 1];
+          return topCard.numericRank === card.numericRank - 1 && 
+            this.areAlternatingSuits(topCard, card);
+        case 'Foundation':
+          if (!foundationSuit) throw new Error('Foundation suit not supplied');
+          if (card.suit !== foundationSuit) return false;
+          if (pile.length === 0) { 
+            if (card.rank === 'Ace') return true;
+            return false;
+          }
+          const targetCard = pile[pile.length - 1];
+          return targetCard.numericRank === card.numericRank - 1;
+      }
+    return false;
   }
 
-  moveCard(src: PlayingCard, pile) {
+  moveCard(src: PlayingCard, pile: Array<PlayingCard>) {
     pile.push(src);
+  }
 
+  areAlternatingSuits(first: PlayingCard, second: PlayingCard) {
+    switch (first.suit) {
+      case 'Spades':
+      case 'Clubs':
+        return second.suit === 'Hearts' || second.suit === 'Diamonds';
+      case 'Diamonds':
+      case 'Hearts':
+        return second.suit === 'Spades' || second.suit === 'Clubs';
+      
+    }
   }
 }
