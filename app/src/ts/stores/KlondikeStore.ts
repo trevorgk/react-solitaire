@@ -1,11 +1,13 @@
 import {PackOfCards, PlayingCard, Suit} from '../models/playingCards';
 import {Foundation, PileType} from '../models/klondike';
-import {observable, action} from 'mobx';
+import {observable, useStrict, action} from 'mobx';
 import {PileProps, KlondikeCardProps} from '../components'
 
 const klondikeConfiguration = {
   tableauCount: 7
 }
+
+useStrict(true);
 
 export class KlondikeStore {
   @observable pack: PackOfCards;
@@ -103,7 +105,7 @@ export class KlondikeStore {
     return false;
   }
 
-  moveCard(srcCardProps: KlondikeCardProps, destPileProps: PileProps) {
+  @action moveCard(srcCardProps: KlondikeCardProps, destPileProps: PileProps) {
     let { 
       pileType: destPileType, 
       pile: destPile, 
