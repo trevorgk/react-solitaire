@@ -64,7 +64,7 @@ export const Pile: React.ClassicComponentClass<Props> = modifier((props: Props) 
     <div className={`pile-component ${pileLayoutCssClass(layout)}`}>
       {renderPile ? 
         pile.map((card, pos) => 
-          <KlondikeCard store={store} key={pos} card={card} pileType={pileType} pilePosition={pos} foundationSuit={foundationSuit} tableauColumn={tableauColumn} />)
+          <KlondikeCard store={store} key={pos} card={card} pileProps={props} pilePosition={pos} />)
         : <div className="pile__empty"></div>
       }
       {isOver &&

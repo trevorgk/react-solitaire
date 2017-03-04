@@ -2,18 +2,17 @@ import * as React from 'react';
 import { KlondikeStore } from '../stores/KlondikeStore';
 import {PileType, ItemType} from '../models/klondike';
 import {PlayingCard, Suit} from '../models/playingCards';
+import { PileProps } from './';
 import {assign} from 'lodash/fp/object';
 import {DragSource} from 'react-dnd';
 
-interface Props {
+export interface Props {
   store: KlondikeStore;
   card: PlayingCard;
-  pileType: PileType;
   connectDragSource?: any;
   isDragging?: boolean;
   pilePosition: number;
-  foundationSuit?: Suit;
-  tableauColumn: number;
+  pileProps: PileProps;
 }
 
 const cardSource = {
@@ -35,14 +34,13 @@ const cardSource = {
     // You may also read the drop result from the drop target
     // that handled the drop, if it returned an object from
     // its drop() method.
-    const dropResult = monitor.getDropResult();
+    const dropResult: PileProps = monitor.getDropResult();
 
     console.log('dropped', dropResult);
 
-    const { store, card, pileType: srcPileType, pilePosition } = props;
-    const { pileType, pile: destPile, foundationSuit: destFoundationSuit, tableauColumn: destTableauColumn } = dropResult;
-    if (store.canMoveCard(card, destPile, pileType, destFoundationSuit, destTableauColumn))
-      store.moveCard(pile, pileType, destFoundationSuit, destTableauColumn, pilePosition)
+    const { store, card, pilePosition, pileProps } = props;
+    if (store.canMoveCard(card, dropResult))
+      store.moveCard(props, dropResult)
   }
 };
 
@@ -60,12 +58,16 @@ const isDraggingCssClassName = (isDragging: boolean) => `${isDragging ? 'is-drag
 export const KlondikeCard: React.ComponentClass<Props> = DragSource('Card', cardSource, collect) ((props: Props) => {
   const {
     card,
-    pileType,
     connectDragSource,
     isDragging,
-    pilePosition
+    pilePosition,
+    pileProps
   } = props;
 
+  const {
+    pileType
+  } = pileProps;
+  
   return connectDragSource(
     <div className={`klondike-card-component ${isDraggingCssClassName(isDragging)} ${pileTypeCssClassName(pileType)}`} onClick={e => {
       card.show && console.log('card shown')

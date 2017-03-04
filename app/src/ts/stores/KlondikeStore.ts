@@ -1,7 +1,7 @@
 import {PackOfCards, PlayingCard, Suit} from '../models/playingCards';
 import {Foundation, PileType} from '../models/klondike';
-import {observable} from 'mobx';
-import {PileProps} from '../components'
+import {observable, action} from 'mobx';
+import {PileProps, KlondikeCardProps} from '../components'
 
 const klondikeConfiguration = {
   tableauCount: 7
@@ -74,39 +74,64 @@ export class KlondikeStore {
     this.waste = [this.stock.pop(), this.stock.pop(), this.stock.pop()];
   }
 
-  canMoveCard(card: PlayingCard, pile: Array<PlayingCard>, targetPileType: PileType,
-    foundationSuit?: Suit, tableauColumn?: number) {
+  canMoveCard(card: PlayingCard, destPileProps: PileProps) {
       if (!card.show) return false;
+      const { 
+        pileType: destPileType, 
+        pile: destPile, 
+        foundationSuit: destFoundationSuit, 
+        tableauColumn: destTableauColumn 
+      } = destPileProps;
 
-      switch (targetPileType) {
+      switch (destPileType) {
         case 'Tableau':
-          if (tableauColumn === undefined) throw new Error('Tableau column number wasn\'t supplied');
-          const targetColumn = this.tableau[tableauColumn];
+          if (destTableauColumn === undefined) throw new Error('Tableau column number wasn\'t supplied');
+          const targetColumn = this.tableau[destTableauColumn];
           if (targetColumn.length === 0) return true;
           const topCard = targetColumn[targetColumn.length - 1];
           return topCard.numericRank === card.numericRank + 1 && topCard.color !== card.color;
         case 'Foundation':
-          if (!foundationSuit) throw new Error('Foundation suit not supplied');
-          if (card.suit !== foundationSuit) return false;
-          if (pile.length === 0) { 
+          if (!destFoundationSuit) throw new Error('Foundation suit not supplied');
+          if (card.suit !== destFoundationSuit) return false;
+          if (destPile.length === 0) { 
             if (card.rank === 'Ace') return true;
             return false;
           }
-          const targetCard = pile[pile.length - 1];
+          const targetCard = destPile[destPile.length - 1];
           return targetCard.numericRank === card.numericRank - 1;
       }
     return false;
   }
 
-  moveCard(card: PlayingCard, targetPile: Array<PlayingCard>, srcPileType: PileType, foundationSuit: Suit, tableauColumn: number, pilePosition: number) {
-    let srcCard = null
+  moveCard(srcCardProps: KlondikeCardProps, destPileProps: PileProps) {
+    let { 
+      pileType: destPileType, 
+      pile: destPile, 
+      foundationSuit: destFoundationSuit, 
+      tableauColumn: destTableauColumn 
+    } = destPileProps;
+
+    const {
+      pileProps: srcPileProps,
+      pilePosition: srcPilePosition,
+    } = srcCardProps;
+
+    const { 
+      pileType: srcPileType, 
+      pile: srcPile, 
+      foundationSuit: srcFoundationSuit, 
+      tableauColumn: srcTableauColumn 
+    } = srcPileProps;
+
+
+    let srcCards = srcPile.splice(srcPilePosition);
+    
+    if (srcCards === null || !srcCards.length) throw new Error('could not find source cards');
     switch (srcPileType) {
-        case 'Foundation':
-          srcCard = this.foundations[foundationSuit][pilePosition];
-        case 'Tableau':
-          srcCard = this.tableau[tableauColumn][pilePosition];
-      }
-      if (srcCard === null) throw new Error('could not find source card');
-      targetPile.push(srcCard);
+      case 'Foundation':
+        srcCards = srcPile.splice(srcPilePosition);
+    }
+    
+    destPile.push(...srcCards);
   }
 }

@@ -36,14 +36,14 @@ test('after tableau, all remaining cards are in the pack', () => {
 });
 
 
-test('Can only put an ace and two of correct suit on empty foundation pile', () => {
-  const kingOfDiamonds = new PlayingCard("King", "Diamonds");
-  const aceOfSpades = new PlayingCard("Ace", "Spades");
-  const twoOfSpades = new PlayingCard("Two", "Spades");
+// test('Can only put an ace and two of correct suit on empty foundation pile', () => {
+//   const kingOfDiamonds = new PlayingCard("King", "Diamonds");
+//   const aceOfSpades = new PlayingCard("Ace", "Spades");
+//   const twoOfSpades = new PlayingCard("Two", "Spades");
 
-  expect(store.canMoveCard(kingOfDiamonds, store.foundations["Spades"], "Foundation", "Spades", 0)).toBe(false);
-  expect(store.canMoveCard(twoOfSpades, store.foundations["Spades"], "Foundation", "Spades", 0)).toBe(false);
-  expect(store.canMoveCard(aceOfSpades, store.foundations["Spades"], "Foundation", "Spades", 0)).toBe(true);
-  store.foundations["Spades"].push(aceOfSpades);
-  expect(store.canMoveCard(twoOfSpades, store.foundations["Spades"], "Foundation", "Spades", 0)).toBe(true);
-});
+//   expect(store.canMoveCard(kingOfDiamonds, store.foundations["Spades"], "Foundation", "Spades", 0)).toBe(false);
+//   expect(store.canMoveCard(twoOfSpades, store.foundations["Spades"], "Foundation", "Spades", 0)).toBe(false);
+//   expect(store.canMoveCard(aceOfSpades, store.foundations["Spades"], "Foundation", "Spades", 0)).toBe(true);
+//   store.foundations["Spades"].push(aceOfSpades);
+//   expect(store.canMoveCard(twoOfSpades, store.foundations["Spades"], "Foundation", "Spades", 0)).toBe(true);
+// });
