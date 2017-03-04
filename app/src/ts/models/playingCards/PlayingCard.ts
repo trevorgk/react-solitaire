@@ -13,7 +13,6 @@ export class PlayingCard {
 
     }
     static backFace = '/assets/img/cards/back-purple.png';
-    public display = () => this.show ? this.getImageFile() : PlayingCard.backFace;
     public toString = () => `${this.rank} of ${this.suit}`;
     public getImageFile = () => `/assets/img/cards/${this.suit}/${this.rank}.png`
 }

@@ -136,4 +136,20 @@ export class KlondikeStore {
     
     destPile.push(...srcCards);
   }
+
+  @action tableauCardClicked(cardProps: KlondikeCardProps) {
+    const {
+      pilePosition,
+      pileProps,
+      card
+    } = cardProps;
+
+    const {
+      pile
+    } = pileProps;
+
+    if (pilePosition === pile.length - 1) {
+      if (!card.show) card.show = true;
+    }
+  }
 }

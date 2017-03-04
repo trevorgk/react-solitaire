@@ -3,8 +3,9 @@ import { KlondikeStore } from '../stores/KlondikeStore';
 import {PileType, ItemType} from '../models/klondike';
 import {PlayingCard, Suit} from '../models/playingCards';
 import { PileProps } from './';
-import {assign} from 'lodash/fp/object';
+import {assign, flowRight} from 'lodash/fp';
 import {DragSource} from 'react-dnd';
+import { observer } from 'mobx-react';
 
 export interface Props {
   store: KlondikeStore;
@@ -13,6 +14,7 @@ export interface Props {
   isDragging?: boolean;
   pilePosition: number;
   pileProps: PileProps;
+  clickHandler?: (Props) => void
 }
 
 const cardSource = {
@@ -55,26 +57,31 @@ function collect(connect, monitor) {
 const pileTypeCssClassName = (pileType: PileType) => `pileType__${pileType.toLowerCase()}`;
 const isDraggingCssClassName = (isDragging: boolean) => `${isDragging ? 'is-dragging' : ''}`;
 
-export const KlondikeCard: React.ComponentClass<Props> = DragSource('Card', cardSource, collect) ((props: Props) => {
+const modifier = flowRight(DragSource('Card', cardSource, collect), observer);
+
+export const KlondikeCard: React.ComponentClass<Props> =  modifier((props: Props) => {
   const {
     card,
     connectDragSource,
     isDragging,
     pilePosition,
-    pileProps
+    pileProps,
+    clickHandler
   } = props;
 
   const {
     pileType
   } = pileProps;
-  
+  const display = card.show ? card.getImageFile() : PlayingCard.backFace;
+
   return connectDragSource(
-    <div className={`klondike-card-component ${isDraggingCssClassName(isDragging)} ${pileTypeCssClassName(pileType)}`} onClick={e => {
-      card.show && console.log('card shown')
+    <div className={`klondike-card-component ${isDraggingCssClassName(isDragging)} ${pileTypeCssClassName(pileType)}`} 
+    onClick={(e) => {
+      if (!!clickHandler) clickHandler(props);
     }}>
       <img draggable={true} onDragStart={e => {
         console.log(e);
-      }} className="mw-100" src={card.display()}/>
+      }} className="mw-100" src={display}/>
       
     </div>
   )

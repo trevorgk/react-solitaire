@@ -60,11 +60,15 @@ export const Pile: React.ClassicComponentClass<Props> = modifier((props: Props) 
 
   const renderPile = !!pile && pile.length;
 
+  const cardClickHandler = pileType === 'Tableau' ? 
+    store.tableauCardClicked : null;
+
   return connectDropTarget(
     <div className={`pile-component ${pileLayoutCssClass(layout)}`}>
       {renderPile ? 
         pile.map((card, pos) => 
-          <KlondikeCard store={store} key={pos} card={card} pileProps={props} pilePosition={pos} />)
+          <KlondikeCard store={store} key={pos} card={card} pileProps={props} pilePosition={pos} 
+            clickHandler={cardClickHandler} />)
         : <div className="pile__empty"></div>
       }
       {isOver &&
