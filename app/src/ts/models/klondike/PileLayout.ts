@@ -1,1 +1,0 @@
-export type PileLayout = "Squared" | "FannedRight" | "FannedDown";
