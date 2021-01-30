@@ -15,6 +15,7 @@ export class PlayingCard {
     this.reveal = !this.reveal;
   };
   static backFace = '/cards/back-purple.png';
-  public toString = () => `${this.pip} of ${this.suit}`;
+  public toString = () =>
+    this.reveal ? `${this.pip} of ${this.suit}` : 'hidden card';
   public getImageFile = () => `/cards/${this.suit}/${this.pip}.png`;
 }

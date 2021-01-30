@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
+import GameBoard from './components/GameBoard/GameBoard';
 
 const App = () => (
   <div className="App">
-    <header className="App-header"></header>
+    <GameBoard />
   </div>
 );
 
