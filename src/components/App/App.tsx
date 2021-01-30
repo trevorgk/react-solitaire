@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import GameBoard from './components/GameBoard/GameBoard';
+import GameBoard from '../GameBoard/GameBoard';
 
 const App = () => (
   <div className="App">
