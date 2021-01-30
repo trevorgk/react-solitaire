@@ -19,3 +19,9 @@ export const colours = ['Red', 'Black'];
 export type Pip = typeof pips[number];
 export type Suit = typeof suits[number];
 export type Colour = typeof colours[number];
+
+export interface PlayingCard {
+  reveal: boolean;
+  suit: Suit;
+  pip: Pip;
+}

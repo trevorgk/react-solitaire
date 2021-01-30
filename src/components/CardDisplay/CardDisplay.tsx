@@ -1,16 +1,19 @@
 import React from 'react';
-import { PlayingCard } from '../../models/PlayingCard';
+import { PlayingCard } from '../../types';
+import { getSrc, getAltText } from './utils';
 
 interface Props {
   card: PlayingCard;
+  onClick?: () => void;
 }
 
-const CardDisplay = ({ card }: Props) => {
-  const display = card.reveal ? card.getImageFile() : PlayingCard.backFace;
+const CardDisplay = ({ card, onClick }: Props) => {
+  const src = getSrc(card);
+  const alt = getAltText(card);
 
   return (
-    <div className="CardDisplay">
-      <img src={display} alt={card.toString()} />
+    <div onClick={onClick} className="CardDisplay">
+      <img src={src} alt={alt} />
     </div>
   );
 };
