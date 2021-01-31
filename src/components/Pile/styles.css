@@ -1,0 +1,23 @@
+.Pile-layout__Stack {
+  position: relative;
+  width: 80px;
+  height: 112px;
+}
+.Pile-layout__Stack .CardDisplay {
+  position: absolute;
+}
+
+.Pile-layout__SpreadRight {
+  display: flex;
+}
+.Pile-layout__SpreadRight .CardDisplay {
+  margin-left: -70px;
+}
+
+.Pile-layout__SpreadDown {
+  display: flex;
+  flex-direction: column;
+}
+.Pile-layout__SpreadDown .CardDisplay {
+  margin-top: -90px;
+}

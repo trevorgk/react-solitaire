@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles.css';
 import { PileLayout, PlayingCard } from '../../types';
 import CardDisplay from '../CardDisplay/CardDisplay';
 
@@ -9,9 +10,9 @@ interface Props {
 
 const Pile = ({ layout, cards }: Props) => {
   return (
-    <div className="Pile">
+    <div className={`Pile Pile-layout__${layout}`}>
       {cards.map((card) => (
-        <CardDisplay card={card} />
+        <CardDisplay key={`card.${card.pip}.${card.suit}`} card={card} />
       ))}
     </div>
   );

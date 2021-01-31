@@ -6,7 +6,7 @@ const GameBoard = () => {
   const pile = generatePack(true);
   return (
     <div className="GameBoard">
-      <Pile cards={pile} layout="Stack" />
+      <Pile cards={pile} layout="SpreadRight" />
     </div>
   );
 };
