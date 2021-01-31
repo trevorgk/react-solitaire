@@ -25,3 +25,5 @@ export interface PlayingCard {
   suit: Suit;
   pip: Pip;
 }
+
+export type PileLayout = 'Stack' | 'SpreadRight' | 'SpreadDown';
