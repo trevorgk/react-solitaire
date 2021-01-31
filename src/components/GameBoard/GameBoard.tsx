@@ -1,21 +1,12 @@
-import React, { useState } from 'react';
-import { PlayingCard } from '../../types';
-import CardDisplay from '../CardDisplay/CardDisplay';
+import react from 'react';
+import { generatePack } from '../../utils/pack';
+import Pile from '../Pile/Pile';
 
 const GameBoard = () => {
-  const [card, setCard] = useState<PlayingCard>({
-    pip: 'Ace',
-    suit: 'Diamonds',
-    reveal: false,
-  });
-
-  const onClick = () => {
-    setCard({ ...card, reveal: !card.reveal });
-  };
-
+  const pile = generatePack(true);
   return (
     <div className="GameBoard">
-      <CardDisplay onClick={onClick} card={card} />
+      <Pile cards={pile} layout="Stack" />
     </div>
   );
 };
