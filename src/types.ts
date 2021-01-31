@@ -26,4 +26,4 @@ export interface PlayingCard {
   pip: Pip;
 }
 
-export type PileLayout = 'Stack' | 'SpreadRight' | 'SpreadDown';
+export type PileLayout = 'Squared' | 'FannedRight' | 'FannedDown';

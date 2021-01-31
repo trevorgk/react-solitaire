@@ -11,8 +11,8 @@ interface Props {
 const Pile = ({ layout, cards }: Props) => {
   return (
     <div className={`Pile Pile-layout__${layout}`}>
-      {cards.map((card) => (
-        <CardDisplay key={`card.${card.pip}.${card.suit}`} card={card} />
+      {cards.map((card, index) => (
+        <CardDisplay key={index} card={card} />
       ))}
     </div>
   );
