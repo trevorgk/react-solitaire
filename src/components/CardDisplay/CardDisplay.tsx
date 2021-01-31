@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles.css';
 import { PlayingCard } from '../../types';
 import { getSrc, getAltText } from './utils';
 

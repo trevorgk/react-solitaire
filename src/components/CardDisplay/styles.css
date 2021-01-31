@@ -1,0 +1,13 @@
+.CardDisplay {
+  position: relative;
+  width: 80px;
+  height: 112px;
+}
+
+.CardDisplay.isDragging {
+  opacity: 0.5;
+}
+
+.CardDisplay img {
+  max-width: 100%;
+}
