@@ -1,5 +1,4 @@
 .Pile-layout__Squared {
-  position: relative;
   width: 80px;
   height: 112px;
 }
@@ -9,6 +8,7 @@
 
 .Pile-layout__FannedRight {
   display: flex;
+  padding-left: 70px;
 }
 .Pile-layout__FannedRight .CardDisplay {
   margin-left: -70px;

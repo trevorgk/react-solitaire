@@ -1,0 +1,5 @@
+.Stock {
+  display: flex;
+  width: 185px;
+  justify-content: space-evenly;
+}
