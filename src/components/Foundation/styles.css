@@ -1,0 +1,13 @@
+.Foundation {
+  display: flex;
+}
+
+.FoundationPile {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 80px;
+  height: 112px;
+  margin: 0 5px;
+  background-position: 18px 30px;
+  background-repeat: no-repeat;
+}

@@ -1,0 +1,5 @@
+.GameBoard {
+  width: 600px;
+  display: flex;
+  justify-content: space-between;
+}

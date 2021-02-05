@@ -12,12 +12,14 @@ interface Props {
 const Stock = ({ stockPile, talon, onStockClick }: Props) => {
   return (
     <div className="Stock">
-      <Pile
-        cards={stockPile}
-        layout="Squared"
-        onPileClick={onStockClick}
-        className="stock"
-      />
+      <div className="StockPile">
+        <Pile
+          cards={stockPile}
+          layout="Squared"
+          onPileClick={onStockClick}
+          className="stock"
+        />
+      </div>
       <Pile cards={talon} layout="FannedRight" className="talon" />
     </div>
   );

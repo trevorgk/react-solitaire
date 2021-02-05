@@ -1,5 +1,13 @@
 .Stock {
   display: flex;
   width: 185px;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.StockPile {
+  width: 80px;
+  height: 112px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
 }
