@@ -1,10 +1,15 @@
 import React from 'react';
-import './styles.css';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import GameBoard from '../GameBoard/GameBoard';
+import './styles.css';
 
 const App = () => (
   <div className="App">
-    <GameBoard />
+    <DndProvider backend={HTML5Backend}>
+      <GameBoard />
+    </DndProvider>
   </div>
 );
 

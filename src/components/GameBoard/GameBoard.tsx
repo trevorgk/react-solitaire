@@ -13,6 +13,7 @@ interface State {
   waste: Array<PlayingCard>;
   foundation: Foundation;
 }
+
 const GameBoard = () => {
   const [state, setState] = useState<State>({
     stock: generatePack(false).slice(0, 11),

@@ -4,8 +4,9 @@
   height: 112px;
 }
 
-.CardDisplay.isDragging {
+.CardDisplay--isDragging {
   opacity: 0.5;
+  cursor: move;
 }
 
 .CardDisplay img {
