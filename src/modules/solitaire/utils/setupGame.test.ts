@@ -1,23 +1,11 @@
 import { keysIn } from 'lodash';
-import { Suit } from '../../../types';
+import sanityCheck from './sanityCheck';
 import setupGame from './setupGame';
 
-it('there is a total of 52 cards', () => {
+it('passes sanity check', () => {
   const game = setupGame();
 
-  let sum = 0;
-  sum += game.stock.length;
-  sum += game.waste.length;
-  sum += game.talon.length;
-
-  keysIn(game.foundation).forEach((suit) => {
-    sum += game.foundation[suit as Suit].length;
-  });
-
-  keysIn(game.tableau).forEach((idx) => {
-    sum += game.tableau[parseInt(idx)].length;
-  });
-  expect(sum).toEqual(52);
+  expect(sanityCheck(game)).toBe(true);
 });
 
 it('reveals only the last card of each tableau pile', () => {
