@@ -1,5 +1,10 @@
 .GameBoard {
-  width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.upper {
   display: flex;
   justify-content: space-between;
+  margin: 0 5px;
 }

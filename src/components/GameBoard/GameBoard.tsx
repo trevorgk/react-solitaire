@@ -1,31 +1,13 @@
 import produce from 'immer';
 import { useState } from 'react';
-
-import { PlayingCard, Foundation } from '../../types';
-import { generatePack } from '../../utils/pack';
-import FoundationComponent from '../Foundation/Foundation';
+import setupGame from '../../modules/solitaire/utils/setupGame';
+import Foundation from '../Foundation/Foundation';
+import Tableau from '../Tableau/Tableau';
 import Stock from '../Stock/Stock';
 import './styles.css';
 
-interface State {
-  stock: Array<PlayingCard>;
-  talon: Array<PlayingCard>;
-  waste: Array<PlayingCard>;
-  foundation: Foundation;
-}
-
 const GameBoard = () => {
-  const [state, setState] = useState<State>({
-    stock: generatePack(false).slice(0, 11),
-    talon: [],
-    waste: [],
-    foundation: {
-      Spades: [],
-      Clubs: [],
-      Diamonds: [],
-      Hearts: [],
-    },
-  });
+  const [state, setState] = useState(setupGame());
 
   const onStockClick = () => {
     setState((state) =>
@@ -54,11 +36,14 @@ const GameBoard = () => {
     console.log({ waste: state.waste });
   };
 
-  const { stock, talon, foundation } = state;
+  const { stock, talon, foundation, tableau } = state;
   return (
     <div className="GameBoard">
-      <Stock stockPile={stock} talon={talon} onStockClick={onStockClick} />
-      <FoundationComponent foundation={foundation} />
+      <div className="upper">
+        <Stock stockPile={stock} talon={talon} onStockClick={onStockClick} />
+        <Foundation foundation={foundation} />
+      </div>
+      <Tableau tableau={tableau} />
     </div>
   );
 };

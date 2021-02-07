@@ -1,0 +1,9 @@
+.Tableau {
+  display: flex;
+  margin-top: 90px;
+  padding-top: 30px;
+}
+
+.TableauPile {
+  margin: 0 5px;
+}

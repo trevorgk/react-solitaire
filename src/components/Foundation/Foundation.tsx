@@ -1,13 +1,14 @@
 import { keysIn } from 'lodash';
 import React from 'react';
 
-import { Foundation as FoundationType, Suit } from '../../types';
+import { PlayingCard, Suit } from '../../types';
 import Pile from '../Pile/Pile';
-import './styles.css';
-import { getBackgroundImage } from './utils';
 
-export interface Props {
-  foundation: FoundationType;
+import { getBackgroundImage } from './utils';
+import './styles.css';
+
+interface Props {
+  foundation: Record<Suit, Array<PlayingCard>>;
 }
 
 const Foundation = ({ foundation }: Props) => {
