@@ -1,17 +1,17 @@
 import { keysIn } from 'lodash';
 import React from 'react';
 
-import { PlayingCard, Suit } from '../../types';
 import Pile from '../Pile/Pile';
+import { useSolitaireContext } from '../../modules/solitaire/SolitaireContext';
+import { Suit } from '../../types';
 
 import { getBackgroundImage } from './utils';
 import './styles.css';
 
-interface Props {
-  foundation: Record<Suit, Array<PlayingCard>>;
-}
+const Foundation = () => {
+  const [gameState] = useSolitaireContext();
 
-const Foundation = ({ foundation }: Props) => {
+  const { foundation } = gameState;
   return (
     <div className="Foundation">
       {keysIn(foundation).map((suit) => {

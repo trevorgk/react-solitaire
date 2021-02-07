@@ -1,16 +1,16 @@
 import { keysIn } from 'lodash';
 import React from 'react';
+import { useSolitaireContext } from '../../modules/solitaire/SolitaireContext';
 
-import { PlayingCard } from '../../types';
 import Pile from '../Pile/Pile';
 
 import './styles.css';
 
-interface Props {
-  tableau: Record<number, Array<PlayingCard>>;
-}
+const Tableau = () => {
+  const [gameState] = useSolitaireContext();
 
-const Tableau = ({ tableau }: Props) => {
+  const { tableau } = gameState;
+
   return (
     <div className="Tableau">
       {keysIn(tableau).map((idx) => {
