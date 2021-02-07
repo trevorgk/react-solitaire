@@ -3,7 +3,7 @@ import { keysIn } from 'lodash';
 import { Suit } from '../../../types';
 import { GameState } from '../types';
 
-const sanityCheck = (game: GameState): boolean => {
+const sanityCheck = (game: GameState): true => {
   let sum = 0;
   sum += game.stock.length;
   sum += game.waste.length;
@@ -17,7 +17,11 @@ const sanityCheck = (game: GameState): boolean => {
     sum += game.tableau[parseInt(idx)].length;
   });
 
-  return sum === 52;
+  if (sum !== 52) {
+    throw new Error('Game no longer contains 52 cards');
+  }
+
+  return true;
 };
 
 export default sanityCheck;
