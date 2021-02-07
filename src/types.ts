@@ -27,5 +27,3 @@ export interface PlayingCard {
 }
 
 export type PileLayout = 'Squared' | 'FannedRight' | 'FannedDown';
-
-export type Foundation = Record<Suit, Array<PlayingCard>>;
