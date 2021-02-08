@@ -8,7 +8,7 @@ import './styles.css';
 
 const Stock = () => {
   const [gameState, setGameState] = useSolitaireContext();
-  const { stock, talon } = gameState;
+  const { stock, waste } = gameState;
 
   const onStockClick = () => setGameState(stockClicked);
 
@@ -16,13 +16,14 @@ const Stock = () => {
     <div className="Stock">
       <div className="StockPile">
         <Pile
+          type="Stock"
           cards={stock}
           layout="Squared"
           onPileClick={onStockClick}
           className="stock"
         />
       </div>
-      <Pile cards={talon} layout="FannedRight" className="talon" />
+      <Pile type="Waste" cards={waste} layout="FannedRight" className="talon" />
     </div>
   );
 };

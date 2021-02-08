@@ -3,16 +3,16 @@ import produce from 'immer';
 import { GameState } from '../types';
 import sanityCheck from '../utils/sanityCheck';
 
-const stockClicked = (gameState: GameState) => {
-  const update = produce(gameState, (draft) => {
+const stockClicked = (gameState: GameState) =>
+  produce(gameState, (draft) => {
     const MAX = 3;
-    draft.talon.forEach((card) => (card.reveal = false));
-    draft.waste = draft.waste.concat(draft.talon);
-    draft.talon = [];
+    draft.waste.forEach((card) => (card.reveal = false));
+    draft.talon = draft.talon.concat(draft.waste);
+    draft.waste = [];
 
     if (draft.stock.length === 0) {
-      draft.stock = draft.stock.concat(draft.waste.reverse());
-      draft.waste = [];
+      draft.stock = draft.stock.concat(draft.talon.reverse());
+      draft.talon = [];
 
       return;
     }
@@ -21,13 +21,11 @@ const stockClicked = (gameState: GameState) => {
       const card = draft.stock.pop();
       if (card) {
         card.reveal = true;
-        draft.talon.push(card);
+        draft.waste.push(card);
       }
     }
-  });
 
-  sanityCheck(update);
-  return update;
-};
+    sanityCheck(draft);
+  });
 
 export default stockClicked;

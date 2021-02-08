@@ -18,7 +18,7 @@ const TableauPile = ({ idx }: Props) => {
 
   return (
     <div className="TableauPile">
-      <Pile cards={pile} layout="FannedDown" />
+      <Pile type="Tableau" cards={pile} layout="FannedDown" />
     </div>
   );
 };

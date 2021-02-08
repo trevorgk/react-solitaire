@@ -2,7 +2,7 @@
   width: 80px;
   height: 112px;
 }
-.Pile-layout__Squared .CardDisplay {
+.Pile-layout__Squared .CardHolder {
   position: absolute;
 }
 
@@ -10,7 +10,7 @@
   display: flex;
   padding-left: 70px;
 }
-.Pile-layout__FannedRight .CardDisplay {
+.Pile-layout__FannedRight .CardHolder {
   margin-left: -70px;
 }
 
@@ -18,6 +18,6 @@
   display: flex;
   flex-direction: column;
 }
-.Pile-layout__FannedDown .CardDisplay {
+.Pile-layout__FannedDown .CardHolder {
   margin-top: -90px;
 }

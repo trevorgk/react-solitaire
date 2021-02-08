@@ -4,11 +4,6 @@
   height: 112px;
 }
 
-.CardDisplay--isDragging {
-  opacity: 0.5;
-  cursor: move;
-}
-
 .CardDisplay img {
   max-width: 100%;
 }

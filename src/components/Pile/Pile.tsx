@@ -2,13 +2,15 @@ import cx from 'classnames';
 import React from 'react';
 import './styles.css';
 import { PileLayout, PlayingCard } from '../../types';
-import CardDisplay from '../CardDisplay/CardDisplay';
+import { PileType } from '../../modules/solitaire/types';
+import CardHolder from './CardHolder/CardHolder';
 
 interface Props {
   cards: Array<PlayingCard>;
   className?: string;
   layout: PileLayout;
   onPileClick?: () => void;
+  type: PileType;
 }
 
 const Pile = ({ className, layout, cards, onPileClick }: Props) => {
@@ -18,7 +20,7 @@ const Pile = ({ className, layout, cards, onPileClick }: Props) => {
       onClick={onPileClick}
     >
       {cards.map((card, index) => (
-        <CardDisplay key={index} card={card} />
+        <CardHolder key={index} card={card} />
       ))}
     </div>
   );
