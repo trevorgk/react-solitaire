@@ -1,5 +1,7 @@
 .Pile {
   position: relative;
+  min-width: 80px;
+  min-height: 112px;
 }
 
 .Pile-layout__Squared {
