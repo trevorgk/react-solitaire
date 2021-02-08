@@ -9,7 +9,7 @@ const Foundation = () => {
   return (
     <div className="Foundation">
       {suits.map((suit) => (
-        <FoundationPile suit={suit} />
+        <FoundationPile key={suit} suit={suit} />
       ))}
     </div>
   );

@@ -13,8 +13,8 @@ interface Props {
 const FoundationPile = ({ suit }: Props) => {
   const [gameState] = useSolitaireContext();
 
-  const { foundation } = gameState;
   const backgroundImage = getBackgroundImage(suit);
+  const { foundation } = gameState;
 
   return (
     <div
