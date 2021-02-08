@@ -15,20 +15,20 @@ interface Props {
 const FoundationPile = ({ suit }: Props) => {
   const [gameState] = useSolitaireContext();
 
-  const [{ isOver }, drop] = useDrop({
-    accept: ItemTypes.CARD,
-    // drop: () => moveCard(),
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  });
+  // const [{ isOver }, drop] = useDrop({
+  //   accept: ItemTypes.CARD,
+  //   // drop: () => moveCard(),
+  //   collect: (monitor) => ({
+  //     isOver: !!monitor.isOver(),
+  //   }),
+  // });
 
   const backgroundImage = getBackgroundImage(suit);
   const { foundation } = gameState;
 
   return (
     <div
-      ref={drop}
+      // ref={drop}
       className="FoundationPile"
       style={{
         backgroundImage,
@@ -36,13 +36,12 @@ const FoundationPile = ({ suit }: Props) => {
     >
       <Pile
         dropTarget={{
-          pile: 'Foundation',
+          pileType: 'Foundation',
           suit,
         }}
         cards={foundation[suit]}
         layout="Squared"
       />
-      {isOver && <div className="FoundationPile__overlay" />}
     </div>
   );
 };

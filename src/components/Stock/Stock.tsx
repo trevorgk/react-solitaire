@@ -17,7 +17,7 @@ const Stock = () => {
       <div className="StockPile">
         <Pile
           dropTarget={{
-            pile: 'Stock',
+            pileType: 'Stock',
           }}
           cards={stock}
           layout="Squared"
@@ -27,7 +27,7 @@ const Stock = () => {
       </div>
       <Pile
         dropTarget={{
-          pile: 'Waste',
+          pileType: 'Waste',
         }}
         cards={waste}
         layout="FannedRight"

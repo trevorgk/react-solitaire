@@ -24,6 +24,7 @@ export interface PlayingCard {
   reveal: boolean;
   suit: Suit;
   pip: Pip;
+  colour: Colour;
 }
 
 export type PileLayout = 'Squared' | 'FannedRight' | 'FannedDown';

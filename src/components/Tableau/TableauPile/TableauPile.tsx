@@ -20,7 +20,7 @@ const TableauPile = ({ idx }: Props) => {
     <div className="TableauPile">
       <Pile
         dropTarget={{
-          pile: 'Tableau',
+          pileType: 'Tableau',
           lane: idx,
         }}
         cards={pile}
