@@ -2,7 +2,10 @@ import { PlayingCard, Suit } from '../../types';
 
 export type PileType = 'Stock' | 'Waste' | 'Tableau' | 'Foundation';
 
-export type DragTarget =
+export type DropTarget =
+  | {
+      pile: 'Waste' | 'Stock';
+    }
   | {
       pile: 'Foundation';
       suit: Suit;
@@ -14,7 +17,11 @@ export type DragTarget =
 
 export type DragSource =
   | {
-      pile: 'Waste';
+      pile: 'Waste' | 'Stock';
+    }
+  | {
+      pile: 'Foundation';
+      suit: Suit;
     }
   | {
       pile: 'Tableau';

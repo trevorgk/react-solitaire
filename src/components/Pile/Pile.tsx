@@ -2,7 +2,7 @@ import cx from 'classnames';
 import React from 'react';
 import './styles.css';
 import { PileLayout, PlayingCard } from '../../types';
-import { PileType } from '../../modules/solitaire/types';
+import { DropTarget } from '../../modules/solitaire/types';
 import CardHolder from './CardHolder/CardHolder';
 
 interface Props {
@@ -10,17 +10,28 @@ interface Props {
   className?: string;
   layout: PileLayout;
   onPileClick?: () => void;
-  type: PileType;
+  dropTarget: DropTarget;
 }
 
-const Pile = ({ className, layout, cards, onPileClick }: Props) => {
+const Pile = ({ className, layout, cards, onPileClick, dropTarget }: Props) => {
   return (
     <div
       className={cx('Pile', `Pile-layout__${layout}`, className)}
       onClick={onPileClick}
     >
       {cards.map((card, index) => (
-        <CardHolder key={index} card={card} />
+        <CardHolder
+          dragSource={
+            dropTarget.pile === 'Tableau'
+              ? {
+                  ...dropTarget,
+                  position: index,
+                }
+              : dropTarget
+          }
+          key={index}
+          card={card}
+        />
       ))}
     </div>
   );

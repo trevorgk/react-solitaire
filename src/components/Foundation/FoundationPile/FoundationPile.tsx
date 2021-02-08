@@ -34,7 +34,14 @@ const FoundationPile = ({ suit }: Props) => {
         backgroundImage,
       }}
     >
-      <Pile type="Foundation" cards={foundation[suit]} layout="Squared" />
+      <Pile
+        dropTarget={{
+          pile: 'Foundation',
+          suit,
+        }}
+        cards={foundation[suit]}
+        layout="Squared"
+      />
       {isOver && <div className="FoundationPile__overlay" />}
     </div>
   );

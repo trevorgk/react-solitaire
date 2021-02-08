@@ -3,7 +3,9 @@ import React from 'react';
 import { useDrag } from 'react-dnd';
 
 import { ItemTypes } from '../../../constants';
+import { useSolitaireContext } from '../../../modules/solitaire/SolitaireContext';
 import { DragSource } from '../../../modules/solitaire/types';
+import canDrag from '../../../modules/solitaire/utils/canDrag';
 import { PlayingCard } from '../../../types';
 import CardDisplay from '../../CardDisplay/CardDisplay';
 
@@ -11,13 +13,15 @@ import './styles.css';
 
 interface Props {
   card: PlayingCard;
-  dragSource?: DragSource;
+  dragSource: DragSource;
   onClick?: () => void;
 }
 
 const CardHolder = ({ card, dragSource, onClick }: Props) => {
+  const [gameState] = useSolitaireContext();
   const [{ isDragging }, drag] = useDrag({
     item: { type: ItemTypes.CARD },
+    canDrag: () => canDrag(gameState, dragSource),
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),

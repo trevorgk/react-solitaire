@@ -16,14 +16,23 @@ const Stock = () => {
     <div className="Stock">
       <div className="StockPile">
         <Pile
-          type="Stock"
+          dropTarget={{
+            pile: 'Stock',
+          }}
           cards={stock}
           layout="Squared"
           onPileClick={onStockClick}
           className="stock"
         />
       </div>
-      <Pile type="Waste" cards={waste} layout="FannedRight" className="talon" />
+      <Pile
+        dropTarget={{
+          pile: 'Waste',
+        }}
+        cards={waste}
+        layout="FannedRight"
+        className="talon"
+      />
     </div>
   );
 };

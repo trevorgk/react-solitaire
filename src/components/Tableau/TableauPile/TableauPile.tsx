@@ -18,7 +18,14 @@ const TableauPile = ({ idx }: Props) => {
 
   return (
     <div className="TableauPile">
-      <Pile type="Tableau" cards={pile} layout="FannedDown" />
+      <Pile
+        dropTarget={{
+          pile: 'Tableau',
+          lane: idx,
+        }}
+        cards={pile}
+        layout="FannedDown"
+      />
     </div>
   );
 };
