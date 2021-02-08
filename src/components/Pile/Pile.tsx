@@ -11,6 +11,7 @@ import canDropCard from '../../modules/solitaire/utils/canDrop';
 import CardHolder from './CardHolder/CardHolder';
 import './styles.css';
 import Overlay from './Overlay/Overlay';
+import moveCard from '../../modules/solitaire/producers/moveCard';
 
 interface Props {
   cards: Array<PlayingCard>;
@@ -21,7 +22,7 @@ interface Props {
 }
 
 const Pile = ({ className, layout, cards, onPileClick, dropTarget }: Props) => {
-  const [gameState] = useSolitaireContext();
+  const [gameState, setGameState] = useSolitaireContext();
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ItemTypes.CARD,
     canDrop: (item) => {
@@ -30,14 +31,18 @@ const Pile = ({ className, layout, cards, onPileClick, dropTarget }: Props) => {
 
       return canDropCard(gameState, dragSource, dropTarget);
     },
+    drop: (item) => {
+      // @ts-ignore
+      const dragSource: DragSource = item.dragSource;
+      console.log('dropping the bomb');
+
+      return setGameState(moveCard(gameState, dragSource, dropTarget));
+    },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
       canDrop: !!monitor.canDrop(),
     }),
   });
-  if (isOver) {
-    console.log({ canDrop });
-  }
   return (
     <div
       ref={drop}

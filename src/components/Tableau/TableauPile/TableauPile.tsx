@@ -1,4 +1,5 @@
 import React from 'react';
+import tableauClicked from '../../../modules/solitaire/producers/tableauClicked';
 
 import { useSolitaireContext } from '../../../modules/solitaire/SolitaireContext';
 import Pile from '../../Pile/Pile';
@@ -10,11 +11,13 @@ interface Props {
 }
 
 const TableauPile = ({ idx }: Props) => {
-  const [gameState] = useSolitaireContext();
+  const [gameState, setGameState] = useSolitaireContext();
 
   const { tableau } = gameState;
 
   const pile = tableau[idx];
+
+  const onTableauClick = () => setGameState(tableauClicked(gameState, idx));
 
   return (
     <div className="TableauPile">
@@ -24,6 +27,7 @@ const TableauPile = ({ idx }: Props) => {
           lane: idx,
         }}
         cards={pile}
+        onPileClick={onTableauClick}
         layout="FannedDown"
       />
     </div>
