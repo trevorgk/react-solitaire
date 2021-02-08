@@ -4,20 +4,27 @@ export type PileType = 'Stock' | 'Waste' | 'Tableau' | 'Foundation';
 
 export type DropTarget =
   | {
-      pile: 'Waste' | 'Stock';
+      pile: 'Stock';
     }
   | {
-      pile: 'Foundation';
-      suit: Suit;
+      pile: 'Waste';
     }
   | {
       pile: 'Tableau';
       lane: number;
+    }
+  | {
+      pile: 'Foundation';
+      suit: Suit;
     };
 
 export type DragSource =
   | {
-      pile: 'Waste' | 'Stock';
+      pile: 'Stock';
+    }
+  | {
+      pile: 'Waste';
+      position: number;
     }
   | {
       pile: 'Foundation';

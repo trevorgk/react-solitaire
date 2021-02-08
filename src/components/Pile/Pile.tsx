@@ -19,17 +19,17 @@ const Pile = ({ className, layout, cards, onPileClick, dropTarget }: Props) => {
       className={cx('Pile', `Pile-layout__${layout}`, className)}
       onClick={onPileClick}
     >
-      {cards.map((card, index) => (
+      {cards.map((card, position) => (
         <CardHolder
           dragSource={
-            dropTarget.pile === 'Tableau'
+            dropTarget.pile === 'Tableau' || dropTarget.pile === 'Waste'
               ? {
                   ...dropTarget,
-                  position: index,
+                  position,
                 }
               : dropTarget
           }
-          key={index}
+          key={position}
           card={card}
         />
       ))}

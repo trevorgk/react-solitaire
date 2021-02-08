@@ -3,7 +3,11 @@ import { GameState, DragSource } from '../types';
 const canDrag = (gameState: GameState, dragSource: DragSource) => {
   switch (dragSource.pile) {
     case 'Tableau':
-      return true;
+      const card = gameState.tableau[dragSource.lane][dragSource.position];
+      return card.reveal;
+    case 'Waste':
+      return dragSource.position === gameState.waste.length - 1;
+
     default:
       return false;
   }
