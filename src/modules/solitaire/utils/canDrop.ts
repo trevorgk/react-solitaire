@@ -2,6 +2,7 @@ import { pips } from './../../../types';
 import { GameState, DragSource, DropTarget } from '../types';
 import getDraggedCard from './getDraggedCard';
 import getTargetPile from './getTargetPile';
+import { getColour } from '../../../utils/pack';
 
 const canDrop = (
   gameState: GameState,
@@ -21,7 +22,7 @@ const canDrop = (
       if (pile.length !== 0) {
         const last = pile[pile.length - 1];
         return (
-          last.colour !== sourceCard.colour &&
+          getColour(last) !== getColour(sourceCard) &&
           pips.indexOf(last.pip) === pips.indexOf(sourceCard.pip) + 1
         );
       } else {

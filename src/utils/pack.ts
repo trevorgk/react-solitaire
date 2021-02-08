@@ -1,6 +1,6 @@
 import produce from 'immer';
 
-import { Colour, PlayingCard, suits, pips } from '../types';
+import { PlayingCard, suits, pips } from '../types';
 
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 export const shuffle = (pile: Array<PlayingCard>): Array<PlayingCard> =>
@@ -26,16 +26,15 @@ export const generatePack = (reveal = false): Array<PlayingCard> => {
   const pack: Array<PlayingCard> = [];
   for (let i = 0; i < suits.length; i++) {
     for (let j = 0; j < pips.length; j++) {
-      const suit = suits[i];
-      const colour: Colour =
-        suit === 'Diamonds' || suit === 'Hearts' ? 'Red' : 'Black';
       pack.push({
-        suit,
+        suit: suits[i],
         pip: pips[j],
         reveal,
-        colour,
       });
     }
   }
   return shuffle(pack);
 };
+
+export const getColour = (card: PlayingCard) =>
+  card.suit === 'Diamonds' || card.suit === 'Hearts';
