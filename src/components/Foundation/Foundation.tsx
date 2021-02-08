@@ -1,33 +1,16 @@
-import { keysIn } from 'lodash';
 import React from 'react';
 
-import Pile from '../Pile/Pile';
-import { useSolitaireContext } from '../../modules/solitaire/SolitaireContext';
-import { Suit } from '../../types';
+import { suits } from '../../types';
 
-import { getBackgroundImage } from './utils';
 import './styles.css';
+import FoundationPile from './FoundationPile/FoundationPile';
 
 const Foundation = () => {
-  const [gameState] = useSolitaireContext();
-
-  const { foundation } = gameState;
   return (
     <div className="Foundation">
-      {keysIn(foundation).map((suit) => {
-        const backgroundImage = getBackgroundImage(suit as Suit);
-
-        return (
-          <div
-            className={`FoundationPile FoundationPile__${suit}`}
-            style={{
-              backgroundImage,
-            }}
-          >
-            <Pile cards={foundation[suit as Suit]} layout="Squared" />
-          </div>
-        );
-      })}
+      {suits.map((suit) => (
+        <FoundationPile suit={suit} />
+      ))}
     </div>
   );
 };

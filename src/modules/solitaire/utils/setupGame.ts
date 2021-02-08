@@ -1,8 +1,7 @@
 import { PlayingCard, Suit } from '../../../types';
 import { generatePack } from '../../../utils/pack';
+import { NUM_TABLEAU_PILES } from '../constants';
 import { GameState } from './../types';
-
-const NUM_TABLEAU_PILES = 7;
 
 const setupGame = (): GameState => {
   const cards = generatePack().slice();

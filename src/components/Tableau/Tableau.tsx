@@ -1,27 +1,16 @@
-import { keysIn } from 'lodash';
 import React from 'react';
-import { useSolitaireContext } from '../../modules/solitaire/SolitaireContext';
-
-import Pile from '../Pile/Pile';
+import { NUM_TABLEAU_PILES } from '../../modules/solitaire/constants';
 
 import './styles.css';
+import TableauPile from './TableauPile/TableauPile';
 
 const Tableau = () => {
-  const [gameState] = useSolitaireContext();
+  let rows = [];
 
-  const { tableau } = gameState;
-
-  return (
-    <div className="Tableau">
-      {keysIn(tableau).map((idx) => {
-        return (
-          <div className="TableauPile">
-            <Pile cards={tableau[parseInt(idx)]} layout="FannedDown" />
-          </div>
-        );
-      })}
-    </div>
-  );
+  for (let i = 0; i < NUM_TABLEAU_PILES; i++) {
+    rows.push(<TableauPile idx={i} key={i} />);
+  }
+  return <div className="Tableau">{rows}</div>;
 };
 
 export default Tableau;
