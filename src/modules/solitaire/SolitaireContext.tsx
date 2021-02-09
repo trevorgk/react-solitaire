@@ -1,4 +1,3 @@
-import produce from 'immer';
 import React, { useState } from 'react';
 
 import { GameState } from './types';
