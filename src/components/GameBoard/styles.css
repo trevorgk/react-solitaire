@@ -1,4 +1,5 @@
 .GameBoard {
+  margin-top: 10vh;
   display: flex;
   flex-direction: column;
 }

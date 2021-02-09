@@ -21,6 +21,10 @@ interface Props {
   dropTarget: DropTarget;
 }
 
+const isHax = () =>
+  // @ts-expect-error
+  window.hax === true;
+
 const Pile = ({ className, layout, cards, onPileClick, dropTarget }: Props) => {
   const [gameState, setGameState] = useSolitaireContext();
   const [{ isOver, canDrop }, drop] = useDrop({
@@ -32,9 +36,8 @@ const Pile = ({ className, layout, cards, onPileClick, dropTarget }: Props) => {
       return canDropCard(gameState, dragSource, dropTarget);
     },
     drop: (item) => {
-      // @ts-ignore
+      // @ts-expect-error
       const dragSource: DragSource = item.dragSource;
-      console.log('dropping the bomb');
 
       return setGameState(moveCard(gameState, dragSource, dropTarget));
     },
@@ -63,13 +66,11 @@ const Pile = ({ className, layout, cards, onPileClick, dropTarget }: Props) => {
           card={card}
         />
       ))}
-      {isOver && !canDrop && <Overlay color="red" />}
-      {!isOver && canDrop && <Overlay color="yellow" />}
-      {isOver && canDrop && <Overlay color="green" />}
+      {isHax() && isOver && !canDrop && <Overlay color="red" />}
+      {isHax() && !isOver && canDrop && <Overlay color="yellow" />}
+      {isHax() && isOver && canDrop && <Overlay color="green" />}
     </div>
   );
 };
-
-//`Pile Pile-layout__${layout}`
 
 export default Pile;
