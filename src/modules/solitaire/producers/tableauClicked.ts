@@ -1,4 +1,4 @@
-import produce from 'immer';
+import { produce } from 'immer';
 
 import { GameState } from '../types';
 import sanityCheck from '../utils/sanityCheck';

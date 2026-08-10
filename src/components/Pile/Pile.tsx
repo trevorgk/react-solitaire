@@ -1,17 +1,16 @@
 import cx from 'classnames';
-import React from 'react';
 import { useDrop } from 'react-dnd';
 
 import { ItemTypes } from '../../constants';
 import { PileLayout, PlayingCard } from '../../types';
 import { useSolitaireContext } from '../../modules/solitaire/SolitaireContext';
-import { DragSource, DropTarget } from '../../modules/solitaire/types';
+import { CardDragItem, DropTarget } from '../../modules/solitaire/types';
 import canDropCard from '../../modules/solitaire/utils/canDrop';
+import moveCard from '../../modules/solitaire/producers/moveCard';
 
 import CardHolder from './CardHolder/CardHolder';
 import './styles.css';
 import Overlay from './Overlay/Overlay';
-import moveCard from '../../modules/solitaire/producers/moveCard';
 
 interface Props {
   cards: Array<PlayingCard>;
@@ -21,34 +20,37 @@ interface Props {
   dropTarget: DropTarget;
 }
 
-const isHax = () =>
-  // @ts-expect-error
-  window.hax === true;
+declare global {
+  interface Window {
+    hax?: boolean;
+  }
+}
+
+const isHax = () => window.hax === true;
 
 const Pile = ({ className, layout, cards, onPileClick, dropTarget }: Props) => {
   const [gameState, setGameState] = useSolitaireContext();
-  const [{ isOver, canDrop }, drop] = useDrop({
-    accept: ItemTypes.CARD,
-    canDrop: (item) => {
-      // @ts-ignore
-      const dragSource: DragSource = item.dragSource;
-
-      return canDropCard(gameState, dragSource, dropTarget);
-    },
-    drop: (item) => {
-      // @ts-expect-error
-      const dragSource: DragSource = item.dragSource;
-
-      return setGameState(moveCard(gameState, dragSource, dropTarget));
-    },
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-      canDrop: !!monitor.canDrop(),
+  const [{ isOver, canDrop }, drop] = useDrop(
+    () => ({
+      accept: ItemTypes.CARD,
+      canDrop: (item: CardDragItem) =>
+        canDropCard(gameState, item.dragSource, dropTarget),
+      drop: (item: CardDragItem) => {
+        setGameState(moveCard(gameState, item.dragSource, dropTarget));
+      },
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+      }),
     }),
-  });
+    [gameState, dropTarget, setGameState],
+  );
+
   return (
     <div
-      ref={drop}
+      ref={(node) => {
+        drop(node);
+      }}
       className={cx('Pile', `Pile-layout__${layout}`, className)}
       onClick={onPileClick}
     >

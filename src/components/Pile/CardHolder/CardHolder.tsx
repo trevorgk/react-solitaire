@@ -1,5 +1,4 @@
 import cx from 'classnames';
-import React from 'react';
 import { useDrag } from 'react-dnd';
 
 import { ItemTypes } from '../../../constants';
@@ -19,19 +18,25 @@ interface Props {
 
 const CardHolder = ({ card, dragSource, onClick }: Props) => {
   const [gameState] = useSolitaireContext();
-  const [{ isDragging }, drag] = useDrag({
-    item: { type: ItemTypes.CARD, dragSource },
-    canDrag: () => canDragCard(gameState, dragSource),
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: ItemTypes.CARD,
+      item: { dragSource },
+      canDrag: () => canDragCard(gameState, dragSource),
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
     }),
-  });
+    [gameState, dragSource],
+  );
 
   return (
     <div
       onClick={onClick}
       className={cx('CardHolder', { 'CardHolder--isDragging': isDragging })}
-      ref={drag}
+      ref={(node) => {
+        drag(node);
+      }}
     >
       <CardDisplay card={card} />
     </div>

@@ -1,4 +1,4 @@
-import produce from 'immer';
+import { produce } from 'immer';
 import { PlayingCard } from '../../../types';
 
 import { GameState, DragSource, DropTarget } from '../types';

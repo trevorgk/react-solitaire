@@ -36,6 +36,10 @@ export type DragSource =
       position: number;
     };
 
+export interface CardDragItem {
+  dragSource: DragSource;
+}
+
 export interface GameState {
   stock: Array<PlayingCard>;
   talon: Array<PlayingCard>;
